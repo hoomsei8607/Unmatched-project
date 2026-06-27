@@ -26,7 +26,7 @@ void Graph::Initialize_Graph()
     //filling the temp object with space 1 info
     temp_array = {ZONE_COLORS::BLUE, ZONE_COLORS::NON, ZONE_COLORS::NON};
     temp_space_object.Set_Info(false, false, true, 1, temp_array);
-    
+
     //adding this to the vector of any space that space 1 is connected to 
     Game_Map_Graph[2].push_back(temp_space_object);
     Game_Map_Graph[7].push_back(temp_space_object);
@@ -249,4 +249,9 @@ void Graph::Initialize_Graph()
     Game_Map_Graph[28].push_back(temp_space_object);
     Game_Map_Graph[29].push_back(temp_space_object);
     
+}
+
+Graph::~Graph()
+{
+    delete Object_Instance;
 }
