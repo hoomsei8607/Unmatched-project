@@ -7,7 +7,7 @@ class Fighter_Base_Class
     public:
         void Move();
 
-    private:
+    protected:
         int Initial_Hp;
         int Current_Hp;
         int Base_Move_Value;
