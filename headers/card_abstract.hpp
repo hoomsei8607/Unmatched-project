@@ -4,6 +4,14 @@
 class Card_Base_Class
 {
     public:
+    int get_card_value();
+    int get_Card_Boost_Value();
+    CARD_EFFECT_TYPE get_effect();
+    CARD_TYPE get_type();
+    CARD_OWNER get_owner();
+    bool get_is_discarded();
+    int get_card_number();
+
     
     protected:
         int Card_Value;
@@ -11,7 +19,8 @@ class Card_Base_Class
         CARD_EFFECT_TYPE effect;
         CARD_TYPE type;
         CARD_OWNER owner;
-                    
+        bool is_discarded;   
+        int card_number;        
 };
 
 #endif

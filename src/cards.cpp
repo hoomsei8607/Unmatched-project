@@ -1,0 +1,221 @@
+#include "../headers/cards.hpp"
+
+dracula_feedingfrenzy::dracula_feedingfrenzy()
+{
+    Card_Value=2;
+    Card_Boost_Value=3;
+    owner=CARD_OWNER::HERO;
+    effect=CARD_EFFECT_TYPE::DURING_COMBAT;
+    type=CARD_TYPE::ATTACK;
+    card_number=2;
+}
+
+dracula_mistform::dracula_mistform()
+{
+    Card_Value=0;
+    Card_Boost_Value=2;
+    owner=CARD_OWNER::HERO;
+    type=CARD_TYPE::SCHEME;
+    card_number=2;
+}
+dracula_ambush::dracula_ambush()
+{
+    Card_Value=2;
+    Card_Boost_Value=3;
+    owner=CARD_OWNER::ANY;
+    effect=CARD_EFFECT_TYPE::DURING_COMBAT;
+    type=CARD_TYPE::ATTACK;
+    card_number=2;
+}
+
+dracula_baptism_of_blood::dracula_baptism_of_blood()
+{
+    Card_Value=0;
+    Card_Boost_Value=2;
+    owner=CARD_OWNER::HERO;
+    type=CARD_TYPE::SCHEME;
+    card_number=2;
+}
+dracula_beastform::dracula_beastform()
+{
+    Card_Value=6;
+    Card_Boost_Value=4;
+    owner=CARD_OWNER::HERO;
+    effect=CARD_EFFECT_TYPE::DURING_COMBAT;
+    type=CARD_TYPE::ATTACK;
+    card_number=2;
+}
+dracula_dash::dracula_dash()
+{
+    Card_Value=3;
+    Card_Boost_Value=1;
+    owner=CARD_OWNER::ANY;
+    effect=CARD_EFFECT_TYPE::AFTER_COMBAT;
+    type=CARD_TYPE::VERSATILE;
+    card_number=3;
+}
+dracula_exploit::dracula_exploit()
+{
+    Card_Value=4;
+    Card_Boost_Value=1;
+    owner=CARD_OWNER::ANY;
+    effect=CARD_EFFECT_TYPE::AFTER_COMBAT;
+    type=CARD_TYPE::VERSATILE;
+    card_number=3;
+}
+dracula_look_into_my_eyes::dracula_look_into_my_eyes()
+{
+    Card_Value=1;
+    Card_Boost_Value=2;
+    owner=CARD_OWNER::HERO;
+    effect=CARD_EFFECT_TYPE::DURING_COMBAT;
+    type=CARD_TYPE::DEFENCE;
+    card_number=3;
+}
+dracula_prey_upon::dracula_prey_upon()
+{
+    Card_Value=0;
+    Card_Boost_Value=4;
+    owner=CARD_OWNER::HERO;
+    type=CARD_TYPE::SCHEME;
+    card_number=2;
+}
+dracula_ravening_seduction::dracula_ravening_seduction()
+{
+    Card_Value=0;
+    Card_Boost_Value=2;
+    owner=CARD_OWNER::SIDE_KICK;
+    type=CARD_TYPE::SCHEME;
+    card_number=3;
+}
+dracula_thirst_For_sustenance::dracula_thirst_For_sustenance()
+{
+    Card_Value=3;
+    Card_Boost_Value=3;
+    owner=CARD_OWNER::SIDE_KICK;
+    effect=CARD_EFFECT_TYPE::AFTER_COMBAT;
+    type=CARD_TYPE::ATTACK;
+    card_number=3;
+}
+dracula_feint::dracula_feint()
+{
+    Card_Value=2;
+    Card_Boost_Value=2;
+    owner=CARD_OWNER::ANY;
+    effect=CARD_EFFECT_TYPE::IMMEDIATE;
+    type=CARD_TYPE::VERSATILE;
+    card_number=3;
+}
+holmes_administer_aid::holmes_administer_aid()
+{
+    Card_Value=0;
+    Card_Boost_Value=2;
+    owner=CARD_OWNER::SIDE_KICK;
+    type=CARD_TYPE::SCHEME;
+    card_number=2;
+}
+holmes_confirm_suspicion::holmes_confirm_suspicion()
+{
+    Card_Value=0;
+    Card_Boost_Value=1;
+    owner=CARD_OWNER::HERO;
+    type=CARD_TYPE::SCHEME;
+    card_number=3;
+}
+holmes_counterpunch::holmes_counterpunch()
+{
+    Card_Value=3;
+    Card_Boost_Value=1;
+    owner=CARD_OWNER::HERO;
+    effect=CARD_EFFECT_TYPE::AFTER_COMBAT;
+    type=CARD_TYPE::VERSATILE;
+    card_number=3;
+}
+holmes_deduce_strategy::holmes_deduce_strategy()
+{
+    Card_Value=3;
+    Card_Boost_Value=1;
+    owner=CARD_OWNER::HERO;
+    effect=CARD_EFFECT_TYPE::DURING_COMBAT;
+    type=CARD_TYPE::VERSATILE;
+    card_number=3;
+}
+holmes_education_never_ends::holmes_education_never_ends()
+{
+    Card_Value=3;
+    Card_Boost_Value=1;
+    owner=CARD_OWNER::ANY;
+    effect=CARD_EFFECT_TYPE::AFTER_COMBAT;
+    type=CARD_TYPE::VERSATILE;
+    card_number=2;
+}
+holmes_elementary::holmes_elementary()
+{
+    Card_Value=3;
+    Card_Boost_Value=3;
+    owner=CARD_OWNER::HERO;
+    effect=CARD_EFFECT_TYPE::DURING_COMBAT;
+    type=CARD_TYPE::DEFENCE;
+    card_number=2;
+}
+holmes_eliminate_the_impossible::holmes_eliminate_the_impossible()
+{
+    Card_Value=0;
+    Card_Boost_Value=2;
+    owner=CARD_OWNER::HERO;
+    type=CARD_TYPE::SCHEME;
+    card_number=2;
+}
+holmes_feint::holmes_feint()
+{
+    Card_Value=2;
+    Card_Boost_Value=1;
+    owner=CARD_OWNER::ANY;
+    effect=CARD_EFFECT_TYPE::IMMEDIATE;
+    type=CARD_TYPE::VERSATILE;
+    card_number=3;
+}
+holmes_fixed_point_in_a_changing_age::holmes_fixed_point_in_a_changing_age()
+{
+    Card_Value=3;
+    Card_Boost_Value=1;
+    owner=CARD_OWNER::SIDE_KICK;
+    effect=CARD_EFFECT_TYPE::AFTER_COMBAT;
+    type=CARD_TYPE::VERSATILE;
+    card_number=2;
+}
+holmes_master_of_disguise::holmes_master_of_disguise()
+{
+    Card_Value=0;
+    Card_Boost_Value=2;
+    owner=CARD_OWNER::HERO;
+    type=CARD_TYPE::SCHEME;
+    card_number=2;
+}
+holmes_the_game_is_afoot::holmes_the_game_is_afoot()
+{
+    Card_Value=5;
+    Card_Boost_Value=2;
+    owner=CARD_OWNER::HERO;
+    effect=CARD_EFFECT_TYPE::AFTER_COMBAT;
+    type=CARD_TYPE::ATTACK;
+    card_number=2;
+}
+holmes_service_revolver::holmes_service_revolver()
+{
+    Card_Value=5;
+    Card_Boost_Value=3;
+    owner=CARD_OWNER::SIDE_KICK;
+    //effect=CARD_EFFECT_TYPE::AFTER_COMBAT;
+    type=CARD_TYPE::ATTACK;
+    card_number=2;
+}
+holmes_study_methods::holmes_study_methods()
+{
+    Card_Value=3;
+    Card_Boost_Value=2;
+    owner=CARD_OWNER::ANY;
+    effect=CARD_EFFECT_TYPE::AFTER_COMBAT;
+    type=CARD_TYPE::VERSATILE;
+    card_number=2;
+}
