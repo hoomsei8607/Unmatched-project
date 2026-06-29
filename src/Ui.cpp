@@ -14,6 +14,10 @@ bool User_Interface::Manage_Screen()
         Starting_Menu_Screen();
         return true;
     
+    case SCREEN_STATE::PROMPT_INPUT:
+        Get_User_Input();
+        return true;
+        
     case SCREEN_STATE::GAME_LOOP:
         Game_Loop_Screen();
         return true;
