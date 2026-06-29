@@ -6,6 +6,10 @@ class Fighter_Base_Class
 {
     public:
         void Move();
+        int Return_Fighter_Initial_Hp();
+        int Return_Fighter_Current_Hp();
+        int Return_Fighter_Current_Move_Value();
+        int Return_Fighter_Current_Space();
 
     protected:
         int Initial_Hp;
