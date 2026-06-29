@@ -1,6 +1,7 @@
 #include "../headers/graph.hpp"
 #include "../headers/controller.hpp"
 #include "../headers/Ui.hpp"
+#include <iostream>
 
 int main()
 {
