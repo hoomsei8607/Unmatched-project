@@ -9,7 +9,10 @@ FetchContent_MakeAvailable(ftxui)
 add_executable(app src/main.cpp)
 add_library(My_Written_Code 
                 src/Ui_Menu_Screen.cpp
+                src/Ui_GameLoop_Screen.cpp
                 src/Ui.cpp
+                src/get_user_input.cpp
+                
                 )
 target_link_directories(My_Written_Code PUBLIC headers)
 
