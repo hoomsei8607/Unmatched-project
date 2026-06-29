@@ -9,7 +9,7 @@ class User_Interface
         User_Interface();
         bool Manage_Screen();
         void Starting_Menu_Screen();
-        // void Game_Loop_Screen();
+        void Game_Loop_Screen();
         // void Finished_Game_Screen();
         
     private:

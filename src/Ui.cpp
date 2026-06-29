@@ -15,7 +15,7 @@ bool User_Interface::Manage_Screen()
         return true;
     
     case SCREEN_STATE::GAME_LOOP:
-        // Game_Loop_Screen();
+        Game_Loop_Screen();
         return true;
     
     case SCREEN_STATE::GAME_OVER:
