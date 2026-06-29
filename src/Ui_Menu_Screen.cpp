@@ -92,7 +92,7 @@ void User_Interface::Starting_Menu_Screen()
             switch (Selected_Menu_Option)
             {
             case 0:
-                Current_Screen_State = SCREEN_STATE::GAME_LOOP;
+                Current_Screen_State = SCREEN_STATE::PROMPT_INPUT;
                 screen.Exit();
                 return true;
 
