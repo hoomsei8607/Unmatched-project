@@ -12,7 +12,8 @@ add_library(My_Written_Code
                 src/Ui_GameLoop_Screen.cpp
                 src/Ui.cpp
                 src/get_user_input.cpp
-                
+                src/controller.cpp
+                src/user.cpp
                 )
 target_link_directories(My_Written_Code PUBLIC headers)
 
