@@ -5,10 +5,12 @@
 
 int main()
 {
+    Controller control;
     User_Interface Interface_Controller;
     while (true)
     {
-        if(Interface_Controller.Manage_Screen())
+
+        if(Interface_Controller.Manage_Screen(control))
         {}
         else
         {
