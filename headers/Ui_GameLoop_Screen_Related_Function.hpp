@@ -1,13 +1,13 @@
 #ifndef UI_GAMELOOP_RELATED_FUNCTION_HPP
 #define UI_GAMELOOP_RELATED_FUNCTION_HPP
-
+#include <iostream>
 #include <string>
 
-struct Fighters_Print_Info{int Row_Index; int Column_Index; char Fighter_Name; };
 
-std::string Return_Map_To_Be_Rendered()
+
+std::string Return_Map_To_Be_Rendered(int Array_Element_Count, Fighters_Print_Info* Info_Array)
 {
-    // int Array_Element_Count, const Fighters_Print_Info* & Info_Array
+    
     char mymap[11][71];
     std::string To_Be_printed = "";
 
@@ -200,10 +200,13 @@ std::string Return_Map_To_Be_Rendered()
     mymap[10][51] = '/';
     mymap[10][57] = '\\';
 
-    // for(int i = 0 ; i < Array_Element_Count ; i++)
-    // {
-    //     mymap[Info_Array->Row_Index][Info_Array->Column_Index] = Info_Array->Fighter_Name;
-    // }
+    for(int i = 0 ; i < Array_Element_Count ; i++)
+    {
+        if(Info_Array[i].Is_Placed_On_Map)
+        {
+            mymap[Info_Array[i].Row_Index][Info_Array[i].Column_Index] = Info_Array[i].Fighter_Name;
+        }
+    }
 
     
 
