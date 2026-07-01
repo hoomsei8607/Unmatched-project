@@ -1,43 +1,78 @@
 #include "../headers/Ui.hpp"
 #include "../headers/Ui_GameLoop_Screen_Related_Function.hpp"
-
+#include "../headers/controller.hpp"
 #include <map>
-
+#include <iostream>
 
 using namespace ftxui;
 
 
-void User_Interface::Game_Loop_Screen()
+void User_Interface::Game_Loop_Screen(Controller& control)
 {
-    auto screen = ScreenInteractive::TerminalOutput();
-
-    auto Player1_HeroInfo_Box = vbox({
-       //text(hero name)
-       //text(hero hp / hero initial hp)
-       //gauge(hero_current_hp / hero initial hp)
-       //text(hero range)
-       //text(hero move value)
-    }) | border;
     
-    auto Player2_HeroInfo_Box = vbox({
-       //text(hero name)
-       //text(hero hp / hero initial hp)
-       //gauge(hero_current_hp / hero initial hp)
-       //text(hero range)
-       //text(hero move value)
-    }) | border;
 
-    auto Control_Prompt = vbox({
-        text("PRESS C") | bold | underlined,
-        text("open control menu")
-    }) | border;
-
-    auto Location_Info = vbox({
-        text("Current Space Number: "), // fill the number
-        text("Connected To: ") //fill the numbers
-    }) | border;
+    User1_And_User2_Info info_struct;
+    control.Fill_Users_Info_Struct(info_struct);
 
     
     
+    auto render = Renderer([&]{
+        
+        auto Player1_HeroInfo_Box = vbox({
+           text(info_struct.User1_Hero_Name)
+           //text(hero hp / hero initial hp)
+        //    hbox({text("Hp: "), text() , text("/"), text()})
+           //gauge(hero_current_hp / hero initial hp)
+           //text(hero range)
+           //text(hero move value)
+        }) | border;
+        
+        auto Player2_HeroInfo_Box = vbox({
+           text(info_struct.User2_Hero_Name)
+           //text(hero hp / hero initial hp)
+           //gauge(hero_current_hp / hero initial hp)
+           //text(hero range)
+           //text(hero move value)
+        }) | border;
+    
+        auto Control_Prompt = vbox({
+            text("PRESS C") | bold ,
+            text("open control menu")
+        }) | border;
+    
+        auto Location_Info = vbox({
+            text("Current Space Number: "), // fill the number
+            text("Connected To: ") //fill the numbers
+        }) | border;
+    
+        auto Terminal_Out_Map = vbox
+        ({
+            paragraphAlignCenter(Return_Map_To_Be_Rendered())
+        }) | border;
+    
 
+        return vbox({
+            hbox({
+                Player1_HeroInfo_Box,
+                Terminal_Out_Map,
+                Player2_HeroInfo_Box,
+            }),
+            vbox({}) | border,
+            Control_Prompt
+        });
+    });
+
+    auto screen = ScreenInteractive::Fullscreen();
+    auto to_be_looped_on = CatchEvent(render, [&](Event event){
+        if(event == Event::Character('q'))
+        {
+            screen.ExitLoopClosure()();
+            return true;
+        }
+        return false;
+        
+    });
+    screen.Loop(to_be_looped_on);
+    Current_Screen_State = SCREEN_STATE::PROGRAM_SHOULD_TEMINATE;
+    
 }
