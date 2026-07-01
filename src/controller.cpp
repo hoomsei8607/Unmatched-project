@@ -87,3 +87,40 @@ Controller::~Controller()
     delete Dracula_And_Sisters[static_cast<int>(Dracula_And_Sisters_Array_Index::SIS2)];
     delete Dracula_And_Sisters[static_cast<int>(Dracula_And_Sisters_Array_Index::SIS3)];
 }
+
+void Controller::Fill_Fighter_Info_Struct(Fighters_Names fighter_name, Fighter_Info& info_struct)
+{
+    Fighter_Base_Class* Base_Fighter_Class_Pointer = nullptr;
+
+    switch (fighter_name)
+    {
+        case Fighters_Names::DRACULA:
+            Base_Fighter_Class_Pointer = Dracula_And_Sisters[static_cast<int>(Dracula_And_Sisters_Array_Index::DRACULA)];
+            break;
+                
+        case Fighters_Names::SHERLOCK:
+            Base_Fighter_Class_Pointer = Sherklock_And_Watson[static_cast<int>(Sherlock_And_Watson_Array_Index::SHERLOCK)];
+            break;
+                
+        case Fighters_Names::WATSON:
+            Base_Fighter_Class_Pointer = Sherklock_And_Watson[static_cast<int>(Sherlock_And_Watson_Array_Index::WATSON)];
+            break;
+                
+        case Fighters_Names::SIS1:
+            Base_Fighter_Class_Pointer = Dracula_And_Sisters[static_cast<int>(Dracula_And_Sisters_Array_Index::SIS1)];
+            break;
+            
+        case Fighters_Names::SIS2:
+            Base_Fighter_Class_Pointer = Dracula_And_Sisters[static_cast<int>(Dracula_And_Sisters_Array_Index::SIS2)];
+            break;
+
+        case Fighters_Names::SIS3:
+            Base_Fighter_Class_Pointer = Dracula_And_Sisters[static_cast<int>(Dracula_And_Sisters_Array_Index::SIS3)];
+            break;
+        
+    }
+    info_struct.Current_Hp = Base_Fighter_Class_Pointer->Return_Fighter_Current_Hp();
+    info_struct.Initial_Hp = Base_Fighter_Class_Pointer->Return_Fighter_Initial_Hp();
+    info_struct.Move_Value = Base_Fighter_Class_Pointer->Return_Fighter_Current_Move_Value();
+    info_struct.Range = Base_Fighter_Class_Pointer->Return_Fighter_Attacking_Range();
+}

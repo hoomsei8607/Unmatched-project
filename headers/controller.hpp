@@ -12,6 +12,7 @@ class Controller
         Controller();
         void Set_User1_And_User2_Info(const User1_And_User2_Info& info_struct);
         void Fill_Users_Info_Struct(User1_And_User2_Info& info_struct); 
+        void Fill_Fighter_Info_Struct(Fighters_Names fighter_name, Fighter_Info& info_struct);
         ~Controller();
     private:
         User user1;
