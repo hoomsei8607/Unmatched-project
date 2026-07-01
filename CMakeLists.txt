@@ -14,6 +14,8 @@ add_library(My_Written_Code
                 src/get_user_input.cpp
                 src/controller.cpp
                 src/user.cpp
+                src/fighter_abstract.cpp
+                src/fighter_sub_classes.cpp
                 )
 target_link_directories(My_Written_Code PUBLIC headers)
 
