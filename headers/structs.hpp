@@ -3,7 +3,8 @@
 #include "enums.hpp"
 #include <string>
 
-struct User1_And_User2_Info{
+struct User1_And_User2_Info
+{
     std::string User1_Name;
     std::string User2_Name;
 
@@ -18,9 +19,18 @@ struct User1_And_User2_Info{
 
 };
 
-struct Space_Row_And_Column_In_Array{
+struct Space_Row_And_Column_In_Array
+{
     int row_index;
     int column_index;
+};
+
+struct Fighter_Info
+{
+    int Initial_Hp;
+    int Current_Hp;
+    int Move_Value;
+    int Range;
 };
 
 
