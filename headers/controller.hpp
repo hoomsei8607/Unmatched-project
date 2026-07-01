@@ -13,6 +13,10 @@ class Controller
         void Set_User1_And_User2_Info(const User1_And_User2_Info& info_struct);
         void Fill_Users_Info_Struct(User1_And_User2_Info& info_struct); 
         void Fill_Fighter_Info_Struct(Fighters_Names fighter_name, Fighter_Info& info_struct);
+        HERO_NAME Return_Younger_Hero_Name();
+        void Set_Fighter_Space_Number(Fighters_Names fighter_name, int new_space);
+        int Return_Hero_Space_Number(Fighters_Names fighter_Name) const;
+        void Convert_Space_Number_To_Row_And_Column_Index(int space_number, Space_Row_And_Column_In_Array& info_struct);
         ~Controller();
     private:
         User user1;

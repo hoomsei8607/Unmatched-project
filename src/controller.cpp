@@ -124,3 +124,88 @@ void Controller::Fill_Fighter_Info_Struct(Fighters_Names fighter_name, Fighter_I
     info_struct.Move_Value = Base_Fighter_Class_Pointer->Return_Fighter_Current_Move_Value();
     info_struct.Range = Base_Fighter_Class_Pointer->Return_Fighter_Attacking_Range();
 }
+
+HERO_NAME Controller::Return_Younger_Hero_Name()
+{
+    if(std::stoi(user1.Return_User_Age()) > std::stoi(user2.Return_User_Age()))
+    {
+        return user2.Return_Hero_Type();
+    }
+    return user1.Return_Hero_Type();
+}
+
+void Controller::Set_Fighter_Space_Number(Fighters_Names fighter_name, int new_space)
+{
+    switch (fighter_name)
+    {
+    case Fighters_Names::DRACULA:
+        Dracula_And_Sisters[static_cast<int>(Dracula_And_Sisters_Array_Index::DRACULA)]->Set_Current_Fighter_Space_Number(new_space);
+        break;
+    
+    case Fighters_Names::SHERLOCK:
+        Sherklock_And_Watson[static_cast<int>(Sherlock_And_Watson_Array_Index::SHERLOCK)]->Set_Current_Fighter_Space_Number(new_space);
+        break;
+    
+    case Fighters_Names::WATSON:
+        Sherklock_And_Watson[static_cast<int>(Sherlock_And_Watson_Array_Index::WATSON)]->Set_Current_Fighter_Space_Number(new_space);
+        break;
+    
+    case Fighters_Names::SIS1:
+        Dracula_And_Sisters[static_cast<int>(Dracula_And_Sisters_Array_Index::SIS1)]->Set_Current_Fighter_Space_Number(new_space);
+        break;
+    
+    case Fighters_Names::SIS2:
+        Dracula_And_Sisters[static_cast<int>(Dracula_And_Sisters_Array_Index::SIS2)]->Set_Current_Fighter_Space_Number(new_space);
+        break;
+    
+    case Fighters_Names::SIS3:
+        Dracula_And_Sisters[static_cast<int>(Dracula_And_Sisters_Array_Index::SIS3)]->Set_Current_Fighter_Space_Number(new_space);
+        break;
+    
+    default:
+        break;
+    }
+}
+
+void Controller::Convert_Space_Number_To_Row_And_Column_Index(int space_number, Space_Row_And_Column_In_Array& info_struct)
+{
+    if(space_number < 1 || space_number > 32 )
+    {
+        return;
+    }
+    info_struct.column_index = Space_To_Array_Index_Map[space_number].column_index;
+    info_struct.row_index = Space_To_Array_Index_Map[space_number].row_index;
+}
+
+int Controller::Return_Hero_Space_Number(Fighters_Names fighter_name) const
+{
+    switch (fighter_name)
+    {
+            
+        case Fighters_Names::DRACULA:
+            return Dracula_And_Sisters[static_cast<int>(Dracula_And_Sisters_Array_Index::DRACULA)]->Return_Fighter_Current_Space();
+            
+        
+        case Fighters_Names::SIS1:
+            return Dracula_And_Sisters[static_cast<int>(Dracula_And_Sisters_Array_Index::SIS1)]->Return_Fighter_Current_Space();
+            
+        
+        case Fighters_Names::SIS2:
+            return Dracula_And_Sisters[static_cast<int>(Dracula_And_Sisters_Array_Index::SIS2)]->Return_Fighter_Current_Space();
+            
+        
+        case Fighters_Names::SIS3:
+            return Dracula_And_Sisters[static_cast<int>(Dracula_And_Sisters_Array_Index::SIS3)]->Return_Fighter_Current_Space();
+            
+        
+        case Fighters_Names::SHERLOCK:
+            return Sherklock_And_Watson[static_cast<int>(Sherlock_And_Watson_Array_Index::SHERLOCK)]->Return_Fighter_Current_Space();
+            
+            
+        case Fighters_Names::WATSON:
+            return Sherklock_And_Watson[static_cast<int>(Sherlock_And_Watson_Array_Index::WATSON)]->Return_Fighter_Current_Space();
+            
+        default:
+            return -1;
+    }
+}
