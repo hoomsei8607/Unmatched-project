@@ -10,11 +10,13 @@ class Fighter_Base_Class
         int Return_Fighter_Current_Hp();
         int Return_Fighter_Current_Move_Value();
         int Return_Fighter_Current_Space();
+        int Return_Fighter_Attacking_Range();
 
     protected:
         int Initial_Hp;
         int Current_Hp;
         int Base_Move_Value;
+        int Attacking_Range;
         int Current_Move_Value; //in case the player wants to boost the movement
         int Current_Hero_Space; //which space is hero standing on in the map
         bool Is_Fighter_Alive;

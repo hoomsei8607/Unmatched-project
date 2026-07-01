@@ -19,3 +19,8 @@ int Fighter_Base_Class::Return_Fighter_Current_Space()
 {
     return Current_Hero_Space;
 }
+
+int Fighter_Base_Class::Return_Fighter_Attacking_Range()
+{
+    return Attacking_Range;
+}
