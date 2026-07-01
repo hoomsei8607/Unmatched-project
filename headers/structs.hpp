@@ -25,6 +25,14 @@ struct Space_Row_And_Column_In_Array
     int column_index;
 };
 
+struct Fighters_Print_Info
+{
+    int Row_Index;
+    int Column_Index;
+    char Fighter_Name;
+    bool Is_Placed_On_Map;
+};
+
 struct Fighter_Info
 {
     int Initial_Hp;
