@@ -15,7 +15,7 @@ class User_Interface
         User_Interface();
         bool Manage_Screen(Controller& control);
         void Starting_Menu_Screen();
-        void Game_Loop_Screen();
+        void Game_Loop_Screen(Controller& control);
         User1_And_User2_Info Get_User_Input();
         // void Finished_Game_Screen();
         

@@ -1,9 +1,10 @@
 #include "../headers/Ui.hpp"
 #include "../headers/controller.hpp"
+#include <iostream>
 
 User_Interface::User_Interface()
 {
-    this->Current_Screen_State = SCREEN_STATE::MENU;
+    this->Current_Screen_State = SCREEN_STATE::PROMPT_INPUT;
 }
 
 bool User_Interface::Manage_Screen(Controller& control)
@@ -19,7 +20,7 @@ bool User_Interface::Manage_Screen(Controller& control)
         return true;
         
     case SCREEN_STATE::GAME_LOOP:
-        Game_Loop_Screen();
+        Game_Loop_Screen(control);
         return true;
     
     case SCREEN_STATE::GAME_OVER:
@@ -28,6 +29,5 @@ bool User_Interface::Manage_Screen(Controller& control)
 
     case SCREEN_STATE::PROGRAM_SHOULD_TEMINATE:
         return false;
-    
     }
 }
