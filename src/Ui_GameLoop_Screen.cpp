@@ -11,6 +11,8 @@ void User_Interface::Game_Loop_Screen(Controller& control)
 
     User1_And_User2_Info user_info_struct;
     control.Fill_Users_Info_Struct(user_info_struct);
+    Space_Row_And_Column_In_Array Temp_Struct_For_Updating_Hero_Position_On_Map;
+    Fighters_Print_Info Map_Printing_Info[6];
     Fighter_Info Dracula_Info;
     Fighter_Info Sherlock_Info;
     Fighter_Info Watson_Info;
@@ -18,8 +20,42 @@ void User_Interface::Game_Loop_Screen(Controller& control)
     Fighter_Info Dracula_Sis2;
     Fighter_Info Dracula_Sis3;
 
+    //placing the heros on the map after we figured out
+    //who is younger
+    if(control.Return_Younger_Hero_Name() == HERO_NAME::DRACULA)
+    {
+        control.Set_Fighter_Space_Number(Fighters_Names::DRACULA, 9);
+        control.Set_Fighter_Space_Number(Fighters_Names::SHERLOCK, 22);
+        
+    }
+    else if(control.Return_Younger_Hero_Name() == HERO_NAME::SHERLOCK)
+    {
+        control.Set_Fighter_Space_Number(Fighters_Names::DRACULA, 22);
+        control.Set_Fighter_Space_Number(Fighters_Names::SHERLOCK, 9);
+    }
+
+
+    //initializing the fighters position 
+    //filling the temparory struct with dracula row and index valuse
+    control.Convert_Space_Number_To_Row_And_Column_Index(control.Return_Hero_Space_Number(Fighters_Names::DRACULA), Temp_Struct_For_Updating_Hero_Position_On_Map);
+    Map_Printing_Info[static_cast<int>(Fighters_Names::DRACULA)].Is_Placed_On_Map = true;
+    Map_Printing_Info[static_cast<int>(Fighters_Names::DRACULA)].Fighter_Name = 'D';
+    Map_Printing_Info[static_cast<int>(Fighters_Names::DRACULA)].Row_Index = Temp_Struct_For_Updating_Hero_Position_On_Map.row_index;
+    Map_Printing_Info[static_cast<int>(Fighters_Names::DRACULA)].Column_Index = Temp_Struct_For_Updating_Hero_Position_On_Map.column_index;
     
-    
+    //filling the temporary struct with sherlock row and index values
+    control.Convert_Space_Number_To_Row_And_Column_Index(control.Return_Hero_Space_Number(Fighters_Names::SHERLOCK), Temp_Struct_For_Updating_Hero_Position_On_Map);
+    Map_Printing_Info[static_cast<int>(Fighters_Names::SHERLOCK)].Is_Placed_On_Map = true;
+    Map_Printing_Info[static_cast<int>(Fighters_Names::SHERLOCK)].Fighter_Name = 'S';
+    Map_Printing_Info[static_cast<int>(Fighters_Names::SHERLOCK)].Row_Index = Temp_Struct_For_Updating_Hero_Position_On_Map.row_index;
+    Map_Printing_Info[static_cast<int>(Fighters_Names::SHERLOCK)].Column_Index = Temp_Struct_For_Updating_Hero_Position_On_Map.column_index;
+
+    Map_Printing_Info[static_cast<int>(Fighters_Names::WATSON)].Is_Placed_On_Map = false;
+    Map_Printing_Info[static_cast<int>(Fighters_Names::SIS1)].Is_Placed_On_Map = false;
+    Map_Printing_Info[static_cast<int>(Fighters_Names::SIS2)].Is_Placed_On_Map = false;
+    Map_Printing_Info[static_cast<int>(Fighters_Names::SIS3)].Is_Placed_On_Map = false;
+
+
     auto render = Renderer([&]{
         control.Fill_Fighter_Info_Struct(Fighters_Names::DRACULA, Dracula_Info);
         control.Fill_Fighter_Info_Struct(Fighters_Names::SHERLOCK, Sherlock_Info);
@@ -88,7 +124,7 @@ void User_Interface::Game_Loop_Screen(Controller& control)
     
         auto Terminal_Out_Map = vbox
         ({
-            paragraphAlignCenter(Return_Map_To_Be_Rendered())
+            paragraphAlignCenter(Return_Map_To_Be_Rendered(6, Map_Printing_Info))
         }) | border;
     
 
@@ -99,7 +135,7 @@ void User_Interface::Game_Loop_Screen(Controller& control)
                 Player2_HeroInfo_Box,
             }),
             vbox({}) | border,
-            Control_Prompt
+            hbox({Control_Prompt, Location_Info})|border
         });
     });
 
