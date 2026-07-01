@@ -17,6 +17,18 @@ Dracula* Dracula::Get_Instance()
     //else space 2
     return Object_Instance;
 }
+Dracula::Dracula()
+{
+    Initial_Hp=13;
+    Current_Hp=13;
+    Base_Move_Value=2;
+    Current_Move_Value=2;
+    Is_Fighter_Alive=true;
+    Range_Type=ATTACKING_RANGE::MELEE;
+    fighter_type=FIGHTER_TYPE::HERO;
+    Current_Hero_Space=0;
+
+}
 
 Sherlock* Sherlock::Get_Instance()
 {
@@ -30,6 +42,17 @@ Sherlock* Sherlock::Get_Instance()
     return Object_Instance;
     
 }
+Sherlock::Sherlock()
+{
+    Initial_Hp=16;
+    Current_Hp=16;
+    Base_Move_Value=2;
+    Current_Move_Value=2;
+    Is_Fighter_Alive=true;
+    Range_Type=ATTACKING_RANGE::MELEE;
+    fighter_type=FIGHTER_TYPE::HERO;
+    Current_Hero_Space=0;
+}
 
 Watson* Watson::Get_Instance()
 {
@@ -41,6 +64,17 @@ Watson* Watson::Get_Instance()
     //if is the younger fighter current hero space should be 1
     //else space 2
     return Object_Instance;
+}
+Watson::Watson()
+{
+    Initial_Hp=8;
+    Current_Hp=8;
+    Base_Move_Value=2;
+    Current_Move_Value=2;
+    Is_Fighter_Alive=true;
+    Range_Type=ATTACKING_RANGE::RANGED;
+    fighter_type=FIGHTER_TYPE::SIDE_KICK;
+    Current_Hero_Space=0;
 }
 
 void Sherlock::Destroy_Object()
@@ -72,4 +106,13 @@ void Watson::Destroy_Object()
 Dracula_Sister::Dracula_Sister(int sis_number)
 {
     this->sister_number = sis_number;
+    Initial_Hp=1;
+    Current_Hp=1;
+    Base_Move_Value=2;
+    Current_Move_Value=2;
+    Is_Fighter_Alive=true;
+    Range_Type=ATTACKING_RANGE::MELEE;
+    fighter_type=FIGHTER_TYPE::SIDE_KICK;
+    Current_Hero_Space=0;
+
 }

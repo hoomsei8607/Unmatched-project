@@ -10,7 +10,7 @@ class Dracula : public Fighter_Base_Class //singleton
         Dracula(const Dracula&) = delete;
         static void Destroy_Object();
     private:
-        Dracula() = default;
+        Dracula();
         static Dracula* Object_Instance;
 
 };
@@ -23,7 +23,7 @@ class Sherlock : public Fighter_Base_Class //singleton
         Sherlock(const Sherlock&) = delete;
         static void Destroy_Object();
     private:
-        Sherlock() = default;
+        Sherlock() ;
         static Sherlock* Object_Instance;
 
 };
@@ -36,7 +36,7 @@ class Watson : public Fighter_Base_Class
         static void Destroy_Object();
 
     private:
-        Watson() = default;
+        Watson() ;
         static Watson* Object_Instance;
 };
 
