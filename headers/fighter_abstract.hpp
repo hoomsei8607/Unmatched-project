@@ -6,11 +6,12 @@ class Fighter_Base_Class
 {
     public:
         void Move();
-        int Return_Fighter_Initial_Hp();
-        int Return_Fighter_Current_Hp();
-        int Return_Fighter_Current_Move_Value();
-        int Return_Fighter_Current_Space();
-        int Return_Fighter_Attacking_Range();
+        int Return_Fighter_Initial_Hp() const;
+        int Return_Fighter_Current_Hp() const;
+        int Return_Fighter_Current_Move_Value() const;
+        int Return_Fighter_Current_Space() const;
+        int Return_Fighter_Attacking_Range() const;
+        void Set_Current_Fighter_Space_Number(int new_space);
 
     protected:
         int Initial_Hp;
