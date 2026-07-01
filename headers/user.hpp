@@ -6,15 +6,20 @@
 class User
 {
     public:
-        void Set_Age(int age);
+        void Set_Age(const std::string& age);
         void Set_Name(const std::string& name);
-        void Set_Hero_Name(HERO_NAME hero_name);
+        void Set_Hero_Name_Type(HERO_NAME hero_name_type);
+        void Set_Hero_Name_String(const std::string& hero_name_string);
 
+        std::string Return_UserName() const;
+        std::string Return_Hero_Name_String() const;
+        HERO_NAME Return_Hero_Type() const;
+        std::string Return_User_Age() const;
     private:
-        int age;
+        std::string age;
         std::string name;
-        HERO_NAME hero;
-
+        HERO_NAME hero_name_type;
+        std::string hero_name_string;
         
 
 };
