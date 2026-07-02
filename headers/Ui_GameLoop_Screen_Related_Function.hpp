@@ -3,6 +3,9 @@
 #include <iostream>
 #include <string>
 
+#include <thread>
+#include <chrono> 
+
 
 
 std::string Return_Map_To_Be_Rendered(int Array_Element_Count, Fighters_Print_Info* Info_Array)
@@ -24,7 +27,7 @@ std::string Return_Map_To_Be_Rendered(int Array_Element_Count, Fighters_Print_In
         }
     }
     mymap[10][70] = '\0';
-
+    
     //initializing first row
     for(int i = 18 ; i < 57 ; i++)
     {
@@ -44,6 +47,19 @@ std::string Return_Map_To_Be_Rendered(int Array_Element_Count, Fighters_Print_In
             mymap[0][i] = '-';
         }
     }
+    
+    mymap[0][19] = '2';
+    mymap[0][25] = '9';
+    mymap[0][31] = '3';
+    mymap[0][37] = '4';
+
+    mymap[0][41] = '(';
+    mymap[0][42] = '1';
+    mymap[0][43] = '1';
+    mymap[0][44] = ')';
+    
+    mymap[0][49] = '5';
+    mymap[0][55] = '6';
 
     mymap[1][15] = '/';
     mymap[1][24] = '|';
@@ -55,15 +71,19 @@ std::string Return_Map_To_Be_Rendered(int Array_Element_Count, Fighters_Print_In
     mymap[1][48] = '|';
 
     mymap[2][11] = '(';
-    mymap[2][12] = '-';
+    mymap[2][12] = '1';
     mymap[2][13] = ')';
+
     mymap[2][35] = '(';
-    mymap[2][36] = '-';
-    mymap[2][37] = ')';
+    mymap[2][36] = '1';
+    mymap[2][37] = '0';
+    mymap[2][38] = ')';
+
     mymap[2][47] = '(';
-    mymap[2][48] = '-';
-    mymap[2][49] = ')';
-    mymap[2][50] = '-';
+    mymap[2][48] = '1';
+    mymap[2][49] = '2';
+    mymap[2][50] = ')';
+
     mymap[2][51] = '-';
     mymap[2][52] = '-';
     mymap[2][53] = '-';
@@ -96,6 +116,14 @@ std::string Return_Map_To_Be_Rendered(int Array_Element_Count, Fighters_Print_In
         }
     }    
 
+
+    mymap[4][6] = '7';
+    mymap[4][18] = '8';
+    
+    mymap[4][24] = '1';
+    mymap[4][25] = '5';
+    mymap[4][26] = ')';
+
     mymap[4][42] = '|';
     mymap[4][62] = '\\';
 
@@ -107,32 +135,38 @@ std::string Return_Map_To_Be_Rendered(int Array_Element_Count, Fighters_Print_In
     
 
     mymap[6][0] = '(';
-    mymap[6][1] = '-';
-    mymap[6][2] = ')';
+    mymap[6][1] = '1';
+    mymap[6][2] = '3';
+    mymap[6][3] = ')';
 
-    for(int i = 3 ; i < 17 ; i++)
+    for(int i = 4 ; i < 17 ; i++)
     {
         mymap[6][i] = '-';
     }
     mymap[6][17] = '(';
-    mymap[6][18] = '-';
-    mymap[6][19] = ')';
+    mymap[6][18] = '1';
+    mymap[6][19] = '4';
+    mymap[6][20] = ')';
     
     mymap[6][29] = '(';
-    mymap[6][30] = '-';
-    mymap[6][31] = ')';
+    mymap[6][30] = '1';
+    mymap[6][31] = '6';
+    mymap[6][32] = ')';
 
-    for(int i = 32 ; i < 70 ; i++)
+    for(int i = 33 ; i < 70 ; i++)
     {
         mymap[6][i] = '-';
     }
     mymap[6][41] = '(';
-    mymap[6][42] = '-';
-    mymap[6][43] = ')';
+    mymap[6][42] = '2';
+    mymap[6][43] = '1';
+    mymap[6][44] = ')';
 
-    mymap[6][67] = '(';
-    mymap[6][68] = '-';
+    mymap[6][66] = '(';
+    mymap[6][67] = '1';
+    mymap[6][68] = '7';
     mymap[6][69] = ')';
+    mymap[6][70] = '\n';
 
     mymap[7][3] = '\\';
     mymap[7][27] = '/';
@@ -151,23 +185,35 @@ std::string Return_Map_To_Be_Rendered(int Array_Element_Count, Fighters_Print_In
     }
 
     mymap[8][6] = '(';
-    mymap[8][7] = '-';
+    mymap[8][7] = '1';
+    mymap[8][8] = '8';
     mymap[8][8] = ')';
+
     mymap[8][17] = '(';
-    mymap[8][18] = '-';
-    mymap[8][19] = ')';
+    mymap[8][18] = '1';
+    mymap[8][19] = '9';
+    mymap[8][20] = ')';
+
     mymap[8][23] = '(';
-    mymap[8][24] = '-';
-    mymap[8][25] = ')';
+    mymap[8][24] = '2';
+    mymap[8][25] = '0';
+    mymap[8][26] = ')';
+
     mymap[8][35] = '(';
-    mymap[8][36] = '-';
-    mymap[8][37] = ')';
+    mymap[8][36] = '2';
+    mymap[8][37] = '6';
+    mymap[8][38] = ')';
+
     mymap[8][47] = '(';
-    mymap[8][48] = '-';
-    mymap[8][49] = ')';
+    mymap[8][48] = '2';
+    mymap[8][49] = '2';
+    mymap[8][50] = ')';
+
     mymap[8][61] = '(';
-    mymap[8][62] = '-';
-    mymap[8][63] = ')';
+    mymap[8][62] = '2';
+    mymap[8][63] = '3';
+    mymap[8][64] = ')';
+
     mymap[8][42] = '|';
 
 
@@ -188,7 +234,7 @@ std::string Return_Map_To_Be_Rendered(int Array_Element_Count, Fighters_Print_In
     for(int i = 11 ; i < 60 ; i++)
     {
         mymap[10][i] = '-';
-        if(i % 6 == 5  && i != 23)
+        if((i % 6 == 5  && i != 23) &&  i < 58)
         {
             mymap[10][i] = '(';
             mymap[10][i + 1] = '-';
@@ -196,15 +242,75 @@ std::string Return_Map_To_Be_Rendered(int Array_Element_Count, Fighters_Print_In
             i += 2;
         }
     }
-    mymap[10][45] = '\\';
+    mymap[10][45] = '-';
+    mymap[10][46] = '\\';
     mymap[10][51] = '/';
     mymap[10][57] = '\\';
 
+    mymap[10][12] = '2';
+    mymap[10][13] = '4';
+    mymap[10][14] = ')';
+    
+    mymap[10][18] = '2';
+    mymap[10][19] = '5';
+    mymap[10][20] = ')';
+    
+    // mymap[10][24] = '3';
+    // mymap[10][25] = '0';
+    // mymap[10][26] = ')';
+    
+    
+    // mymap[10][36] = '2';
+    // mymap[10][37] = '7';
+    // mymap[10][38] = ')';
+    
+    mymap[10][42] = '2';
+    mymap[10][43] = '7';
+    mymap[10][44] = ')';
+    
+    mymap[10][48] = '2';
+    mymap[10][49] = '8';
+    mymap[10][50] = ')';
+    
+    
+    mymap[10][59] = '(';
+    mymap[10][60] = '2';
+    mymap[10][61] = '9';
+    mymap[10][62] = ')';
+    
+    mymap[10][30] = '3';
+    mymap[10][31] = '0';
+    mymap[10][32] = ')';
+
+    mymap[10][36] = '3';
+    mymap[10][37] = '1';
+    mymap[10][38] = ')';
+
+    mymap[10][54] = '3';
+    mymap[10][55] = '2';
+    mymap[10][56] = ')';
+
     for(int i = 0 ; i < Array_Element_Count ; i++)
     {
-        if(Info_Array[i].Is_Placed_On_Map)
+        if(!Info_Array[i].Is_Placed_On_Map)
         {
+            continue;
+        }
+
+        if(Info_Array[i].Fighter_Name != 's')
+        {
+            
             mymap[Info_Array[i].Row_Index][Info_Array[i].Column_Index] = Info_Array[i].Fighter_Name;
+            mymap[Info_Array[i].Row_Index][Info_Array[i].Column_Index + 1] = ')';
+            mymap[Info_Array[i].Row_Index][Info_Array[i].Column_Index + 2] = '-';
+            
+        }
+        else
+        {   
+            
+            mymap[Info_Array[i].Row_Index][Info_Array[i].Column_Index] = Info_Array[i].Fighter_Name;
+            mymap[Info_Array[i].Row_Index][Info_Array[i].Column_Index + 1] = Info_Array[i].Sis_Number;
+            mymap[Info_Array[i].Row_Index][Info_Array[i].Column_Index + 2] = ')';
         }
     }
 
