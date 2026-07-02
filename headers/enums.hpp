@@ -7,7 +7,7 @@ enum class FIGHTER_TYPE {HERO, SIDE_KICK};
 enum class CARD_EFFECT_TYPE {IMMEDIATE, DURING_COMBAT, AFTER_COMBAT, NONE};
 enum class CARD_TYPE {ATTACK, DEFENCE, SCHEME, VERSATILE};
 enum class CARD_OWNER {HERO, SIDE_KICK, ANY};
-enum class SPACE_OCCUPIED_BY {TEAM1, TEAM2};
+enum class USER{USER1, USER2};
 enum class HERO_NAME {DRACULA, SHERLOCK};
 enum class Dracula_And_Sisters_Array_Index{DRACULA, SIS1, SIS2, SIS3};
 enum class Sherlock_And_Watson_Array_Index{SHERLOCK, WATSON};
