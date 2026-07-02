@@ -31,6 +31,7 @@ struct Fighters_Print_Info
     int Column_Index;
     char Fighter_Name;
     bool Is_Placed_On_Map;
+    char Sis_Number;
 };
 
 struct Fighter_Info
