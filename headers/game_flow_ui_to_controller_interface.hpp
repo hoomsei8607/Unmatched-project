@@ -8,18 +8,17 @@
 #include <ftxui/dom/elements.hpp>
 #include <ftxui/screen/screen.hpp>
 
-enum class GAME_FLOW_SCREENS {CHOOSE_FIGHTER, CHOOSE_ACTION, MANEUVER, SCHEME, ATTACK, GO_BACK_TO_MAIN_LOOP};
+enum class GAME_FLOW_SCREENS {CHOOSE_FIGHTER, CHOOSE_ACTION, MANEUVER, SCHEME, ATTACK, Card_Screen, GO_BACK_TO_MAIN_LOOP};
 
 class User_Choice_Manager
 {
     public:
         User_Choice_Manager();
         bool Screen_Manager(USER user_turn, Controller& control, const ftxui::Element& map_and_user_info, Fighters_Print_Info* fighters_printing_info, int fighters_count);
-        // void Choose_Fighter_Screen(USER user_turn, Controller& control, const ftxui::Element& map_and_user_info);
-        // void Choose_Action_Screen(USER user_turn, Controller& control, const ftxui::Element& map_and_user_info);
+        void Choose_Fighter_Screen(USER user_turn, Controller& control, const ftxui::Element& map_and_user_info);
+        void Choose_Action_Screen(USER user_turn, Controller& control, const ftxui::Element& map_and_user_info);
         void Maneuver_Screen(USER user_turn, Controller& control, const ftxui::Element& map_and_user_info, Fighters_Print_Info* fighter_printing_info, int fighters_count);
-        // void Scheme_Screen(USER user_turn, Controller& control, const ftxui::Element& map_and_user_info);
-        // void Attack_Screen(USER user_turn, Controller& control, const ftxui::Element& map_and_user_info);
+        void Use_Cards_Screen(USER user_turn, Controller& control, const ftxui::Element& map_and_use_info);
     private:
         GAME_FLOW_SCREENS game_current_screen;
         Fighters_Names selected_fighter;
