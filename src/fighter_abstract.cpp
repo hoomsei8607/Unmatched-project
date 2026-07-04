@@ -29,3 +29,11 @@ void Fighter_Base_Class::Set_Current_Fighter_Space_Number(int new_space)
 {
     this->Current_Hero_Space = new_space;
 }
+void Fighter_Base_Class::change_health(int amount)
+{
+    Current_Hp+=amount;
+}
+bool Fighter_Base_Class::return_is_fighter_alive()
+{
+    return Is_Fighter_Alive;
+}
