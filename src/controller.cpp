@@ -309,3 +309,21 @@ bool Controller::Manage_UserAction_Numbers_And_Return_True_TO_Change_Turn()
     
     }
 }
+
+HERO_NAME Controller::Return_User1_Hero_Name() const
+{
+    return user1.Return_Hero_Type();
+}
+HERO_NAME Controller::Return_User2_Hero_Name() const
+{
+    return user2.Return_Hero_Type();
+}
+
+std::string Controller::Return_User1_Username() const
+{
+    return user1.Return_UserName();
+}
+std::string Controller::Return_User2_Username() const
+{
+    return user2.Return_UserName();
+}

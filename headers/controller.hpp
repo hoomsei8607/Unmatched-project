@@ -23,6 +23,10 @@ class Controller
         USER Return_Younger_User() const;
         std::string Return_Younger_User_Name() const;
         std::string Return_Older_User_Name() const;
+        std::string Return_User1_Username() const;
+        std::string Return_User2_Username() const;
+        HERO_NAME Return_User1_Hero_Name() const;
+        HERO_NAME Return_User2_Hero_Name() const;
         int Return_Fighter_Move_Value(Fighters_Names fighter_name) const;
         bool Manage_UserAction_Numbers_And_Return_True_TO_Change_Turn();
         ~Controller();
