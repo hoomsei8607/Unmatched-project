@@ -309,3 +309,28 @@ bool Controller::Manage_UserAction_Numbers_And_Return_True_TO_Change_Turn()
     
     }
 }
+bool Controller::Return_Is_Fighter_Alive(Fighters_Names name) const
+{
+    switch (name)
+    {
+    case Fighters_Names::DRACULA:
+        Dracula_And_Sisters[static_cast<int>(Dracula_And_Sisters_Array_Index::DRACULA)]->return_is_fighter_alive();
+        break;
+    
+    case Fighters_Names::SIS1:
+        Dracula_And_Sisters[static_cast<int>(Dracula_And_Sisters_Array_Index::SIS1)]->return_is_fighter_alive();
+        break;
+    case Fighters_Names::SIS2:
+        Dracula_And_Sisters[static_cast<int>(Dracula_And_Sisters_Array_Index::SIS2)]->return_is_fighter_alive();
+        break;
+    case Fighters_Names::SIS3:
+        Dracula_And_Sisters[static_cast<int>(Dracula_And_Sisters_Array_Index::SIS3)]->return_is_fighter_alive();
+        break;
+    case Fighters_Names::SHERLOCK:
+    Sherklock_And_Watson[static_cast<int>(Sherlock_And_Watson_Array_Index::SHERLOCK)]->return_is_fighter_alive();
+        break;
+    case Fighters_Names::WATSON:
+    Sherklock_And_Watson[static_cast<int>(Sherlock_And_Watson_Array_Index::WATSON)]->return_is_fighter_alive();
+        break;
+    }
+}
