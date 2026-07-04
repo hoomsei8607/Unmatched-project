@@ -1,6 +1,8 @@
 #ifndef CARD_ABSTRACT_HPP
 #define CARD_ABSTRACT_HPP
 #include "enums.hpp"
+
+#include "fighter_abstract.hpp"
 class Card_Base_Class
 {
     public:
@@ -11,6 +13,7 @@ class Card_Base_Class
     CARD_OWNER get_owner();
     bool get_is_discarded();
     int get_card_number();
+
 
     
     protected:

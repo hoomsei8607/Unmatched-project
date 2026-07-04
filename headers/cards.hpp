@@ -1,44 +1,54 @@
 #include "card_abstract.hpp"
+#include "graph.hpp"
 
 class dracula_feedingfrenzy : public Card_Base_Class
 {
     public:
     dracula_feedingfrenzy();
+    void card_effect(Controller& controler);
+    
 };
 class dracula_mistform : public Card_Base_Class
 {
     public:
     dracula_mistform();
+    void card_effect(Controller& controler);
 };
 class dracula_ambush : public Card_Base_Class
 {
     public:
-    dracula_ambush();
+    dracula_ambush(Fighter_Base_Class &fighter);
+    void card_effect(User &useerhandler);
 };
 class dracula_baptism_of_blood : public Card_Base_Class
 {
     public:
     dracula_baptism_of_blood();
+    void card_effect(Controller& controler,Fighter_Base_Class& fighters);
 };
 class dracula_beastform : public Card_Base_Class
 {
     public:
     dracula_beastform();
+    void card_effect(User &user_handler);
 };
 class dracula_dash : public Card_Base_Class
 {
     public:
     dracula_dash();
+    void card_effect(Controller& controler);
 };
 class dracula_exploit : public Card_Base_Class
 {
     public:
     dracula_exploit();
+    void card_effect(User &user_handler);
 };
 class dracula_look_into_my_eyes : public Card_Base_Class
 {
     public:
     dracula_look_into_my_eyes();
+    void card_effect(User &user_handler);
 };
 class dracula_prey_upon : public Card_Base_Class
 {
