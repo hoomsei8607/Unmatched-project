@@ -16,8 +16,9 @@ SideKick_Placement_Screen_Manager::SideKick_Placement_Screen_Manager(HERO_NAME y
         current_placement = SideKick_Placement_Screen::WATSON_SCREEN;
     }
 
-    Young_User_SideKick_Spaces_Available = {"17", "21", "23", "29"};
-    Older_User_SideKick_Spaces_Available = {"1", "2", "3", "4", "7", "8", "10", "11", "15"};
+    Young_User_SideKick_Spaces_Available = {"1", "2", "3", "4", "7", "8", "10", "11", "15"};
+    Older_User_SideKick_Spaces_Available = {"17", "21", "23", "29"};
+    
 }
 
 bool SideKick_Placement_Screen_Manager::Screen_Manager(Controller& control, Element map_and_user_info, Fighters_Print_Info* fighters_info_array)
