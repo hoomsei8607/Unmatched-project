@@ -172,9 +172,9 @@ void User_Interface::Game_Loop_Screen(Controller& control)
 
     
     //the main gameloop
+    User_Choice_Manager user_choice_manager;
     while(true)
     {
-        User_Choice_Manager user_choice_manager;
         //updating fighter info after each action
         control.Fill_Fighter_Info_Struct(Fighters_Names::DRACULA, Dracula_Info);
         control.Fill_Fighter_Info_Struct(Fighters_Names::SHERLOCK, Sherlock_Info);
