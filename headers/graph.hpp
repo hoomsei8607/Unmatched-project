@@ -14,13 +14,18 @@ class Graph // a singleton object
     public:
         static Graph* Get_Map_Graph_Pointer();
         void Initialize_Graph();
-        std::set<int> Available_Spaces_For_Moving(int move_value, int team_turn);
+        std::set<int> Available_Spaces_For_Moving(int move_value,  int current_space, USER user_turn);
+        void Recursive_Path_Finder(std::set<int>& paths, int current_space, int times_to_call_recursive_function, int current_step = 0);// call this function with just 3 arguments
+        Graph(const Graph&) = delete;
+        void Change_Space_Occiupied_Status(int space_number);//if the space is empty changes to occiupied and vice versa
         ~Graph();
+
 
 
     private:
         static bool Is_Graph_Initiated;
         static Graph* Object_Instance;
+        Graph() = default;
         std::map <int, std::vector<Space*>> Game_Map_Graph;//key is space number and value is the set of vertecies
 
         //space objects
@@ -60,7 +65,6 @@ class Graph // a singleton object
 
 };
 
-Graph* Graph::Object_Instance = nullptr;
-bool Graph::Is_Graph_Initiated = false;
+
 
 #endif
