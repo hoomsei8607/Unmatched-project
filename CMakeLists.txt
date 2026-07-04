@@ -17,6 +17,9 @@ add_library(My_Written_Code
                 src/fighter_abstract.cpp
                 src/fighter_sub_classes.cpp
                 src/main_game_loop_sideckick_placement_manager.cpp
+                src/game_flow_ui_to_controller_interface.cpp
+                src/graph.cpp
+                src/space.cpp
                 )
 target_link_directories(My_Written_Code PUBLIC headers)
 

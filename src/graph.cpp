@@ -1,5 +1,33 @@
 #include "../headers/graph.hpp"
 #include "../headers/space.hpp"
+
+Graph* Graph::Object_Instance = nullptr;
+bool Graph::Is_Graph_Initiated = false;
+
+
+
+void Graph::Recursive_Path_Finder(std::set<int>& paths, int current_space, int times_to_call_recursive_function, int current_step)
+{
+    for(auto space : Game_Map_Graph[current_space])
+    {
+        if(!(space->Get_Occupied_Status()))
+        paths.insert(space->Get_Space_Number());
+    }
+    current_step++;
+
+    if(current_step < times_to_call_recursive_function)
+    {
+        for(auto space : Game_Map_Graph[current_space])
+        {
+            Recursive_Path_Finder(paths, space->Get_Space_Number(), times_to_call_recursive_function, current_step);
+        }
+    }
+    else
+    {
+        return;
+    }
+
+}
 Graph* Graph::Get_Map_Graph_Pointer()
 {
     if(Object_Instance != nullptr)
@@ -259,4 +287,116 @@ void Graph::Initialize_Graph()
 Graph::~Graph()
 {
     delete Object_Instance;
+    Object_Instance = nullptr;
+}
+
+
+std::set<int> Graph::Available_Spaces_For_Moving(int move_value, int current_space, USER user_turn)
+{
+    std::set<int> To_Be_Returned_Set;
+
+}
+
+void Graph::Change_Space_Occiupied_Status(int space_number)
+{
+    switch (space_number)
+    {
+    case 1:
+        s1.Change_Occupied_Status();
+        break;
+    case 2:
+        s2.Change_Occupied_Status();
+        break;
+    case 3:
+        s3.Change_Occupied_Status();
+        break;
+    case 4:
+        s4.Change_Occupied_Status();
+        break;
+    case 5:
+        s5.Change_Occupied_Status();
+        break;
+    case 6:
+        s6.Change_Occupied_Status();
+        break;
+    case 7:
+        s7.Change_Occupied_Status();
+        break;
+    case 8:
+        s8.Change_Occupied_Status();
+        break;
+    case 9:
+        s9.Change_Occupied_Status();
+        break;
+    case 10:
+        s10.Change_Occupied_Status();
+        break;
+    case 11:
+        s11.Change_Occupied_Status();
+        break;
+    case 12:
+        s12.Change_Occupied_Status();
+        break;
+    case 13:
+        s13.Change_Occupied_Status();
+        break;
+    case 14:
+        s14.Change_Occupied_Status();
+        break;
+    case 15:
+        s15.Change_Occupied_Status();
+        break;
+    case 16:
+        s16.Change_Occupied_Status();
+        break;
+    case 17:
+        s17.Change_Occupied_Status();
+        break;
+    case 18:
+        s18.Change_Occupied_Status();
+        break;
+    case 19:
+        s19.Change_Occupied_Status();
+        break;
+    case 20:
+        s20.Change_Occupied_Status();
+        break;
+    case 21:
+        s21.Change_Occupied_Status();
+        break;
+    case 22:
+        s22.Change_Occupied_Status();
+        break;
+    case 23:
+        s23.Change_Occupied_Status();
+        break;
+    case 24:
+        s24.Change_Occupied_Status();
+        break;
+    case 25:
+        s25.Change_Occupied_Status();
+        break;
+    case 26:
+        s26.Change_Occupied_Status();
+        break;
+    case 27:
+        s27.Change_Occupied_Status();
+        break;
+    case 28:
+        s28.Change_Occupied_Status();
+        break;
+    case 29:
+        s29.Change_Occupied_Status();
+        break;
+    case 30:
+        s30.Change_Occupied_Status();
+        break;
+    case 31:
+        s31.Change_Occupied_Status();
+        break;
+    case 32:
+        s32.Change_Occupied_Status();
+        break;
+        
+    }
 }

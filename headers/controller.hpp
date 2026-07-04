@@ -23,6 +23,8 @@ class Controller
         USER Return_Younger_User() const;
         std::string Return_Younger_User_Name() const;
         std::string Return_Older_User_Name() const;
+        int Return_Fighter_Move_Value(Fighters_Names fighter_name) const;
+        bool Manage_UserAction_Numbers_And_Return_True_TO_Change_Turn();
         ~Controller();
     private:
         User user1;
@@ -32,5 +34,6 @@ class Controller
         std::map <int, Space_Row_And_Column_In_Array> Space_To_Array_Index_Map;
         USER Younger_User;
         USER User_Turn;
+        USER_ACTION current_user_action;
 };
 #endif

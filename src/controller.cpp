@@ -260,3 +260,52 @@ std::string Controller::Return_Younger_User_Name() const
     }
     return user1.Return_UserName();
 }
+
+int Controller::Return_Fighter_Move_Value(Fighters_Names fighter_name) const
+{
+    switch (fighter_name)
+    {
+    case Fighters_Names::DRACULA:
+        return Dracula_And_Sisters[static_cast<int>(Dracula_And_Sisters_Array_Index::DRACULA)]->Return_Fighter_Current_Move_Value();
+    
+    case Fighters_Names::SIS1:
+        return Dracula_And_Sisters[static_cast<int>(Dracula_And_Sisters_Array_Index::SIS1)]->Return_Fighter_Current_Move_Value();
+        
+    case Fighters_Names::SIS2:
+        return Dracula_And_Sisters[static_cast<int>(Dracula_And_Sisters_Array_Index::SIS2)]->Return_Fighter_Current_Move_Value();
+        
+    case Fighters_Names::SIS3:
+        return Dracula_And_Sisters[static_cast<int>(Dracula_And_Sisters_Array_Index::SIS3)]->Return_Fighter_Current_Move_Value();
+        
+    case Fighters_Names::SHERLOCK:
+        return Sherklock_And_Watson[static_cast<int>(Sherlock_And_Watson_Array_Index::SHERLOCK)]->Return_Fighter_Current_Move_Value();
+    case Fighters_Names::WATSON:
+        return Sherklock_And_Watson[static_cast<int>(Sherlock_And_Watson_Array_Index::WATSON)]->Return_Fighter_Current_Move_Value();
+        
+    default:
+        break;
+    }   
+}
+
+bool Controller::Manage_UserAction_Numbers_And_Return_True_TO_Change_Turn()
+{
+    switch (current_user_action)
+    {
+    case USER_ACTION::USER1_ACTION1:
+        current_user_action = USER_ACTION::USER1_ACTION2;
+        return false;
+    
+    case USER_ACTION::USER2_ACTION1:
+        current_user_action = USER_ACTION::USER2_ACTION2;
+        return false;
+    
+    case USER_ACTION::USER1_ACTION2:
+        current_user_action = USER_ACTION::USER2_ACTION1;
+        return true;
+    
+    case USER_ACTION::USER2_ACTION2:
+        current_user_action = USER_ACTION::USER1_ACTION1;
+        return true;
+    
+    }
+}

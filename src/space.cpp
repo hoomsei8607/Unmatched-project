@@ -5,17 +5,17 @@ void Space::Change_Occupied_Status()
     this->Is_Occupied = !Is_Occupied;
 }
 
-bool Space::Get_Occupied_Status()
+bool Space::Get_Occupied_Status() const
 {
     return this->Is_Occupied;
 }
 
-bool Space::Get_Secret_Pathway_Status()
+bool Space::Get_Secret_Pathway_Status() const
 {
     return this->Has_Secret_Path;
 }
 
-bool Space::Get_Multi_Zone_status()
+bool Space::Get_Multi_Zone_status() const
 {
     return this->Is_Multi_Zone;
 }
@@ -39,4 +39,9 @@ void Space::Set_Info(bool Is_Multi_zone, bool Is_Occupied, bool Has_Secret_Path,
         zone[i] = Colors[i];
     }
     
+}
+
+int Space::Get_Space_Number() const
+{
+    return Space_Number;
 }

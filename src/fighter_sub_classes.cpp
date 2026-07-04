@@ -27,6 +27,7 @@ Dracula::Dracula()
     Range_Type=ATTACKING_RANGE::MELEE;
     fighter_type=FIGHTER_TYPE::HERO;
     Current_Hero_Space=0;
+    Attacking_Range = 1;
 
 }
 
@@ -52,6 +53,7 @@ Sherlock::Sherlock()
     Range_Type=ATTACKING_RANGE::MELEE;
     fighter_type=FIGHTER_TYPE::HERO;
     Current_Hero_Space=0;
+    Attacking_Range = 1;
 }
 
 Watson* Watson::Get_Instance()
@@ -114,5 +116,6 @@ Dracula_Sister::Dracula_Sister(int sis_number)
     Range_Type=ATTACKING_RANGE::MELEE;
     fighter_type=FIGHTER_TYPE::SIDE_KICK;
     Current_Hero_Space=0;
+    Attacking_Range = 1;
 
 }
