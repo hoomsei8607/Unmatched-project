@@ -13,4 +13,5 @@ enum class Dracula_And_Sisters_Array_Index{DRACULA, SIS1, SIS2, SIS3};
 enum class Sherlock_And_Watson_Array_Index{SHERLOCK, WATSON};
 enum class SideKick_Name {WATSON, DRACULA_SIS1, DRACULA_SIS2, DRACULA_SIS3};
 enum class Fighters_Names{SHERLOCK, DRACULA, WATSON, SIS1, SIS2, SIS3};
+enum class USER_ACTION{USER1_ACTION1, USER1_ACTION2, USER2_ACTION1, USER2_ACTION2};
 #endif
