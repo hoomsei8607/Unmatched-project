@@ -51,10 +51,6 @@ std::string Card_Base_Class::Get_Card_Type_As_String()
     }
 }
 
-std::string Card_Base_Class::Get_Card_Effect_As_String()
-{
-
-}
 
 std::string Card_Base_Class::Get_Card_Owner_Name_As_String()
 {
@@ -76,7 +72,7 @@ std::string Card_Base_Class::Get_Card_Owner_Name_As_String()
 }
 std::string Card_Base_Class::Get_Card_Effect_Timing_As_String()
 {
-    
+
 }
 std::string Card_Base_Class::Get_Card_Effect_As_String()
 {

@@ -28,6 +28,7 @@ class Card_Base_Class
     bool is_discarded;   
     int card_number;        
     std::string card_name;
+    std::string card_effect_description;
 };
 
 #endif

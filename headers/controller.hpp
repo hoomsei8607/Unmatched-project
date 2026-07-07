@@ -37,7 +37,9 @@ class Controller
         bool Return_Is_Fighter_Alive(Fighters_Names name) const;
         void Initialize_Users_hands();
         void Instantiate_Card_Object(USER user, cards card_name);
-        std::vector <ftxui::Element> Return_Hand_Elements_For_Render(USER user_turn);
+        ftxui::Element Return_Hand_Elements_For_Render(USER user_turn);
+        std::vector<std::string> Return_Hand_As_String(USER user_turn);
+        bool Is_Selected_Card_A_Scheme_Card(USER user_turn, int index);
         ~Controller();
     private:
         User user1;

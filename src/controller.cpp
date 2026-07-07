@@ -1,7 +1,7 @@
 #include "../headers/controller.hpp"
 #include "../headers/fighters_sub_classes.hpp"
 #include "../headers/structs.hpp"
-#include "../headers/cards.hpp"
+#include "../headers/cards.hpp"\
 #include <algorithm>
 #include <random>
 
@@ -528,4 +528,81 @@ void Controller::Instantiate_Card_Object(USER user, cards card_name)
         User2_Hand.push_back(temp_card_ptr);
     }
 
+}
+
+ftxui::Element Controller::Return_Hand_Elements_For_Render(USER user_turn)
+{
+    std::vector<ftxui::Element> Hand_Cards_As_Elements;
+    if(user_turn == USER::USER1)
+    {
+        for(auto card: User1_Hand)
+        {
+            ftxui::Element element = ftxui::vbox({
+            ftxui::text(card->get_card_name()) | ftxui::center,
+            ftxui::hbox({ftxui::text("OWNER: "), ftxui::text(card->Get_Card_Owner_Name_As_String())}),
+            ftxui::hbox({ftxui::text("CARD VALUE: "), ftxui::text(std::to_string(card->get_card_value()))}),
+            ftxui::hbox({ftxui::text("CARD BOOST VALUE: "), ftxui::text(std::to_string(card->get_Card_Boost_Value()))}),
+            ftxui::hbox({ftxui::text("CARD TYPE: "), ftxui::text(card->Get_Card_Type_As_String())}),
+            ftxui::separator(),
+            ftxui::text(card->Get_Card_Effect_As_String())
+            }) | ftxui::border;
+            Hand_Cards_As_Elements.push_back(element);
+        }
+    }
+    else
+    {
+        for(auto card: User2_Hand)
+        {
+            ftxui::Element element = ftxui::vbox({
+            ftxui::text(card->get_card_name()) | ftxui::center,
+            ftxui::hbox({ftxui::text("OWNER: "), ftxui::text(card->Get_Card_Owner_Name_As_String())}),
+            ftxui::hbox({ftxui::text("CARD VALUE: "), ftxui::text(std::to_string(card->get_card_value()))}),
+            ftxui::hbox({ftxui::text("CARD BOOST VALUE: "), ftxui::text(std::to_string(card->get_Card_Boost_Value()))}),
+            ftxui::hbox({ftxui::text("CARD TYPE: "), ftxui::text(card->Get_Card_Type_As_String())}),
+            ftxui::separator(),
+            ftxui::paragraph(card->Get_Card_Effect_As_String())
+            }) | ftxui::border;
+            Hand_Cards_As_Elements.push_back(element);
+        }
+    }
+    return ftxui::hbox({Hand_Cards_As_Elements});
+}
+
+std::vector<std::string> Controller::Return_Hand_As_String(USER user_turn)
+{
+    std::vector<std::string> To_Be_Returned;
+    if(user_turn == USER::USER1)
+    {
+        for(auto card : User1_Hand)
+        {
+            To_Be_Returned.push_back(card->get_card_name());
+        }
+    }
+    else
+    {
+        for(auto card : User2_Hand)
+        {
+            To_Be_Returned.push_back(card->get_card_name());
+        }
+    }
+    return To_Be_Returned;
+}
+
+bool Controller::Is_Selected_Card_A_Scheme_Card(USER user_turn, int index)
+{
+    if(user_turn == USER::USER1)
+    {
+        if(User1_Hand[index]->get_type() == CARD_TYPE::SCHEME)
+        {
+            return true;
+        }
+    }
+    else
+    {
+        if(User2_Hand[index]->get_type() == CARD_TYPE::SCHEME)
+        {
+            return true;
+        }
+    }
+    return false;
 }
