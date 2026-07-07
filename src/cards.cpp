@@ -6,6 +6,7 @@
 
 dracula_feedingfrenzy::dracula_feedingfrenzy()
 {
+    card_name="Feeding Frenzy";
     Card_Value=2;
     Card_Boost_Value=3;
     owner=CARD_OWNER::HERO;
@@ -28,6 +29,7 @@ void dracula_feedingfrenzy::card_effect(Controller& control)
 }
 dracula_mistform::dracula_mistform()
 {
+    card_name="Mistform";
     Card_Value=0;
     Card_Boost_Value=2;
     owner=CARD_OWNER::HERO;
@@ -39,8 +41,9 @@ dracula_mistform::dracula_mistform()
  {
     //get input from player to where to go(anywhere) and add 1 action
  }
-dracula_ambush::dracula_ambush(Fighter_Base_Class &fighter)
+dracula_ambush::dracula_ambush()
 {
+    card_name="Ambush";
     Card_Value=2;
     Card_Boost_Value=3;
     owner=CARD_OWNER::ANY;
@@ -51,7 +54,7 @@ dracula_ambush::dracula_ambush(Fighter_Base_Class &fighter)
 void dracula_ambush::card_effect(User &user_handler)
 {
     //give the enemy user arguement
-    srand(time(0));
+    
     int enemy_card=rand()%5;
     Card_Value+=user_handler.user_hand[enemy_card]->get_Card_Boost_Value();
     user_handler.discard(enemy_card);
@@ -59,6 +62,7 @@ void dracula_ambush::card_effect(User &user_handler)
 }
 dracula_baptism_of_blood::dracula_baptism_of_blood()
 {
+    card_name="Baptism Of Blood";
     Card_Value=0;
     Card_Boost_Value=2;
     owner=CARD_OWNER::HERO;
@@ -88,6 +92,7 @@ void dracula_baptism_of_blood::card_effect(Controller& controler,Fighter_Base_Cl
 }
 dracula_beastform::dracula_beastform()
 {
+    card_name="Beastform";
     Card_Value=6;
     Card_Boost_Value=4;
     owner=CARD_OWNER::HERO;
@@ -105,6 +110,7 @@ void dracula_beastform::card_effect(User &user_handler)
 }
 dracula_dash::dracula_dash()
 {
+    card_name="Dash";
     Card_Value=3;
     Card_Boost_Value=1;
     owner=CARD_OWNER::ANY;
@@ -118,6 +124,7 @@ void dracula_dash::card_effect(Controller& controler)
 }
 dracula_exploit::dracula_exploit()
 {
+    card_name="Exploit";
     Card_Value=4;
     Card_Boost_Value=1;
     owner=CARD_OWNER::ANY;
@@ -131,6 +138,7 @@ void dracula_exploit::card_effect(User &user_handler)
 }
 dracula_look_into_my_eyes::dracula_look_into_my_eyes()
 {
+    card_name="Look Into My Eyes";
     Card_Value=1;
     Card_Boost_Value=2;
     owner=CARD_OWNER::HERO;
@@ -144,6 +152,7 @@ void dracula_look_into_my_eyes::card_effect(User &user_handler)
 }
 dracula_prey_upon::dracula_prey_upon()
 {
+    card_name="Prey Upon";
     Card_Value=0;
     Card_Boost_Value=4;
     owner=CARD_OWNER::HERO;
@@ -159,6 +168,7 @@ void dracula_prey_upon::card_effect(Controller& controler)
 }
 dracula_ravening_seduction::dracula_ravening_seduction()
 {
+    card_name="Ravening Seduction";
     Card_Value=0;
     Card_Boost_Value=2;
     owner=CARD_OWNER::SIDE_KICK;
@@ -171,6 +181,7 @@ void dracula_ravening_seduction::card_effect()
 }
 dracula_thirst_For_sustenance::dracula_thirst_For_sustenance()
 {
+    card_name="Thirst For Sustenance";
     Card_Value=3;
     Card_Boost_Value=3;
     owner=CARD_OWNER::SIDE_KICK;
@@ -184,6 +195,7 @@ void dracula_thirst_For_sustenance::card_effect()
 }
 dracula_feint::dracula_feint()
 {
+    card_name="Feint";
     Card_Value=2;
     Card_Boost_Value=2;
     owner=CARD_OWNER::ANY;
@@ -197,6 +209,7 @@ void dracula_feint::card_effect()
 }
 holmes_administer_aid::holmes_administer_aid()
 {
+    card_name="Administer Aid";
     Card_Value=0;
     Card_Boost_Value=2;
     owner=CARD_OWNER::SIDE_KICK;
@@ -212,6 +225,7 @@ void holmes_administer_aid::card_effect(User &user_handler,Fighter_Base_Class& f
 }
 holmes_confirm_suspicion::holmes_confirm_suspicion()
 {
+    card_name="Confirm Suspicion";
     Card_Value=0;
     Card_Boost_Value=1;
     owner=CARD_OWNER::HERO;
@@ -220,6 +234,7 @@ holmes_confirm_suspicion::holmes_confirm_suspicion()
 }
 holmes_counterpunch::holmes_counterpunch()
 {
+    card_name="Counterpunch";
     Card_Value=3;
     Card_Boost_Value=1;
     owner=CARD_OWNER::HERO;
@@ -229,6 +244,7 @@ holmes_counterpunch::holmes_counterpunch()
 }
 holmes_deduce_strategy::holmes_deduce_strategy()
 {
+    card_name="Deduce Strategy";
     Card_Value=3;
     Card_Boost_Value=1;
     owner=CARD_OWNER::HERO;
@@ -238,6 +254,7 @@ holmes_deduce_strategy::holmes_deduce_strategy()
 }
 holmes_education_never_ends::holmes_education_never_ends()
 {
+    card_name="Education Never Ends";
     Card_Value=3;
     Card_Boost_Value=1;
     owner=CARD_OWNER::ANY;
@@ -247,6 +264,7 @@ holmes_education_never_ends::holmes_education_never_ends()
 }
 holmes_elementary::holmes_elementary()
 {
+    card_name="Elementary";
     Card_Value=3;
     Card_Boost_Value=3;
     owner=CARD_OWNER::HERO;
@@ -256,6 +274,7 @@ holmes_elementary::holmes_elementary()
 }
 holmes_eliminate_the_impossible::holmes_eliminate_the_impossible()
 {
+    card_name="Eliminate The Impossible";
     Card_Value=0;
     Card_Boost_Value=2;
     owner=CARD_OWNER::HERO;
@@ -264,6 +283,7 @@ holmes_eliminate_the_impossible::holmes_eliminate_the_impossible()
 }
 holmes_feint::holmes_feint()
 {
+    card_name="Feint";
     Card_Value=2;
     Card_Boost_Value=1;
     owner=CARD_OWNER::ANY;
@@ -273,6 +293,7 @@ holmes_feint::holmes_feint()
 }
 holmes_fixed_point_in_a_changing_age::holmes_fixed_point_in_a_changing_age()
 {
+    card_name="Fixed Point In A Changing Age";
     Card_Value=3;
     Card_Boost_Value=1;
     owner=CARD_OWNER::SIDE_KICK;
@@ -282,6 +303,7 @@ holmes_fixed_point_in_a_changing_age::holmes_fixed_point_in_a_changing_age()
 }
 holmes_master_of_disguise::holmes_master_of_disguise()
 {
+    card_name="Master Of Disguise";
     Card_Value=0;
     Card_Boost_Value=2;
     owner=CARD_OWNER::HERO;
@@ -290,6 +312,7 @@ holmes_master_of_disguise::holmes_master_of_disguise()
 }
 holmes_the_game_is_afoot::holmes_the_game_is_afoot()
 {
+    card_name="The Game Is Afoot";
     Card_Value=5;
     Card_Boost_Value=2;
     owner=CARD_OWNER::HERO;
@@ -299,6 +322,7 @@ holmes_the_game_is_afoot::holmes_the_game_is_afoot()
 }
 holmes_service_revolver::holmes_service_revolver()
 {
+    card_name="Service Revolver";
     Card_Value=5;
     Card_Boost_Value=3;
     owner=CARD_OWNER::SIDE_KICK;
@@ -308,6 +332,7 @@ holmes_service_revolver::holmes_service_revolver()
 }
 holmes_study_methods::holmes_study_methods()
 {
+    card_name="Study Methods";
     Card_Value=3;
     Card_Boost_Value=2;
     owner=CARD_OWNER::ANY;
