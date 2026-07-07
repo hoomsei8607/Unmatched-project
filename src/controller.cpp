@@ -1,6 +1,7 @@
 #include "../headers/controller.hpp"
 #include "../headers/fighters_sub_classes.hpp"
 #include "../headers/structs.hpp"
+#include "../headers/cards.hpp"
 #include <algorithm>
 #include <random>
 
@@ -380,18 +381,33 @@ void Controller::Initialize_Users_hands()
         for(int i = 0 ; i < 5 ; i++)
         {
             user1.draw(dracula_deck.back());
+            Instantiate_Card_Object(USER::USER1, dracula_deck.back());
+            dracula_deck.pop_back();
 
+            user2.draw(sherlock_deck.back());
+            Instantiate_Card_Object(USER::USER2, sherlock_deck.back());
+            sherlock_deck.pop_back();
         }
     }
     else
     {
+        for(int i = 0 ; i < 5 ; i++)
+        {
+            user1.draw(sherlock_deck.back());
+            Instantiate_Card_Object(USER::USER1, sherlock_deck.back());
+            sherlock_deck.pop_back();
+
+            user2.draw(dracula_deck.back());
+            Instantiate_Card_Object(USER::USER2, dracula_deck.back());
+            dracula_deck.pop_back();
+        }
 
     }
 }
 
 void Controller::Instantiate_Card_Object(USER user, cards card_name)
 {
-    cards* temp_card_ptr = nullptr;
+    Card_Base_Class* temp_card_ptr = nullptr;
     HERO_NAME user_hero;
     if(user == USER::USER1)
     {
@@ -407,51 +423,51 @@ void Controller::Instantiate_Card_Object(USER user, cards card_name)
         switch (dracula_deck.back())
         {
         case cards::FEEDING_FRENZY: 
-            
+            temp_card_ptr = new dracula_feedingfrenzy;
             break;
         
         case cards::MISTFORM : 
-            
+            temp_card_ptr = new dracula_mistform;
             break;
         
         case cards::AMBUSH : 
-            
+            temp_card_ptr = new dracula_ambush;
             break;
         
         case cards::BAPTISM_OF_BLOOD : 
-            
+            temp_card_ptr = new dracula_baptism_of_blood;
             break;
         
         case cards::BEASTFORM : 
-            
+            temp_card_ptr = new dracula_beastform;
             break;
         
         case cards::DASH : 
-            
+            temp_card_ptr = new dracula_dash;
             break;
         
         case cards::EXPLOIT : 
-            
+            temp_card_ptr = new dracula_exploit;
             break;
         
         case cards::LOOK_INTO_MY_EYES : 
-            
+            temp_card_ptr = new dracula_look_into_my_eyes;
             break;
         
         case cards::PREY_UPON : 
-            
+            temp_card_ptr = new dracula_prey_upon;
             break;
         
         case cards::RAVENING_SEDUCTION : 
-            
+            temp_card_ptr = new dracula_ravening_seduction;
             break;
         
         case cards::THIRST_FOR_SUSTENANCE : 
-            
+            temp_card_ptr = new dracula_thirst_For_sustenance;
             break;
         
         case cards::FEINT : 
-            
+            temp_card_ptr = new dracula_feint;
             break;
         }
     }
@@ -460,34 +476,56 @@ void Controller::Instantiate_Card_Object(USER user, cards card_name)
         switch (sherlock_deck.back())
         {
         case cards::AMINISTER_AID :
+            temp_card_ptr = new holmes_administer_aid;
             break;
         case cards::CONFIRM_SUSPICION :
+            temp_card_ptr = new holmes_confirm_suspicion;
             break;
         case cards::COUNTERPUNCH :
+            temp_card_ptr = new holmes_counterpunch;
             break;
         case cards::DEDUCE_STRATEGY :
+            temp_card_ptr = new holmes_deduce_strategy;
             break;
         case cards::EDUCATION_NEVER_ENDS :
+            temp_card_ptr = new holmes_education_never_ends;
             break;
         case cards::ELEMENTARY :
+            temp_card_ptr = new holmes_elementary;
             break;
         case cards::ELIMINATE_THE_IMPOSSIBLE :
+            temp_card_ptr = new holmes_eliminate_the_impossible;
             break;
         case cards::FEINT :
+            temp_card_ptr = new holmes_feint;
             break;
         case cards::FIXED_POINT_IN_A_CHANGING_AGE :
+            temp_card_ptr = new holmes_fixed_point_in_a_changing_age;
             break;
         case cards::MASTER_OF_DISGUISE :
+            temp_card_ptr = new holmes_master_of_disguise;
             break;
         case cards::THE_GAME_IS_AFOOT :
+            temp_card_ptr = new holmes_the_game_is_afoot;
             break;
         case cards::SERVICE_REVOLVER :
+            temp_card_ptr = new holmes_service_revolver;
             break;
         case cards::STUDY_METHODS :
+            temp_card_ptr = new holmes_study_methods;
             break;
         
         }
 
+        
+    }
+    if(user == USER::USER1)
+    {
+        User1_Hand.push_back(temp_card_ptr);
+    }
+    else
+    {
+        User2_Hand.push_back(temp_card_ptr);
     }
 
 }
