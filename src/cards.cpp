@@ -15,14 +15,26 @@ dracula_feedingfrenzy::dracula_feedingfrenzy()
     card_number=2;
     card_effect_description="DURING COMBAT: This card's value is\n +1 for each sister in the same zone as\n the opposing fighter.";
 }
-void dracula_feedingfrenzy::card_effect(Controller& control)
+void dracula_feedingfrenzy::card_effect(Controller& control,Fighters_Names enemy)
 {
+    Graph *location =Graph::Get_Map_Graph_Pointer();
+    // std::array<ZONE_COLORS,3> 
     int sisters_number_locations[3];
     sisters_number_locations[0] = control.Return_Hero_Space_Number(Fighters_Names::SIS1);
     sisters_number_locations[1] = control.Return_Hero_Space_Number(Fighters_Names::SIS2);
     sisters_number_locations[2] = control.Return_Hero_Space_Number(Fighters_Names::SIS3);
-    int sherlock_location = (control.Return_Hero_Space_Number(Fighters_Names::SHERLOCK));
-    int watson_location =(control.Return_Hero_Space_Number(Fighters_Names::WATSON));
+    if (enemy==Fighters_Names::SHERLOCK)
+    {
+        int enemy_location = (control.Return_Hero_Space_Number(Fighters_Names::SHERLOCK));
+    }
+    else if (enemy==Fighters_Names::WATSON)
+    {
+        int watson_location =(control.Return_Hero_Space_Number(Fighters_Names::WATSON));
+    }
+    
+    //to do tommorow!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+    
+    location->return_zone(sisters_number_locations[0]);
     //find fighter places and check for sisters to be the same zone as enemy
     
     
@@ -73,23 +85,22 @@ dracula_baptism_of_blood::dracula_baptism_of_blood()
     card_number=2;
     card_effect_description="Recover 2 health. Return a defeated\n sister (if any) to any space in\n dracula's zone. ";
 }
-void dracula_baptism_of_blood::card_effect(Controller& controler,Fighter_Base_Class& fighters)
-
+void dracula_baptism_of_blood::card_effect(Controller& controler)
 {
-    fighters.change_health(+2);
-    int deadsisters[3]={0,0,0};
+    controler.change_fighter_health(Fighters_Names::DRACULA,+2);
+    int deadsisters[3]={1,1,1};
     
     if (!controler.Return_Is_Fighter_Alive(Fighters_Names::SIS1))
     {
-        deadsisters[0]=1;
+        deadsisters[0]=0;
     }
     if (!controler.Return_Is_Fighter_Alive(Fighters_Names::SIS2))
     {
-        deadsisters[1]=1;
+        deadsisters[1]=0;
     }
     if (!controler.Return_Is_Fighter_Alive(Fighters_Names::SIS3))
     {
-        deadsisters[2]=1;
+        deadsisters[2]=0;
     }
     //get input and revive one
     
@@ -139,9 +150,9 @@ dracula_exploit::dracula_exploit()
     card_number=3;
     card_effect_description="AFTER COMBAT: Draw 1 card.";
 }
-void dracula_exploit::card_effect(User &user_handler)
+void dracula_exploit::card_effect(Controller& controler,USER user_turn)
 {
-    // user_handler.draw();
+    controler.draw(user_turn);
 }
 dracula_look_into_my_eyes::dracula_look_into_my_eyes()
 {
@@ -229,11 +240,11 @@ holmes_administer_aid::holmes_administer_aid()
     card_number=2;
     card_effect_description="Place Dr.Watson in a space adjacent\n to Holmes.Holmes recovers 1 health.\n Draw 1 card.";
 }
-void holmes_administer_aid::card_effect(User &user_handler,Fighter_Base_Class& fighters)
+void holmes_administer_aid::card_effect(Controller& controler,USER user_turn)
 {
     //move doctor watson next to holmes
-    // user_handler.draw();
-    fighters.change_health(+1);
+    controler.draw(user_turn);
+    controler.change_fighter_health(Fighters_Names::SHERLOCK,+1);
 
 }
 holmes_confirm_suspicion::holmes_confirm_suspicion()

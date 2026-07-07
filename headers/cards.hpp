@@ -6,7 +6,7 @@ class dracula_feedingfrenzy : public Card_Base_Class
 {
     public:
     dracula_feedingfrenzy();
-    void card_effect(Controller& controler);
+    void card_effect(Controller& controler,Fighters_Names enemy);
     
 };
 class dracula_mistform : public Card_Base_Class
@@ -25,7 +25,7 @@ class dracula_baptism_of_blood : public Card_Base_Class
 {
     public:
     dracula_baptism_of_blood();
-    void card_effect(Controller& controler,Fighter_Base_Class& fighters);
+    void card_effect(Controller& controler);
 };
 class dracula_beastform : public Card_Base_Class
 {
@@ -43,7 +43,7 @@ class dracula_exploit : public Card_Base_Class
 {
     public:
     dracula_exploit();
-    void card_effect(User &user_handler);
+    void card_effect(Controller& controler,USER user_turn);
 };
 class dracula_look_into_my_eyes : public Card_Base_Class
 {
@@ -79,7 +79,7 @@ class holmes_administer_aid : public Card_Base_Class
 {
     public:
     holmes_administer_aid();
-    void card_effect(User &user_handler,Fighter_Base_Class& fighters);
+    void card_effect(Controller& controler,USER user_turn);
 };
 class holmes_confirm_suspicion : public Card_Base_Class
 {
