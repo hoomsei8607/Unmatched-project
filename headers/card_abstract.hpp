@@ -13,17 +13,17 @@ class Card_Base_Class
     CARD_OWNER get_owner();
     bool get_is_discarded();
     int get_card_number();
-
-
+    std::string get_card_name();
     
     protected:
-        int Card_Value;
-        int Card_Boost_Value;
-        CARD_EFFECT_TYPE effect;
-        CARD_TYPE type;
-        CARD_OWNER owner;
-        bool is_discarded;   
-        int card_number;        
+    int Card_Value;
+    int Card_Boost_Value;
+    CARD_EFFECT_TYPE effect;
+    CARD_TYPE type;
+    CARD_OWNER owner;
+    bool is_discarded;   
+    int card_number;        
+    std::string card_name;
 };
 
 #endif
