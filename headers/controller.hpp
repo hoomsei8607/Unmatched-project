@@ -29,6 +29,7 @@ class Controller
         HERO_NAME Return_User2_Hero_Name() const;
         int Return_Fighter_Move_Value(Fighters_Names fighter_name) const;
         bool Manage_UserAction_Numbers_And_Return_True_TO_Change_Turn();
+        bool Return_Is_Fighter_Alive(Fighters_Names name) const;
         ~Controller();
     private:
         User user1;
