@@ -544,7 +544,7 @@ ftxui::Element Controller::Return_Hand_Elements_For_Render(USER user_turn)
             ftxui::hbox({ftxui::text("CARD BOOST VALUE: "), ftxui::text(std::to_string(card->get_Card_Boost_Value()))}),
             ftxui::hbox({ftxui::text("CARD TYPE: "), ftxui::text(card->Get_Card_Type_As_String())}),
             ftxui::separator(),
-            ftxui::text(card->Get_Card_Effect_As_String())
+            ftxui::paragraph(card->Get_Card_Effect_As_String())
             }) | ftxui::border;
             Hand_Cards_As_Elements.push_back(element);
         }
