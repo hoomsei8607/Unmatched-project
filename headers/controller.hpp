@@ -6,6 +6,11 @@
 #include <map>
 #include "fighter_abstract.hpp"
 
+#include <ftxui/component/component.hpp>
+#include <ftxui/component/screen_interactive.hpp>
+#include <ftxui/dom/elements.hpp>
+#include <ftxui/screen/screen.hpp>
+
 class Controller
 {
     public:
@@ -32,6 +37,7 @@ class Controller
         bool Return_Is_Fighter_Alive(Fighters_Names name) const;
         void Initialize_Users_hands();
         void Instantiate_Card_Object(USER user, cards card_name);
+        std::vector <ftxui::Element> Return_Hand_Elements_For_Render(USER user_turn);
         ~Controller();
     private:
         User user1;
