@@ -15,9 +15,10 @@ class Graph // a singleton object
         static Graph* Get_Map_Graph_Pointer();
         void Initialize_Graph();
         std::set<int> Available_Spaces_For_Moving(int move_value,  int current_space, USER user_turn);
-        void Recursive_Path_Finder(std::set<int>& paths, int current_space, int times_to_call_recursive_function, int current_step = 0);// call this function with just 3 arguments
+        void Recursive_Path_Finder(std::set<int>& paths, int current_space, int times_to_call_recursive_function, USER user_turn, int current_step = 0);// call this function with just 4 arguments
         Graph(const Graph&) = delete;
         void Change_Space_Occiupied_Status(int space_number);//if the space is empty changes to occiupied and vice versa
+        void Set_User_Occupying_Space(USER user_occupying_space, int space_number);
         ~Graph();
 
 

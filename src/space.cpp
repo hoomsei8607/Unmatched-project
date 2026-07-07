@@ -1,5 +1,10 @@
 #include "../headers/space.hpp"
 
+Space::Space()
+{
+    occupied_by_whom = USER::NONE;
+}
+
 void Space::Change_Occupied_Status()
 {
     this->Is_Occupied = !Is_Occupied;
@@ -44,4 +49,13 @@ void Space::Set_Info(bool Is_Multi_zone, bool Is_Occupied, bool Has_Secret_Path,
 int Space::Get_Space_Number() const
 {
     return Space_Number;
+}
+
+void Space::Set_Which_User_Is_Occupying_The_Space(USER user_occupying_space)
+{
+    occupied_by_whom = user_occupying_space;
+}
+USER Space::Get_Which_User_Is_Occupying_The_Space()
+{
+    return occupied_by_whom;
 }
