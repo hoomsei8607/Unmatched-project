@@ -12,22 +12,20 @@ class User
         void Set_Hero_Name_Type(HERO_NAME hero_name_type);
         void Set_Hero_Name_String(const std::string& hero_name_string);
         void discard(int choice);
-        void draw();
+        void draw(cards card);
 
         std::string Return_UserName() const;
         std::string Return_Hero_Name_String() const;
         HERO_NAME Return_Hero_Type() const;
         std::string Return_User_Age() const;
 
-        std::vector <Card_Base_Class*> user_hand;
-        std::vector <dracula_cards> dracula_user_discarded;
-        std::vector <sherlock_cards> sherlock_user_discarded;
-
-    private:
+        
+        private:
         std::string age;
         std::string name;
         HERO_NAME hero_name_type;
         std::string hero_name_string;
+        std::vector <cards> user_hand;
         
 
 };

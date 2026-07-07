@@ -43,7 +43,7 @@ void User::discard(int choice)
 {
     user_hand.erase(user_hand.begin()+choice);
 }
-void User::draw()
+void User::draw(cards card)
 {
-    
+    user_hand.push_back(card);
 }

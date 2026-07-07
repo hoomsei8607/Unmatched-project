@@ -5,6 +5,7 @@
 
 int main()
 {
+    srand(time(0));
     Controller control;
     User_Interface Interface_Controller;
     while (true)

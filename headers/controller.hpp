@@ -40,5 +40,7 @@ class Controller
         USER Younger_User;
         USER User_Turn;
         USER_ACTION current_user_action;
-};
+        std::vector <cards> sherlock_deck;
+        std::vector <cards> dracula_deck;
+    };
 #endif

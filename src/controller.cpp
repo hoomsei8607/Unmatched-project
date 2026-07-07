@@ -45,6 +45,11 @@ Controller::Controller()
     Sherklock_And_Watson[static_cast<int>(Sherlock_And_Watson_Array_Index::SHERLOCK)] = Sherlock::Get_Instance();
     Sherklock_And_Watson[static_cast<int>(Sherlock_And_Watson_Array_Index::WATSON)] = Watson::Get_Instance();
 
+    dracula_deck={cards::FEEDING_FRENZY,cards::MISTFORM,cards::AMBUSH,cards::BAPTISM_OF_BLOOD,cards::BEASTFORM,cards::DASH,cards::EXPLOIT,cards::LOOK_INTO_MY_EYES,cards::PREY_UPON
+    ,cards::RAVENING_SEDUCTION,cards::THIRST_FOR_SUSTENANCE,cards::FEINT,};
+    sherlock_deck={cards::AMINISTER_AID,cards::CONFIRM_SUSPICION,cards::COUNTERPUNCH,cards::DEDUCE_STRATEGY,cards::EDUCATION_NEVER_ENDS,cards::ELEMENTARY,cards::ELIMINATE_THE_IMPOSSIBLE
+    ,cards::FEINT,cards::FIXED_POINT_IN_A_CHANGING_AGE,cards::MASTER_OF_DISGUISE,cards::THE_GAME_IS_AFOOT,cards::SERVICE_REVOLVER,cards::STUDY_METHODS};
+
 }
 
 
