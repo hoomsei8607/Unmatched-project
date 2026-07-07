@@ -54,26 +54,31 @@ class dracula_prey_upon : public Card_Base_Class
 {
     public:
     dracula_prey_upon();
+    void card_effect(Controller& controler);
 };
 class dracula_ravening_seduction : public Card_Base_Class
 {
     public:
     dracula_ravening_seduction();
+    void card_effect();
 };
 class dracula_thirst_For_sustenance : public Card_Base_Class
 {
     public:
     dracula_thirst_For_sustenance();
+    void card_effect();
 };
 class dracula_feint : public Card_Base_Class
 {
     public:
     dracula_feint();
+    void card_effect();
 };
 class holmes_administer_aid : public Card_Base_Class
 {
     public:
     holmes_administer_aid();
+    void card_effect(User &user_handler,Fighter_Base_Class& fighters);
 };
 class holmes_confirm_suspicion : public Card_Base_Class
 {

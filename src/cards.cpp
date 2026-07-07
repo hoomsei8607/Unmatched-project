@@ -150,6 +150,13 @@ dracula_prey_upon::dracula_prey_upon()
     type=CARD_TYPE::SCHEME;
     card_number=2;
 }
+void dracula_prey_upon::card_effect(Controller& controler)
+{
+    int dracula_location = (controler.Return_Hero_Space_Number(Fighters_Names::DRACULA));
+    int sherlock_location = (controler.Return_Hero_Space_Number(Fighters_Names::SHERLOCK));
+    int watson_location =(controler.Return_Hero_Space_Number(Fighters_Names::WATSON));
+
+}
 dracula_ravening_seduction::dracula_ravening_seduction()
 {
     Card_Value=0;
@@ -157,6 +164,10 @@ dracula_ravening_seduction::dracula_ravening_seduction()
     owner=CARD_OWNER::SIDE_KICK;
     type=CARD_TYPE::SCHEME;
     card_number=3;
+}
+void dracula_ravening_seduction::card_effect()
+{
+    //move any fighter 2 spaces and 1 damage for every sister near the fighter (even the ally fighters)
 }
 dracula_thirst_For_sustenance::dracula_thirst_For_sustenance()
 {
@@ -167,6 +178,10 @@ dracula_thirst_For_sustenance::dracula_thirst_For_sustenance()
     type=CARD_TYPE::ATTACK;
     card_number=3;
 }
+void dracula_thirst_For_sustenance::card_effect()
+{
+    //if win move dracula adjacent to the enemy fighter
+}
 dracula_feint::dracula_feint()
 {
     Card_Value=2;
@@ -176,6 +191,10 @@ dracula_feint::dracula_feint()
     type=CARD_TYPE::VERSATILE;
     card_number=3;
 }
+void dracula_feint::card_effect()
+{
+    
+}
 holmes_administer_aid::holmes_administer_aid()
 {
     Card_Value=0;
@@ -183,6 +202,13 @@ holmes_administer_aid::holmes_administer_aid()
     owner=CARD_OWNER::SIDE_KICK;
     type=CARD_TYPE::SCHEME;
     card_number=2;
+}
+void holmes_administer_aid::card_effect(User &user_handler,Fighter_Base_Class& fighters)
+{
+    //move doctor watson next to holmes
+    user_handler.draw();
+    fighters.change_health(+1);
+
 }
 holmes_confirm_suspicion::holmes_confirm_suspicion()
 {
