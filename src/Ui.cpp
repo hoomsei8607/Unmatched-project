@@ -4,7 +4,7 @@
 
 User_Interface::User_Interface()
 {
-    this->Current_Screen_State = SCREEN_STATE::PROMPT_INPUT;
+    this->Current_Screen_State = SCREEN_STATE::MENU;
 }
 
 bool User_Interface::Manage_Screen(Controller& control)
