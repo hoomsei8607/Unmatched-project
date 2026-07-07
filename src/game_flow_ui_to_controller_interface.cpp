@@ -46,6 +46,10 @@ bool User_Choice_Manager::Screen_Manager(USER user_turn, Controller& control, co
             Select_Card_Screen(user_turn, control, map_and_user_info);
             return true;
 
+        case GAME_FLOW_SCREENS::Card_Boost_Selection_Screen:
+            boost_Card_Screen(user_turn, control, map_and_user_info);
+            return true;
+
         case GAME_FLOW_SCREENS::GO_BACK_TO_MAIN_LOOP:
             return false;
         
@@ -260,10 +264,12 @@ void User_Choice_Manager::Select_Card_Screen(USER user_turn, Controller& control
 
     Component Undo_Button = Button("UNDO", [&]{
         game_current_screen = GAME_FLOW_SCREENS::CHOOSE_ACTION;
+        
         screen.ExitLoopClosure()();
     });
     Component Boost_Button = Button("BOOST", [&]{
         game_current_screen = GAME_FLOW_SCREENS::Card_Boost_Selection_Screen;
+        selected_card_index_for_boosting = selected;
         screen.ExitLoopClosure()();
     });
 
@@ -287,4 +293,51 @@ void User_Choice_Manager::Select_Card_Screen(USER user_turn, Controller& control
         });
     });
     screen.Loop(main_renderer);
+}
+
+void User_Choice_Manager::boost_Card_Screen(USER user_turn, Controller& control, const ftxui::Element& map_and_user_info)
+{
+    auto screen = ScreenInteractive::Fullscreen();
+    std::string user_turn_name;
+    std::string card_being_boosted_name;
+
+    auto Confirm_Button = Button("CONFIRM", [&]{});
+
+
+    auto Undo_Button = Button("UNDO", [&]{
+        game_current_screen = GAME_FLOW_SCREENS::Card_Selection_Screen;
+        screen.ExitLoopClosure()();
+    });
+
+    if(user_turn == USER::USER1)
+    {
+        user_turn_name = control.Return_User1_Username();
+    }
+    else if(user_turn == USER::USER2)
+    {
+        user_turn_name = control.Return_User2_Username();
+    }
+
+    std::vector <std::string> Boost_Card_Options;
+    std::vector <Card_Base_Class*> temp_user_hand = control.Return_A_Copy_Of_User_Hand(user_turn);
+    card_being_boosted_name = temp_user_hand[selected_card_index_for_boosting]->get_card_name();
+    temp_user_hand.erase(temp_user_hand.begin() + selected_card_index_for_boosting);
+    for(auto card : temp_user_hand)
+    {
+        Boost_Card_Options.push_back(card->get_card_name());
+    }
+    int selected_card = 0;
+    auto card_select_radiobox = Toggle(&Boost_Card_Options, &selected_card);
+    auto container = Container::Vertical({card_select_radiobox, Confirm_Button, Undo_Button});
+
+    screen.Loop(Renderer(container, [&]{
+        return vbox({
+            hbox({text("USER TURN: "), text(user_turn_name)}),
+            map_and_user_info,
+            control.Return_Hand_Elements_For_Boost_Screen_Render(selected_card_index_for_boosting),
+            hbox({text("CHOOSE A CARD TO BOOST THE ") , text(card_being_boosted_name), text(" CARD WITH")}),
+            container->Render()
+        });
+    }));
+    
 }
