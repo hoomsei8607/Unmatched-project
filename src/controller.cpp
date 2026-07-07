@@ -632,3 +632,47 @@ void Controller::discard(int card,USER user_turn)
     
     
 }
+
+ftxui::Element Controller::Return_Hand_Elements_For_Boost_Screen_Render(int selected_card_for_boost)
+{
+    std::vector<Card_Base_Class*> temp_vector;
+    if(User_Turn == USER::USER1)
+    {
+        temp_vector = User1_Hand;
+    }
+    else
+    {
+        temp_vector = User2_Hand;
+    }
+
+    temp_vector.erase(temp_vector.begin() + selected_card_for_boost);
+    std::vector<ftxui::Element> temp_element_vector;
+    for(auto card : temp_vector)
+    {
+        ftxui::Element element = ftxui::vbox({
+        ftxui::text(card->get_card_name()) | ftxui::center,
+        ftxui::hbox({ftxui::text("OWNER: "), ftxui::text(card->Get_Card_Owner_Name_As_String())}),
+        ftxui::hbox({ftxui::text("CARD VALUE: "), ftxui::text(std::to_string(card->get_card_value()))}),
+        ftxui::hbox({ftxui::text("CARD BOOST VALUE: "), ftxui::text(std::to_string(card->get_Card_Boost_Value()))}),
+        ftxui::hbox({ftxui::text("CARD TYPE: "), ftxui::text(card->Get_Card_Type_As_String())}),
+        ftxui::separator(),
+        ftxui::paragraph(card->Get_Card_Effect_As_String())
+        }) | ftxui::border;
+        temp_element_vector.push_back(element);
+    }
+    return ftxui::hbox({temp_element_vector});
+
+}
+
+std::vector<Card_Base_Class*> Controller::Return_A_Copy_Of_User_Hand(USER user_turn)
+{
+    if(user_turn == USER::USER1)
+    {
+        return User1_Hand;
+    }
+    else if(user_turn == USER::USER2)
+    {
+        return User2_Hand;
+    }
+    
+}

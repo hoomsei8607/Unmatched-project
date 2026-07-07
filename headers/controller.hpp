@@ -42,6 +42,8 @@ class Controller
         bool Is_Selected_Card_A_Scheme_Card(USER user_turn, int index);
         int return_card_boost_value(int card,USER user_turn);
         void discard(int card,USER user_turn);
+        std::vector<Card_Base_Class*> Return_A_Copy_Of_User_Hand(USER user_turn);
+        ftxui::Element Return_Hand_Elements_For_Boost_Screen_Render(int selected_card_to_be_boosted);
         ~Controller();
     private:
         User user1;
