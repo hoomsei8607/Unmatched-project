@@ -47,10 +47,12 @@ Controller::Controller()
     Sherklock_And_Watson[static_cast<int>(Sherlock_And_Watson_Array_Index::SHERLOCK)] = Sherlock::Get_Instance();
     Sherklock_And_Watson[static_cast<int>(Sherlock_And_Watson_Array_Index::WATSON)] = Watson::Get_Instance();
 
-    dracula_deck={cards::FEEDING_FRENZY,cards::MISTFORM,cards::AMBUSH,cards::BAPTISM_OF_BLOOD,cards::BEASTFORM,cards::DASH,cards::EXPLOIT,cards::LOOK_INTO_MY_EYES,cards::PREY_UPON
-    ,cards::RAVENING_SEDUCTION,cards::THIRST_FOR_SUSTENANCE,cards::FEINT,};
-    sherlock_deck={cards::AMINISTER_AID,cards::CONFIRM_SUSPICION,cards::COUNTERPUNCH,cards::DEDUCE_STRATEGY,cards::EDUCATION_NEVER_ENDS,cards::ELEMENTARY,cards::ELIMINATE_THE_IMPOSSIBLE
-    ,cards::FEINT,cards::FIXED_POINT_IN_A_CHANGING_AGE,cards::MASTER_OF_DISGUISE,cards::THE_GAME_IS_AFOOT,cards::SERVICE_REVOLVER,cards::STUDY_METHODS};
+    dracula_deck={cards::FEEDING_FRENZY,cards::FEEDING_FRENZY,cards::MISTFORM,cards::MISTFORM,cards::AMBUSH,cards::AMBUSH,cards::BAPTISM_OF_BLOOD,cards::BAPTISM_OF_BLOOD,cards::BEASTFORM,cards::BEASTFORM,cards::DASH,cards::DASH,cards::DASH
+    ,cards::EXPLOIT,cards::EXPLOIT,cards::EXPLOIT,cards::LOOK_INTO_MY_EYES,cards::LOOK_INTO_MY_EYES,cards::LOOK_INTO_MY_EYES,cards::PREY_UPON,cards::PREY_UPON,
+    cards::RAVENING_SEDUCTION,cards::RAVENING_SEDUCTION,cards::RAVENING_SEDUCTION,cards::THIRST_FOR_SUSTENANCE,cards::THIRST_FOR_SUSTENANCE,cards::THIRST_FOR_SUSTENANCE,cards::FEINT,cards::FEINT,cards::FEINT};
+    sherlock_deck={cards::AMINISTER_AID,cards::AMINISTER_AID,cards::CONFIRM_SUSPICION,cards::CONFIRM_SUSPICION,cards::CONFIRM_SUSPICION,cards::COUNTERPUNCH,cards::COUNTERPUNCH,cards::COUNTERPUNCH,cards::DEDUCE_STRATEGY,cards::DEDUCE_STRATEGY,cards::DEDUCE_STRATEGY
+    ,cards::EDUCATION_NEVER_ENDS,cards::EDUCATION_NEVER_ENDS,cards::ELEMENTARY,cards::ELEMENTARY,cards::ELIMINATE_THE_IMPOSSIBLE,cards::ELIMINATE_THE_IMPOSSIBLE
+    ,cards::FEINT,cards::FEINT,cards::FEINT,cards::FIXED_POINT_IN_A_CHANGING_AGE,cards::FIXED_POINT_IN_A_CHANGING_AGE,cards::MASTER_OF_DISGUISE,cards::MASTER_OF_DISGUISE,cards::THE_GAME_IS_AFOOT,cards::THE_GAME_IS_AFOOT,cards::SERVICE_REVOLVER,cards::SERVICE_REVOLVER,cards::STUDY_METHODS,cards::STUDY_METHODS};
 
     std::random_device rd;
     std::mt19937 random_number_generator(rd());
@@ -404,89 +406,84 @@ void Controller::Instantiate_Card_Object(USER user, cards card_name)
     {
         switch (dracula_deck.back())
         {
-        case : 
+        case cards::FEEDING_FRENZY: 
             
             break;
         
-        case : 
+        case cards::MISTFORM : 
             
             break;
         
-        case : 
+        case cards::AMBUSH : 
             
             break;
         
-        case : 
+        case cards::BAPTISM_OF_BLOOD : 
             
             break;
         
-        case : 
+        case cards::BEASTFORM : 
             
             break;
         
-        case : 
+        case cards::DASH : 
             
             break;
         
-        case : 
+        case cards::EXPLOIT : 
             
             break;
         
-        case : 
+        case cards::LOOK_INTO_MY_EYES : 
             
             break;
         
-        case : 
+        case cards::PREY_UPON : 
             
             break;
         
-        case : 
+        case cards::RAVENING_SEDUCTION : 
             
             break;
         
-        case : 
+        case cards::THIRST_FOR_SUSTENANCE : 
             
             break;
         
-        case : 
+        case cards::FEINT : 
             
             break;
-        
-        case : 
-            
-            break;
-        
         }
     }
     else
     {
         switch (sherlock_deck.back())
         {
-        case :
+        case cards::AMINISTER_AID :
             break;
-        case :
+        case cards::CONFIRM_SUSPICION :
             break;
-        case :
+        case cards::COUNTERPUNCH :
             break;
-        case :
+        case cards::DEDUCE_STRATEGY :
             break;
-        case :
+        case cards::EDUCATION_NEVER_ENDS :
             break;
-        case :
+        case cards::ELEMENTARY :
             break;
-        case :
+        case cards::ELIMINATE_THE_IMPOSSIBLE :
             break;
-        case :
+        case cards::FEINT :
             break;
-        case :
+        case cards::FIXED_POINT_IN_A_CHANGING_AGE :
             break;
-        case :
+        case cards::MASTER_OF_DISGUISE :
             break;
-        case :
+        case cards::THE_GAME_IS_AFOOT :
             break;
-        case :
+        case cards::SERVICE_REVOLVER :
             break;
-        case :
+        case cards::STUDY_METHODS :
             break;
         
         }
