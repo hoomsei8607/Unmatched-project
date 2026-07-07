@@ -33,7 +33,7 @@ void Fighter_Base_Class::change_health(int amount)
 {
     Current_Hp+=amount;
 }
-bool Fighter_Base_Class::return_is_fighter_alive()
+bool Fighter_Base_Class::return_is_fighter_alive()  
 {
     return Is_Fighter_Alive;
 }

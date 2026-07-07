@@ -334,3 +334,21 @@ bool Controller::Return_Is_Fighter_Alive(Fighters_Names name) const
         break;
     }
 }
+
+std::string Controller::Return_User1_Username() const
+{
+    return user1.Return_UserName();
+}
+std::string Controller::Return_User2_Username() const
+{
+    return user2.Return_UserName();
+}
+
+HERO_NAME Controller::Return_User1_Hero_Name() const
+{
+    return user1.Return_Hero_Type();
+}
+HERO_NAME Controller::Return_User2_Hero_Name() const
+{
+    return user2.Return_Hero_Type();
+}

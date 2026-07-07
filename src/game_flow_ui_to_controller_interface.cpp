@@ -1,5 +1,6 @@
 #include "../headers/game_flow_ui_to_controller_interface.hpp"
 #include "../headers/graph.hpp"
+#include "../headers/controller.hpp"
 #include <vector>
 #include <string>
 #include <set>

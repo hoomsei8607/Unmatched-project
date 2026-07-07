@@ -13,7 +13,7 @@ class Fighter_Base_Class
         int Return_Fighter_Attacking_Range() const;
         void Set_Current_Fighter_Space_Number(int new_space);
         void change_health(int);
-        void return_is_fighter_alive();
+        bool return_is_fighter_alive();
 
     protected:
         int Initial_Hp;
