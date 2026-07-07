@@ -17,7 +17,7 @@ class dracula_mistform : public Card_Base_Class
 class dracula_ambush : public Card_Base_Class
 {
     public:
-    dracula_ambush(Fighter_Base_Class &fighter);
+    dracula_ambush();
     void card_effect(User &useerhandler);
 };
 class dracula_baptism_of_blood : public Card_Base_Class
