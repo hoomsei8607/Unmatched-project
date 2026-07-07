@@ -30,12 +30,16 @@ class Controller
         int Return_Fighter_Move_Value(Fighters_Names fighter_name) const;
         bool Manage_UserAction_Numbers_And_Return_True_TO_Change_Turn();
         bool Return_Is_Fighter_Alive(Fighters_Names name) const;
+        void Initialize_Users_hands();
+        void Instantiate_Card_Object(USER user, cards card_name);
         ~Controller();
     private:
         User user1;
         User user2;
         Fighter_Base_Class* Dracula_And_Sisters[4];
         Fighter_Base_Class* Sherklock_And_Watson[2];
+        std::vector <Card_Base_Class*>  User1_Hand;
+        std::vector <Card_Base_Class*>  User2_Hand;
         std::map <int, Space_Row_And_Column_In_Array> Space_To_Array_Index_Map;
         USER Younger_User;
         USER User_Turn;

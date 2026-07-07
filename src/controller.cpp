@@ -1,6 +1,8 @@
 #include "../headers/controller.hpp"
 #include "../headers/fighters_sub_classes.hpp"
 #include "../headers/structs.hpp"
+#include <algorithm>
+#include <random>
 
 Controller::Controller()
 {
@@ -49,6 +51,17 @@ Controller::Controller()
     ,cards::RAVENING_SEDUCTION,cards::THIRST_FOR_SUSTENANCE,cards::FEINT,};
     sherlock_deck={cards::AMINISTER_AID,cards::CONFIRM_SUSPICION,cards::COUNTERPUNCH,cards::DEDUCE_STRATEGY,cards::EDUCATION_NEVER_ENDS,cards::ELEMENTARY,cards::ELIMINATE_THE_IMPOSSIBLE
     ,cards::FEINT,cards::FIXED_POINT_IN_A_CHANGING_AGE,cards::MASTER_OF_DISGUISE,cards::THE_GAME_IS_AFOOT,cards::SERVICE_REVOLVER,cards::STUDY_METHODS};
+
+    std::random_device rd;
+    std::mt19937 random_number_generator(rd());
+    
+    //shuffling the deck
+    for(int i = 0 ; i < 3 ; i++)
+    {
+        std::shuffle(dracula_deck.begin(), dracula_deck.end(), random_number_generator);
+        std::shuffle(sherlock_deck.begin(), sherlock_deck.end(), random_number_generator);
+    }
+ 
 
 }
 
@@ -356,4 +369,128 @@ HERO_NAME Controller::Return_User1_Hero_Name() const
 HERO_NAME Controller::Return_User2_Hero_Name() const
 {
     return user2.Return_Hero_Type();
+}
+
+void Controller::Initialize_Users_hands()
+{
+    if(user1.Return_Hero_Type() == HERO_NAME::DRACULA )
+    {
+        for(int i = 0 ; i < 5 ; i++)
+        {
+            user1.draw(dracula_deck.back());
+
+        }
+    }
+    else
+    {
+
+    }
+}
+
+void Controller::Instantiate_Card_Object(USER user, cards card_name)
+{
+    cards* temp_card_ptr = nullptr;
+    HERO_NAME user_hero;
+    if(user == USER::USER1)
+    {
+        user_hero = user1.Return_Hero_Type();            
+    }
+    else
+    {
+        user_hero = user2.Return_Hero_Type();
+    }
+
+    if(user_hero == HERO_NAME::DRACULA)
+    {
+        switch (dracula_deck.back())
+        {
+        case : 
+            
+            break;
+        
+        case : 
+            
+            break;
+        
+        case : 
+            
+            break;
+        
+        case : 
+            
+            break;
+        
+        case : 
+            
+            break;
+        
+        case : 
+            
+            break;
+        
+        case : 
+            
+            break;
+        
+        case : 
+            
+            break;
+        
+        case : 
+            
+            break;
+        
+        case : 
+            
+            break;
+        
+        case : 
+            
+            break;
+        
+        case : 
+            
+            break;
+        
+        case : 
+            
+            break;
+        
+        }
+    }
+    else
+    {
+        switch (sherlock_deck.back())
+        {
+        case :
+            break;
+        case :
+            break;
+        case :
+            break;
+        case :
+            break;
+        case :
+            break;
+        case :
+            break;
+        case :
+            break;
+        case :
+            break;
+        case :
+            break;
+        case :
+            break;
+        case :
+            break;
+        case :
+            break;
+        case :
+            break;
+        
+        }
+
+    }
+
 }
