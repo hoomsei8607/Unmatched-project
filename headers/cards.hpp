@@ -18,7 +18,7 @@ class dracula_ambush : public Card_Base_Class
 {
     public:
     dracula_ambush();
-    void card_effect(User &useerhandler);
+    void card_effect(Controller& controler,USER user_turn);
 };
 class dracula_baptism_of_blood : public Card_Base_Class
 {

@@ -38,6 +38,8 @@ class Controller
         void Initialize_Users_hands();
         void Instantiate_Card_Object(USER user, cards card_name);
         std::vector <ftxui::Element> Return_Hand_Elements_For_Render(USER user_turn);
+        int return_card_boost_value(int card,USER user_turn);
+        void discard(int card,USER user_turn);
         ~Controller();
     private:
         User user1;
