@@ -59,7 +59,7 @@ void dracula_ambush::card_effect(User &user_handler)
     //give the enemy user arguement
     
     int enemy_card=rand()%5;
-    Card_Value+=user_handler.user_hand[enemy_card]->get_Card_Boost_Value();
+    // Card_Value+=user_handler.user_hand[enemy_card]->get_Card_Boost_Value();
     user_handler.discard(enemy_card);
 
 }
@@ -141,7 +141,7 @@ dracula_exploit::dracula_exploit()
 }
 void dracula_exploit::card_effect(User &user_handler)
 {
-    user_handler.draw();
+    // user_handler.draw();
 }
 dracula_look_into_my_eyes::dracula_look_into_my_eyes()
 {
@@ -232,7 +232,7 @@ holmes_administer_aid::holmes_administer_aid()
 void holmes_administer_aid::card_effect(User &user_handler,Fighter_Base_Class& fighters)
 {
     //move doctor watson next to holmes
-    user_handler.draw();
+    // user_handler.draw();
     fighters.change_health(+1);
 
 }
@@ -244,7 +244,7 @@ holmes_confirm_suspicion::holmes_confirm_suspicion()
     owner=CARD_OWNER::SHERLOCK;
     type=CARD_TYPE::SCHEME;
     card_number=3;
-    card_effect_description="Choose an opponent and name a value.\n Your opponent must choose and discard\n one card matching that attack or defense\n value. Their hero takes damage equal to\n the BOOST value of the discarded card.\n If they do not have a card of the named value, they must reveal their hand instead.";
+    card_effect_description="Choose an opponent and name a value.\nYour opponent must choose and discard\none card matching that attack or defense\nvalue. Their hero takes damage equal to\nthe BOOST value of the discarded card.\nIf they do not have a card of the named value, they must reveal their hand instead.";
 }
 holmes_counterpunch::holmes_counterpunch()
 {
@@ -266,7 +266,7 @@ holmes_deduce_strategy::holmes_deduce_strategy()
     effect=CARD_EFFECT_TYPE::DURING_COMBAT;
     type=CARD_TYPE::VERSATILE;
     card_number=3;
-    card_effect_description="DURING COMBAT: You may change the\nprinted value of the opponents's card to\n its BOOST value.(if a card does not have a\nBOOST value,it is treated as 0.) ";
+    card_effect_description="DURING COMBAT: You may change the\nprinted value of the opponents's card to\nits BOOST value.(if a card does not have a\nBOOST value,it is treated as 0.) ";
 }
 holmes_education_never_ends::holmes_education_never_ends()
 {
@@ -277,7 +277,7 @@ holmes_education_never_ends::holmes_education_never_ends()
     effect=CARD_EFFECT_TYPE::AFTER_COMBAT;
     type=CARD_TYPE::VERSATILE;
     card_number=2;\
-    card_effect_description="AFTER COMBAT: if you won the\ncombat,your opponent draws 1 card.\n If you lost the combat , you\ndraw 2 cards.";
+    card_effect_description="AFTER COMBAT: if you won the\ncombat,your opponent draws 1 card.\nIf you lost the combat , you\ndraw 2 cards.";
 }
 holmes_elementary::holmes_elementary()
 {
@@ -288,7 +288,7 @@ holmes_elementary::holmes_elementary()
     effect=CARD_EFFECT_TYPE::DURING_COMBAT;
     type=CARD_TYPE::DEFENCE;
     card_number=2;
-    card_effect_description="Play this card face up. Predict the printed\n attack value of the opponent's card.\nDURING COMBAT: if you predicted the\ncorrect value, cancel all effects on\n your opponent's card and ignore\nattack value. ";
+    card_effect_description="Play this card face up. Predict the printed\nattack value of the opponent's card.\nDURING COMBAT: if you predicted the\ncorrect value, cancel all effects on\n your opponent's card and ignore\nattack value. ";
 }
 holmes_eliminate_the_impossible::holmes_eliminate_the_impossible()
 {
@@ -298,7 +298,7 @@ holmes_eliminate_the_impossible::holmes_eliminate_the_impossible()
     owner=CARD_OWNER::SHERLOCK;
     type=CARD_TYPE::SCHEME;
     card_number=2;
-    card_effect_description="Choose an opponent.Look at their\nhand and choose 1 card for them\n to discard";
+    card_effect_description="Choose an opponent.Look at their\nhand and choose 1 card for them\nto discard";
 }
 holmes_feint::holmes_feint()
 {
@@ -309,7 +309,7 @@ holmes_feint::holmes_feint()
     effect=CARD_EFFECT_TYPE::IMMEDIATE;
     type=CARD_TYPE::VERSATILE;
     card_number=3;
-    card_effect_description="IMMEDIATELY: Cancel all effects on\n your opponents's card.";
+    card_effect_description="IMMEDIATELY: Cancel all effects on\nyour opponents's card.";
 }
 holmes_fixed_point_in_a_changing_age::holmes_fixed_point_in_a_changing_age()
 {
@@ -341,7 +341,7 @@ holmes_the_game_is_afoot::holmes_the_game_is_afoot()
     effect=CARD_EFFECT_TYPE::AFTER_COMBAT;
     type=CARD_TYPE::ATTACK;
     card_number=2;
-    card_effect_description="AFTER COMBAT: Move Holmes\n up to 3 spaces.";
+    card_effect_description="AFTER COMBAT: Move Holmes\nup to 3 spaces.";
 }
 holmes_service_revolver::holmes_service_revolver()
 {

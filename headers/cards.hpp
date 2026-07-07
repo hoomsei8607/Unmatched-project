@@ -1,4 +1,5 @@
 #include "card_abstract.hpp"
+#include "controller.hpp"
 #include "graph.hpp"
 
 class dracula_feedingfrenzy : public Card_Base_Class
