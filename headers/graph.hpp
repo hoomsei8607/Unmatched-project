@@ -3,6 +3,7 @@
 
 #include "space.hpp"
 #include <vector>
+#include <array>
 #include <map>
 #include <set>
 
@@ -18,6 +19,7 @@ class Graph // a singleton object
         void Recursive_Path_Finder(std::set<int>& paths, int current_space, int times_to_call_recursive_function, int current_step = 0);// call this function with just 3 arguments
         Graph(const Graph&) = delete;
         void Change_Space_Occiupied_Status(int space_number);//if the space is empty changes to occiupied and vice versa
+        std::array<ZONE_COLORS,3> return_zone(int space);
         ~Graph();
 
 

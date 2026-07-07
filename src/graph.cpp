@@ -400,3 +400,107 @@ void Graph::Change_Space_Occiupied_Status(int space_number)
         
     }
 }
+std::array<ZONE_COLORS,3> Graph::return_zone(int space_number)
+{
+    Space * space_object;
+    switch (space_number)
+    {
+    case 1:
+        space_object=&s1;
+        break;
+    case 2:
+        space_object=&s2;
+        break;
+    case 3:
+        space_object=&s3;
+        break;
+    case 4:
+        space_object=&s4;
+        break;
+    case 5:
+        space_object=&s5;
+        break;
+    case 6:
+        space_object=&s6;
+        break;
+    case 7:
+        space_object=&s7;
+        break;
+    case 8:
+        space_object=&s8;
+        break;
+    case 9:
+        space_object=&s9;
+        break;
+    case 10:
+        space_object=&s10;
+        break;
+    case 11:
+        space_object=&s11;
+        break;
+    case 12:
+        space_object=&s12;
+        break;
+    case 13:
+        space_object=&s13;
+        break;
+    case 14:
+        space_object=&s14;
+        break;
+    case 15:
+        space_object=&s15;
+        break;
+    case 16:
+        space_object=&s16;
+        break;
+    case 17:
+        space_object=&s17;
+        break;
+    case 18:
+        space_object=&s18;
+        break;
+    case 19:
+        space_object=&s19;
+        break;
+    case 20:
+        space_object=&s20;
+        break;
+    case 21:
+        space_object=&s21;
+        break;
+    case 22:
+        space_object=&s22;
+        break;
+    case 23:
+        space_object=&s23;
+        break;
+    case 24:
+        space_object=&s24;
+        break;
+    case 25:
+        space_object=&s25;
+        break;
+    case 26:
+        space_object=&s26;
+        break;
+    case 27:
+        space_object=&s27;
+        break;
+    case 28:
+        space_object=&s28;
+        break;
+    case 29:
+        space_object=&s29;
+        break;
+    case 30:
+        space_object=&s30;
+        break;
+    case 31:
+        space_object=&s31;
+        break;
+    case 32:
+        space_object=&s32;
+        break; 
+    }
+    return space_object->return_zone_color(space_number);
+}

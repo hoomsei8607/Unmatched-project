@@ -45,3 +45,11 @@ int Space::Get_Space_Number() const
 {
     return Space_Number;
 }
+std::array<ZONE_COLORS,3> Space::return_zone_color(int space_number)
+{
+    std::array<ZONE_COLORS,3> location_colors={ZONE_COLORS::NON,ZONE_COLORS::NON,ZONE_COLORS::NON};
+    location_colors[0]=zone[0];
+    location_colors[1]=zone[1];
+    location_colors[2]=zone[2];
+    return location_colors;
+}

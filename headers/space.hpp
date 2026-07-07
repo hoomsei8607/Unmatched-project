@@ -13,6 +13,7 @@ class Space
     void Get_Zone_Color(std::array<ZONE_COLORS,3>& Passed_Array_To_Be_Filled);
     int Get_Space_Number() const;
     void Set_Info(bool Is_Multi_zone, bool Is_Occupied, bool Has_Secret_Path, int Space_Number, const std::array<ZONE_COLORS, 3>& Colors);
+    std::array<ZONE_COLORS,3> return_zone_color(int space_number);
 
     private:
     bool Is_Multi_Zone;
