@@ -42,6 +42,8 @@ class Controller
         bool Is_Selected_Card_A_Scheme_Card(USER user_turn, int index);
         int return_card_boost_value(int card,USER user_turn);
         void discard(int card,USER user_turn);
+        void draw(USER user);
+        void change_fighter_health(Fighters_Names fighter,int amount);
         ~Controller();
     private:
         User user1;

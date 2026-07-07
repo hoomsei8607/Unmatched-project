@@ -380,11 +380,11 @@ void Controller::Initialize_Users_hands()
     {
         for(int i = 0 ; i < 5 ; i++)
         {
-            user1.draw(dracula_deck.back());
+            user1.user_draw(dracula_deck.back());
             Instantiate_Card_Object(USER::USER1, dracula_deck.back());
             dracula_deck.pop_back();
 
-            user2.draw(sherlock_deck.back());
+            user2.user_draw(sherlock_deck.back());
             Instantiate_Card_Object(USER::USER2, sherlock_deck.back());
             sherlock_deck.pop_back();
         }
@@ -393,11 +393,11 @@ void Controller::Initialize_Users_hands()
     {
         for(int i = 0 ; i < 5 ; i++)
         {
-            user1.draw(sherlock_deck.back());
+            user1.user_draw(sherlock_deck.back());
             Instantiate_Card_Object(USER::USER1, sherlock_deck.back());
             sherlock_deck.pop_back();
 
-            user2.draw(dracula_deck.back());
+            user2.user_draw(dracula_deck.back());
             Instantiate_Card_Object(USER::USER2, dracula_deck.back());
             dracula_deck.pop_back();
         }
@@ -622,13 +622,76 @@ void Controller::discard(int card,USER user_turn)
     if (user_turn==USER::USER1)
     {
         User1_Hand.erase(User1_Hand.begin()+card);
-        user1.discard(card);
+        user1.user_discard(card);
     }
     else if (user_turn==USER::USER2)
     {
         User2_Hand.erase(User1_Hand.begin()+card);
-        user2.discard(card);
+        user2.user_discard(card);
     }
-    
-    
+}
+
+void Controller::draw(USER user)
+{
+    if(user==USER::USER1)
+    {   
+        if (user1.Return_Hero_Type()==HERO_NAME::DRACULA)
+        {
+            Instantiate_Card_Object(user,dracula_deck.back());
+            user1.user_draw(dracula_deck.back());
+            dracula_deck.pop_back();
+            return;
+        }
+        else if (user1.Return_Hero_Type()==HERO_NAME::SHERLOCK)
+        {
+            Instantiate_Card_Object(user,sherlock_deck.back());
+            user1.user_draw(sherlock_deck.back());
+            dracula_deck.pop_back();
+            return;
+        }
+    }
+    else if(user==USER::USER2)
+    {   
+        if (user2.Return_Hero_Type()==HERO_NAME::DRACULA)
+        {
+            Instantiate_Card_Object(user,dracula_deck.back());
+            user2.user_draw(dracula_deck.back());
+            dracula_deck.pop_back();
+            return;
+        }
+        else if (user2.Return_Hero_Type()==HERO_NAME::SHERLOCK)
+        {
+            Instantiate_Card_Object(user,sherlock_deck.back());
+            user2.user_draw(sherlock_deck.back());
+            dracula_deck.pop_back();
+            return;
+        }
+    }
+}
+
+void Controller::change_fighter_health(Fighters_Names fighter ,int amount)
+{
+    switch (fighter)
+    {
+    case Fighters_Names::DRACULA :
+        Dracula_And_Sisters[0]->change_health(amount);
+        break;
+    case Fighters_Names::SIS1 :
+        Dracula_And_Sisters[1]->change_health(amount);
+        break;
+    case Fighters_Names::SIS2 :
+        Dracula_And_Sisters[2]->change_health(amount);
+        break;
+    case Fighters_Names::SIS3 :
+        Dracula_And_Sisters[3]->change_health(amount);
+        break;
+    case Fighters_Names::SHERLOCK :
+        Sherklock_And_Watson[0]->change_health(amount);
+        break;
+    case Fighters_Names::WATSON :
+        Sherklock_And_Watson[1]->change_health(amount);
+        break;
+    default:
+        break;
+    }
 }

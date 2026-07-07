@@ -39,11 +39,11 @@ std::string User::Return_User_Age() const
 {
     return this->age;
 }
-void User::discard(int choice)
+void User::user_discard(int choice)
 {
     user_hand.erase(user_hand.begin()+choice);
 }
-void User::draw(cards card)
+void User::user_draw(cards card)
 {
     user_hand.push_back(card);
 }

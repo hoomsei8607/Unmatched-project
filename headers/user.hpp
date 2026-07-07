@@ -11,8 +11,8 @@ class User
         void Set_Name(const std::string& name);
         void Set_Hero_Name_Type(HERO_NAME hero_name_type);
         void Set_Hero_Name_String(const std::string& hero_name_string);
-        void discard(int choice);
-        void draw(cards card);
+        void user_discard(int choice);
+        void user_draw(cards card);
 
         std::string Return_UserName() const;
         std::string Return_Hero_Name_String() const;
