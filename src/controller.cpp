@@ -606,3 +606,29 @@ bool Controller::Is_Selected_Card_A_Scheme_Card(USER user_turn, int index)
     }
     return false;
 }
+int Controller::return_card_boost_value(int card,USER user_turn)
+{
+    if (user_turn==USER::USER1)
+    {
+        return User2_Hand[card]->get_Card_Boost_Value();
+    }
+    else if (user_turn==USER::USER2)
+    {
+        return User1_Hand[card]->get_Card_Boost_Value();
+    }                           
+}
+void Controller::discard(int card,USER user_turn)
+{
+    if (user_turn==USER::USER1)
+    {
+        User1_Hand.erase(User1_Hand.begin()+card);
+        user1.discard(card);
+    }
+    else if (user_turn==USER::USER2)
+    {
+        User2_Hand.erase(User1_Hand.begin()+card);
+        user2.discard(card);
+    }
+    
+    
+}

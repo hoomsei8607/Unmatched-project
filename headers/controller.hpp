@@ -40,6 +40,8 @@ class Controller
         ftxui::Element Return_Hand_Elements_For_Render(USER user_turn);
         std::vector<std::string> Return_Hand_As_String(USER user_turn);
         bool Is_Selected_Card_A_Scheme_Card(USER user_turn, int index);
+        int return_card_boost_value(int card,USER user_turn);
+        void discard(int card,USER user_turn);
         ~Controller();
     private:
         User user1;

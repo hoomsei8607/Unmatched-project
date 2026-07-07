@@ -54,13 +54,13 @@ dracula_ambush::dracula_ambush()
     card_number=2;
     card_effect_description="DURING COMBAT: Your opponent\n discards 1 random card. Add its BOOST\n value to this card's attack value";
 }
-void dracula_ambush::card_effect(User &user_handler)
+void dracula_ambush::card_effect(Controller& controler,USER user_turn)
 {
     //give the enemy user arguement
     
     int enemy_card=rand()%5;
-    // Card_Value+=user_handler.user_hand[enemy_card]->get_Card_Boost_Value();
-    user_handler.discard(enemy_card);
+    Card_Value+=controler.return_card_boost_value(enemy_card,user_turn);
+    controler.discard(enemy_card,user_turn);
 
 }
 dracula_baptism_of_blood::dracula_baptism_of_blood()
