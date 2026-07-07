@@ -10,6 +10,10 @@ using namespace ftxui;
 
 void User_Interface::Game_Loop_Screen(Controller& control)
 {
+    //initializing users hand
+    control.Initialize_Users_hands();
+
+
     Graph* game_map_ptr = Graph::Get_Map_Graph_Pointer();
     control.Set_Younger_User_Variable_Value();
     SideKick_Placement_Screen_Manager side_kick_Screen_manager(control.Return_Younger_Hero_Name());
