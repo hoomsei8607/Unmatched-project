@@ -9,10 +9,11 @@ dracula_feedingfrenzy::dracula_feedingfrenzy()
     card_name="Feeding Frenzy";
     Card_Value=2;
     Card_Boost_Value=3;
-    owner=CARD_OWNER::HERO;
+    owner=CARD_OWNER::DRACULA;
     effect=CARD_EFFECT_TYPE::DURING_COMBAT;
     type=CARD_TYPE::ATTACK;
     card_number=2;
+    card_effect_description="DURING COMBAT: This card's value is\n +1 for each sister in the same zone as\n the opposing fighter.";
 }
 void dracula_feedingfrenzy::card_effect(Controller& control)
 {
@@ -32,9 +33,10 @@ dracula_mistform::dracula_mistform()
     card_name="Mistform";
     Card_Value=0;
     Card_Boost_Value=2;
-    owner=CARD_OWNER::HERO;
+    owner=CARD_OWNER::DRACULA;
     type=CARD_TYPE::SCHEME;
     card_number=2;
+    card_effect_description="Place dracula in any space. \nGain 1 action";
     
 }
  void dracula_mistform::card_effect(Controller& controler)
@@ -50,6 +52,7 @@ dracula_ambush::dracula_ambush()
     effect=CARD_EFFECT_TYPE::DURING_COMBAT;
     type=CARD_TYPE::ATTACK;
     card_number=2;
+    card_effect_description="DURING COMBAT: Your opponent\n discards 1 random card. Add its BOOST\n value to this card's attack value";
 }
 void dracula_ambush::card_effect(User &user_handler)
 {
@@ -65,9 +68,10 @@ dracula_baptism_of_blood::dracula_baptism_of_blood()
     card_name="Baptism Of Blood";
     Card_Value=0;
     Card_Boost_Value=2;
-    owner=CARD_OWNER::HERO;
+    owner=CARD_OWNER::DRACULA;
     type=CARD_TYPE::SCHEME;
     card_number=2;
+    card_effect_description="Recover 2 health. Return a defeated\n sister (if any) to any space in\n dracula's zone. ";
 }
 void dracula_baptism_of_blood::card_effect(Controller& controler,Fighter_Base_Class& fighters)
 
@@ -95,10 +99,11 @@ dracula_beastform::dracula_beastform()
     card_name="Beastform";
     Card_Value=6;
     Card_Boost_Value=4;
-    owner=CARD_OWNER::HERO;
+    owner=CARD_OWNER::DRACULA;
     effect=CARD_EFFECT_TYPE::DURING_COMBAT;
     type=CARD_TYPE::ATTACK;
     card_number=2;
+    card_effect_description="DURING COMBAT: You may discard\n any number of cards from your hand.\n This card's value is +1 for each card\n you discard.";
 }
 void dracula_beastform::card_effect(User &user_handler)
 {
@@ -117,6 +122,7 @@ dracula_dash::dracula_dash()
     effect=CARD_EFFECT_TYPE::AFTER_COMBAT;
     type=CARD_TYPE::VERSATILE;
     card_number=3;
+    card_effect_description="AFTER COMBAT: Move your fighter up\n to 3 spaces.";
 }
 void dracula_dash::card_effect(Controller& controler)
 {
@@ -131,6 +137,7 @@ dracula_exploit::dracula_exploit()
     effect=CARD_EFFECT_TYPE::AFTER_COMBAT;
     type=CARD_TYPE::VERSATILE;
     card_number=3;
+    card_effect_description="AFTER COMBAT: Draw 1 card.";
 }
 void dracula_exploit::card_effect(User &user_handler)
 {
@@ -141,10 +148,11 @@ dracula_look_into_my_eyes::dracula_look_into_my_eyes()
     card_name="Look Into My Eyes";
     Card_Value=1;
     Card_Boost_Value=2;
-    owner=CARD_OWNER::HERO;
+    owner=CARD_OWNER::DRACULA;
     effect=CARD_EFFECT_TYPE::DURING_COMBAT;
     type=CARD_TYPE::DEFENCE;
     card_number=3;
+    card_effect_description="DURING COMBAT: Add the BOOST value\n from your opponent's attack card to\n the defense value of this card.";
 }
 void dracula_look_into_my_eyes::card_effect(User &user_handler)
 {
@@ -155,9 +163,10 @@ dracula_prey_upon::dracula_prey_upon()
     card_name="Prey Upon";
     Card_Value=0;
     Card_Boost_Value=4;
-    owner=CARD_OWNER::HERO;
+    owner=CARD_OWNER::DRACULA;
     type=CARD_TYPE::SCHEME;
     card_number=2;
+    card_effect_description="Deal 1 damage to all opposing fighters\n adjacent to dracula. Dracula recovers\n 1 health for each damage dealt.";
 }
 void dracula_prey_upon::card_effect(Controller& controler)
 {
@@ -171,9 +180,10 @@ dracula_ravening_seduction::dracula_ravening_seduction()
     card_name="Ravening Seduction";
     Card_Value=0;
     Card_Boost_Value=2;
-    owner=CARD_OWNER::SIDE_KICK;
+    owner=CARD_OWNER::SISITERS;
     type=CARD_TYPE::SCHEME;
     card_number=3;
+    card_effect_description="Move any fighter up to 2 spaces.\nAfter moving, deal 1 damage to\n the moved fighter for each sister\n adjacent to them.";
 }
 void dracula_ravening_seduction::card_effect()
 {
@@ -184,10 +194,11 @@ dracula_thirst_For_sustenance::dracula_thirst_For_sustenance()
     card_name="Thirst For Sustenance";
     Card_Value=3;
     Card_Boost_Value=3;
-    owner=CARD_OWNER::SIDE_KICK;
+    owner=CARD_OWNER::SISITERS;
     effect=CARD_EFFECT_TYPE::AFTER_COMBAT;
     type=CARD_TYPE::ATTACK;
     card_number=3;
+    card_effect_description="AFTER COMBAT: If you won the\n combat, place Dracula in any space\n adjacent to the opposing fighter.";
 }
 void dracula_thirst_For_sustenance::card_effect()
 {
@@ -202,6 +213,7 @@ dracula_feint::dracula_feint()
     effect=CARD_EFFECT_TYPE::IMMEDIATE;
     type=CARD_TYPE::VERSATILE;
     card_number=3;
+    card_effect_description="IMMEDIATELY:Cancel all effects on\n your opponent's card.";
 }
 void dracula_feint::card_effect()
 {
@@ -212,9 +224,10 @@ holmes_administer_aid::holmes_administer_aid()
     card_name="Administer Aid";
     Card_Value=0;
     Card_Boost_Value=2;
-    owner=CARD_OWNER::SIDE_KICK;
+    owner=CARD_OWNER::WATSON;
     type=CARD_TYPE::SCHEME;
     card_number=2;
+    card_effect_description="Place Dr.Watson in a space adjacent\n to Holmes.Holmes recovers 1 health.\n Draw 1 card.";
 }
 void holmes_administer_aid::card_effect(User &user_handler,Fighter_Base_Class& fighters)
 {
@@ -228,29 +241,32 @@ holmes_confirm_suspicion::holmes_confirm_suspicion()
     card_name="Confirm Suspicion";
     Card_Value=0;
     Card_Boost_Value=1;
-    owner=CARD_OWNER::HERO;
+    owner=CARD_OWNER::SHERLOCK;
     type=CARD_TYPE::SCHEME;
     card_number=3;
+    card_effect_description="Choose an opponent and name a value.\n Your opponent must choose and discard\n one card matching that attack or defense\n value. Their hero takes damage equal to\n the BOOST value of the discarded card.\n If they do not have a card of the named value, they must reveal their hand instead.";
 }
 holmes_counterpunch::holmes_counterpunch()
 {
     card_name="Counterpunch";
     Card_Value=3;
     Card_Boost_Value=1;
-    owner=CARD_OWNER::HERO;
+    owner=CARD_OWNER::SHERLOCK;
     effect=CARD_EFFECT_TYPE::AFTER_COMBAT;
     type=CARD_TYPE::VERSATILE;
     card_number=3;
+    card_effect_description="AFTER COMBAT: IF Holmes is adjacent\nto the opposing fighter, deal 2 damage\nto that fighter. ";
 }
 holmes_deduce_strategy::holmes_deduce_strategy()
 {
     card_name="Deduce Strategy";
     Card_Value=3;
     Card_Boost_Value=1;
-    owner=CARD_OWNER::HERO;
+    owner=CARD_OWNER::SHERLOCK;
     effect=CARD_EFFECT_TYPE::DURING_COMBAT;
     type=CARD_TYPE::VERSATILE;
     card_number=3;
+    card_effect_description="DURING COMBAT: You may change the\nprinted value of the opponents's card to\n its BOOST value.(if a card does not have a\nBOOST value,it is treated as 0.) ";
 }
 holmes_education_never_ends::holmes_education_never_ends()
 {
@@ -260,26 +276,29 @@ holmes_education_never_ends::holmes_education_never_ends()
     owner=CARD_OWNER::ANY;
     effect=CARD_EFFECT_TYPE::AFTER_COMBAT;
     type=CARD_TYPE::VERSATILE;
-    card_number=2;
+    card_number=2;\
+    card_effect_description="AFTER COMBAT: if you won the\ncombat,your opponent draws 1 card.\n If you lost the combat , you\ndraw 2 cards.";
 }
 holmes_elementary::holmes_elementary()
 {
     card_name="Elementary";
     Card_Value=3;
     Card_Boost_Value=3;
-    owner=CARD_OWNER::HERO;
+    owner=CARD_OWNER::SHERLOCK;
     effect=CARD_EFFECT_TYPE::DURING_COMBAT;
     type=CARD_TYPE::DEFENCE;
     card_number=2;
+    card_effect_description="Play this card face up. Predict the printed\n attack value of the opponent's card.\nDURING COMBAT: if you predicted the\ncorrect value, cancel all effects on\n your opponent's card and ignore\nattack value. ";
 }
 holmes_eliminate_the_impossible::holmes_eliminate_the_impossible()
 {
     card_name="Eliminate The Impossible";
     Card_Value=0;
     Card_Boost_Value=2;
-    owner=CARD_OWNER::HERO;
+    owner=CARD_OWNER::SHERLOCK;
     type=CARD_TYPE::SCHEME;
     card_number=2;
+    card_effect_description="Choose an opponent.Look at their\nhand and choose 1 card for them\n to discard";
 }
 holmes_feint::holmes_feint()
 {
@@ -290,45 +309,50 @@ holmes_feint::holmes_feint()
     effect=CARD_EFFECT_TYPE::IMMEDIATE;
     type=CARD_TYPE::VERSATILE;
     card_number=3;
+    card_effect_description="IMMEDIATELY: Cancel all effects on\n your opponents's card.";
 }
 holmes_fixed_point_in_a_changing_age::holmes_fixed_point_in_a_changing_age()
 {
     card_name="Fixed Point In A Changing Age";
     Card_Value=3;
     Card_Boost_Value=1;
-    owner=CARD_OWNER::SIDE_KICK;
+    owner=CARD_OWNER::WATSON;
     effect=CARD_EFFECT_TYPE::AFTER_COMBAT;
     type=CARD_TYPE::VERSATILE;
     card_number=2;
+    card_effect_description="AFTER COMBAT: If Dr.Watson is\nadjacent to Holmes,they each\nrecover 1 health.";
 }
 holmes_master_of_disguise::holmes_master_of_disguise()
 {
     card_name="Master Of Disguise";
     Card_Value=0;
     Card_Boost_Value=2;
-    owner=CARD_OWNER::HERO;
+    owner=CARD_OWNER::SHERLOCK;
     type=CARD_TYPE::SCHEME;
     card_number=2;
+    card_effect_description="Choose an opponent.Holmes swaps\nspaces wioth their hero.Deal 1 damage\nto that hero.";
 }
 holmes_the_game_is_afoot::holmes_the_game_is_afoot()
 {
     card_name="The Game Is Afoot";
     Card_Value=5;
     Card_Boost_Value=2;
-    owner=CARD_OWNER::HERO;
+    owner=CARD_OWNER::SHERLOCK;
     effect=CARD_EFFECT_TYPE::AFTER_COMBAT;
     type=CARD_TYPE::ATTACK;
     card_number=2;
+    card_effect_description="AFTER COMBAT: Move Holmes\n up to 3 spaces.";
 }
 holmes_service_revolver::holmes_service_revolver()
 {
     card_name="Service Revolver";
     Card_Value=5;
     Card_Boost_Value=3;
-    owner=CARD_OWNER::SIDE_KICK;
+    owner=CARD_OWNER::WATSON;
     //effect=CARD_EFFECT_TYPE::AFTER_COMBAT;
     type=CARD_TYPE::ATTACK;
     card_number=2;
+    card_effect_description=" ";
 }
 holmes_study_methods::holmes_study_methods()
 {
@@ -339,4 +363,5 @@ holmes_study_methods::holmes_study_methods()
     effect=CARD_EFFECT_TYPE::AFTER_COMBAT;
     type=CARD_TYPE::VERSATILE;
     card_number=2;
+    card_effect_description="AFTER COMBAT: if you won the\ncombat,look at your opponent's hand. ";
 }
