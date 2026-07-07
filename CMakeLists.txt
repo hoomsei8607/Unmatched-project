@@ -20,6 +20,8 @@ add_library(My_Written_Code
                 src/game_flow_ui_to_controller_interface.cpp
                 src/graph.cpp
                 src/space.cpp
+                src/cards.cpp
+                src/card_abstract.cpp
                 )
 target_link_directories(My_Written_Code PUBLIC headers)
 
