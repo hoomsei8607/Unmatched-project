@@ -42,6 +42,10 @@ bool User_Choice_Manager::Screen_Manager(USER user_turn, Controller& control, co
             // Attack_Screen(user_turn, control, map_and_user_info);
             return true;
 
+        case GAME_FLOW_SCREENS::Card_Selection_Screen:
+            Select_Card_Screen(user_turn, control, map_and_user_info);
+            return true;
+
         case GAME_FLOW_SCREENS::GO_BACK_TO_MAIN_LOOP:
             return false;
         
@@ -203,7 +207,7 @@ void User_Choice_Manager::Choose_Action_Screen(USER user_turn, Controller& contr
         }
         else if(selected == 1)
         {
-            game_current_screen = GAME_FLOW_SCREENS::Card_Screen;
+            game_current_screen = GAME_FLOW_SCREENS::Card_Selection_Screen;
         }
         screen.ExitLoopClosure()();
         
@@ -233,4 +237,54 @@ void User_Choice_Manager::Choose_Action_Screen(USER user_turn, Controller& contr
             Action_Select_Container->Render()
         });
     }));
+}
+
+void User_Choice_Manager::Select_Card_Screen(USER user_turn, Controller& control, const ftxui::Element& map_and_use_info)
+{
+    std::string user_trun_name_string;
+    std::vector<std::string> Card_Options = control.Return_Hand_As_String(user_turn);
+    int selected = 0;
+
+    auto screen = ScreenInteractive::Fullscreen();
+
+    if(user_turn == USER::USER1)
+    {
+        user_trun_name_string = control.Return_User1_Username();
+    }
+    else
+    {
+        user_trun_name_string = control.Return_User2_Username();
+    }
+
+    Component Confirm_Button = Button("CONFIRM", [&]{});
+
+    Component Undo_Button = Button("UNDO", [&]{
+        game_current_screen = GAME_FLOW_SCREENS::CHOOSE_ACTION;
+        screen.ExitLoopClosure()();
+    });
+    Component Boost_Button = Button("BOOST", [&]{
+        game_current_screen = GAME_FLOW_SCREENS::Card_Boost_Selection_Screen;
+        screen.ExitLoopClosure()();
+    });
+
+    Boost_Button = Boost_Button | Maybe([&]{
+       return !control.Is_Selected_Card_A_Scheme_Card(user_turn, selected); 
+    });
+
+    Component Card_Select_RadioBox = Toggle(&Card_Options, &selected);
+
+    Component card_select_container = Container::Vertical({Card_Select_RadioBox, Confirm_Button, Boost_Button, Undo_Button});
+
+    
+
+    auto main_renderer = Renderer(card_select_container, [&]{
+
+        return vbox({
+            hbox({text("USER TURN: "), text(user_trun_name_string)}),
+            map_and_use_info,
+            control.Return_Hand_Elements_For_Render(user_turn),
+            card_select_container->Render()
+        });
+    });
+    screen.Loop(main_renderer);
 }
