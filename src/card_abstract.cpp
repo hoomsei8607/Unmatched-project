@@ -32,3 +32,7 @@ std::string Card_Base_Class::get_card_name()
 {
     return card_name;
 }
+std::string Card_Base_Class::Get_Card_Effect_As_String()
+{
+    return card_effect_description;
+}
