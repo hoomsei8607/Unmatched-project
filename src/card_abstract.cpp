@@ -28,3 +28,7 @@ int Card_Base_Class::get_card_number()
 {
     return card_number;
 }
+std::string Card_Base_Class::get_card_name()
+{
+    return card_name;
+}
