@@ -1,7 +1,7 @@
 #ifndef CARD_ABSTRACT_HPP
 #define CARD_ABSTRACT_HPP
 #include "enums.hpp"
-
+#include <string>
 #include "fighter_abstract.hpp"
 class Card_Base_Class
 {
@@ -14,6 +14,10 @@ class Card_Base_Class
     bool get_is_discarded();
     int get_card_number();
     std::string get_card_name();
+    std::string Get_Card_Owner_Name_As_String();
+    std::string Get_Card_Type_As_String();
+    std::string Get_Card_Effect_Timing_As_String();
+    std::string Get_Card_Effect_As_String();
     
     protected:
     int Card_Value;
