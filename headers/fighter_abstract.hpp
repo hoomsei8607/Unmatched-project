@@ -5,12 +5,12 @@
 class Fighter_Base_Class
 {
     public:
-        void Move();
         int Return_Fighter_Initial_Hp() const;
         int Return_Fighter_Current_Hp() const;
         int Return_Fighter_Current_Move_Value() const;
         int Return_Fighter_Current_Space() const;
         int Return_Fighter_Attacking_Range() const;
+        ATTACKING_RANGE Return_Fighter_Attacking_Range_Enum_Type() const;
         void Set_Current_Fighter_Space_Number(int new_space);
         void change_health(int);
         bool return_is_fighter_alive();

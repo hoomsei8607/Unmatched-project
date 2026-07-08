@@ -37,3 +37,8 @@ bool Fighter_Base_Class::return_is_fighter_alive()
 {
     return Is_Fighter_Alive;
 }
+
+ATTACKING_RANGE Fighter_Base_Class::Return_Fighter_Attacking_Range_Enum_Type() const
+{
+    return Range_Type;
+}

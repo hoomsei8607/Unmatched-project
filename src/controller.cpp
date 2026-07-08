@@ -264,6 +264,18 @@ USER Controller::Return_Younger_User() const
     return Younger_User;
 }
 
+USER Controller::Return_Older_User() const
+{
+    if(Return_Younger_User() == USER::USER1)
+    {
+        return USER::USER2;
+    }
+    else
+    {
+        return USER::USER1;
+    }
+}
+
 std::string Controller::Return_Older_User_Name() const
 {
     if(std::stoi(user1.Return_User_Age()) > std::stoi(user2.Return_User_Age()))
@@ -740,4 +752,61 @@ std::vector<Card_Base_Class*> Controller::Return_A_Copy_Of_User_Hand(USER user_t
         return User2_Hand;
     }
     
+}
+
+CARD_TYPE Controller::Return_Selected_Card_Type(USER user_turn, int index)
+{
+    if(user_turn == USER::USER1)
+    {
+        return User1_Hand[index]->get_type();
+    }
+    else if(user_turn == USER::USER2)
+    {
+        return User1_Hand[index]->get_type();
+    }
+}
+
+
+ATTACKING_RANGE Controller::Return_Fighter_Attacking_Range(Fighters_Names selected_fighter)
+{
+    HERO_NAME user_hero;
+    if(User_Turn == USER::USER1)
+    {
+        user_hero = user1.Return_Hero_Type();
+    }
+    else if(User_Turn == USER::USER2)
+    {
+        user_hero = user2.Return_Hero_Type();
+    }
+
+    if(user_hero == HERO_NAME::DRACULA)
+    {
+        switch (selected_fighter)
+        {
+        case Fighters_Names::DRACULA:
+            return Dracula_And_Sisters[static_cast<int>(Dracula_And_Sisters_Array_Index::DRACULA)]->Return_Fighter_Attacking_Range_Enum_Type();
+        
+        case Fighters_Names::SIS1:
+            return Dracula_And_Sisters[static_cast<int>(Dracula_And_Sisters_Array_Index::SIS1)]->Return_Fighter_Attacking_Range_Enum_Type();
+        
+        case Fighters_Names::SIS2:
+            return Dracula_And_Sisters[static_cast<int>(Dracula_And_Sisters_Array_Index::SIS2)]->Return_Fighter_Attacking_Range_Enum_Type();
+        
+        case Fighters_Names::SIS3:
+            return Dracula_And_Sisters[static_cast<int>(Dracula_And_Sisters_Array_Index::SIS3)]->Return_Fighter_Attacking_Range_Enum_Type();
+        
+        }
+    }
+    else
+    {
+        switch (selected_fighter)
+        {
+        case Fighters_Names::DRACULA:
+            return Sherklock_And_Watson[static_cast<int>(Sherlock_And_Watson_Array_Index::SHERLOCK)]->Return_Fighter_Attacking_Range_Enum_Type();
+        
+        case Fighters_Names::SIS1:
+            return Sherklock_And_Watson[static_cast<int>(Sherlock_And_Watson_Array_Index::WATSON)]->Return_Fighter_Attacking_Range_Enum_Type();
+        
+        }
+    }
 }

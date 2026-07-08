@@ -26,6 +26,7 @@ class Controller
         void Change_User_Turn();
         USER Return_User_Turn() const;
         USER Return_Younger_User() const;
+        USER Return_Older_User() const;
         std::string Return_Younger_User_Name() const;
         std::string Return_Older_User_Name() const;
         std::string Return_User1_Username() const;
@@ -40,12 +41,14 @@ class Controller
         ftxui::Element Return_Hand_Elements_For_Render(USER user_turn);
         std::vector<std::string> Return_Hand_As_String(USER user_turn);
         bool Is_Selected_Card_A_Scheme_Card(USER user_turn, int index);
+        CARD_TYPE Return_Selected_Card_Type(USER user_turn, int index);
         int return_card_boost_value(int card,USER user_turn);
         void discard(int card,USER user_turn);
         void draw(USER user);
         void change_fighter_health(Fighters_Names fighter,int amount);
         std::vector<Card_Base_Class*> Return_A_Copy_Of_User_Hand(USER user_turn);
         ftxui::Element Return_Hand_Elements_For_Boost_Screen_Render(int selected_card_to_be_boosted);
+        ATTACKING_RANGE Return_Fighter_Attacking_Range(Fighters_Names selected_fighter);
         ~Controller();
     private:
         User user1;

@@ -34,13 +34,18 @@ void User_Interface::Game_Loop_Screen(Controller& control)
     if(control.Return_Younger_Hero_Name() == HERO_NAME::DRACULA)
     {
         control.Set_Fighter_Space_Number(Fighters_Names::DRACULA, 9);
+        game_map_ptr->Set_User_Occupying_Space(control.Return_Younger_User(), 9);
         control.Set_Fighter_Space_Number(Fighters_Names::SHERLOCK, 22);
+        game_map_ptr->Set_User_Occupying_Space(control.Return_Older_User(), 22);
+
         
     }
     else if(control.Return_Younger_Hero_Name() == HERO_NAME::SHERLOCK)
     {
         control.Set_Fighter_Space_Number(Fighters_Names::DRACULA, 22);
+        game_map_ptr->Set_User_Occupying_Space(control.Return_Younger_User(), 22);
         control.Set_Fighter_Space_Number(Fighters_Names::SHERLOCK, 9);
+        game_map_ptr->Set_User_Occupying_Space(control.Return_Older_User(), 9);
     }
     game_map_ptr->Change_Space_Occiupied_Status(22);
     game_map_ptr->Change_Space_Occiupied_Status(9);
@@ -67,21 +72,6 @@ void User_Interface::Game_Loop_Screen(Controller& control)
     Map_Printing_Info[static_cast<int>(Fighters_Names::SIS1)].Sis_Number = '1';
     Map_Printing_Info[static_cast<int>(Fighters_Names::SIS2)].Sis_Number = '2';
     Map_Printing_Info[static_cast<int>(Fighters_Names::SIS3)].Sis_Number = '3';
-
-    // auto to_be_looped_on = CatchEvent(render, [&](Event event){
-    //     if(event == Event::Character('q'))
-    //     {
-    //         screen.ExitLoopClosure()();
-    //         return true;
-    //     }
-    //     return false;
-        
-    // });
-
-    auto Control_Prompt = vbox({
-            text("PRESS C") | bold ,
-            text("open control menu")
-        }) | border;
 
         control.Fill_Fighter_Info_Struct(Fighters_Names::DRACULA, Dracula_Info);
         control.Fill_Fighter_Info_Struct(Fighters_Names::SHERLOCK, Sherlock_Info);
@@ -172,6 +162,21 @@ void User_Interface::Game_Loop_Screen(Controller& control)
     game_map_ptr->Change_Space_Occiupied_Status(control.Return_Hero_Space_Number(Fighters_Names::SIS2));
     game_map_ptr->Change_Space_Occiupied_Status(control.Return_Hero_Space_Number(Fighters_Names::SIS3));
     game_map_ptr->Change_Space_Occiupied_Status(control.Return_Hero_Space_Number(Fighters_Names::WATSON));
+
+    if(control.Return_User1_Hero_Name() == HERO_NAME::DRACULA)
+    {
+        game_map_ptr->Set_User_Occupying_Space(USER::USER1, control.Return_Hero_Space_Number(Fighters_Names::SIS1));
+        game_map_ptr->Set_User_Occupying_Space(USER::USER1, control.Return_Hero_Space_Number(Fighters_Names::SIS2));
+        game_map_ptr->Set_User_Occupying_Space(USER::USER1, control.Return_Hero_Space_Number(Fighters_Names::SIS3));
+        game_map_ptr->Set_User_Occupying_Space(USER::USER2, control.Return_Hero_Space_Number(Fighters_Names::WATSON));
+    }
+    else
+    {
+        game_map_ptr->Set_User_Occupying_Space(USER::USER2, control.Return_Hero_Space_Number(Fighters_Names::SIS1));
+        game_map_ptr->Set_User_Occupying_Space(USER::USER2, control.Return_Hero_Space_Number(Fighters_Names::SIS2));
+        game_map_ptr->Set_User_Occupying_Space(USER::USER2, control.Return_Hero_Space_Number(Fighters_Names::SIS3));
+        game_map_ptr->Set_User_Occupying_Space(USER::USER1, control.Return_Hero_Space_Number(Fighters_Names::WATSON));
+    }
     
 
     

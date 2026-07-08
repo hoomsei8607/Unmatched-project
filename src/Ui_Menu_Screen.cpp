@@ -25,7 +25,7 @@ void User_Interface::Starting_Menu_Screen()
         )";
         
         
-        auto screen = ScreenInteractive::TerminalOutput();
+        auto screen = ScreenInteractive::Fullscreen();
         
         
         

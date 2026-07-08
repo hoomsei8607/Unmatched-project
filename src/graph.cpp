@@ -415,106 +415,10 @@ std::array<ZONE_COLORS,3> Graph::return_zone(int space_number)
 }
 void Graph::Set_User_Occupying_Space(USER user_occupying_space, int space_number)
 {
-    switch (space_number)
-    {
-    case 1:
-        s1.Set_Which_User_Is_Occupying_The_Space(user_occupying_space);
-        break;
-    case 2:
-        s2.Set_Which_User_Is_Occupying_The_Space(user_occupying_space);
-        break;
-    case 3:
-        s3.Set_Which_User_Is_Occupying_The_Space(user_occupying_space);
-        break;
-    case 4:
-        s4.Set_Which_User_Is_Occupying_The_Space(user_occupying_space);
-        break;
-    case 5:
-        s5.Set_Which_User_Is_Occupying_The_Space(user_occupying_space);
-        break;
-    case 6:
-        s6.Set_Which_User_Is_Occupying_The_Space(user_occupying_space);
-        break;
-    case 7:
-        s7.Set_Which_User_Is_Occupying_The_Space(user_occupying_space);
-        break;
-    case 8:
-        s8.Set_Which_User_Is_Occupying_The_Space(user_occupying_space);
-        break;
-    case 9:
-        s9.Set_Which_User_Is_Occupying_The_Space(user_occupying_space);
-        break;
-    case 10:
-        s10.Set_Which_User_Is_Occupying_The_Space(user_occupying_space);
-        break;
-    case 11:
-        s11.Set_Which_User_Is_Occupying_The_Space(user_occupying_space);
-        break;
-    case 12:
-        s12.Set_Which_User_Is_Occupying_The_Space(user_occupying_space);
-        break;
-    case 13:
-        s13.Set_Which_User_Is_Occupying_The_Space(user_occupying_space);
-        break;
-    case 14:
-        s14.Set_Which_User_Is_Occupying_The_Space(user_occupying_space);
-        break;
-    case 15:
-        s15.Set_Which_User_Is_Occupying_The_Space(user_occupying_space);
-        break;
-    case 16:
-        s16.Set_Which_User_Is_Occupying_The_Space(user_occupying_space);
-        break;
-    case 17:
-        s17.Set_Which_User_Is_Occupying_The_Space(user_occupying_space);
-        break;
-    case 18:
-        s18.Set_Which_User_Is_Occupying_The_Space(user_occupying_space);
-        break;
-    case 19:
-        s19.Set_Which_User_Is_Occupying_The_Space(user_occupying_space);
-        break;
-    case 20:
-        s20.Set_Which_User_Is_Occupying_The_Space(user_occupying_space);
-        break;
-    case 21:
-        s21.Set_Which_User_Is_Occupying_The_Space(user_occupying_space);
-        break;
-    case 22:
-        s22.Set_Which_User_Is_Occupying_The_Space(user_occupying_space);
-        break;
-    case 23:
-        s23.Set_Which_User_Is_Occupying_The_Space(user_occupying_space);
-        break;
-    case 24:
-        s24.Set_Which_User_Is_Occupying_The_Space(user_occupying_space);
-        break;
-    case 25:
-        s25.Set_Which_User_Is_Occupying_The_Space(user_occupying_space);
-        break;
-    case 26:
-        s26.Set_Which_User_Is_Occupying_The_Space(user_occupying_space);
-        break;
-    case 27:
-        s27.Set_Which_User_Is_Occupying_The_Space(user_occupying_space);
-        break;
-    case 28:
-        s28.Set_Which_User_Is_Occupying_The_Space(user_occupying_space);
-        break;
-    case 29:
-        s29.Set_Which_User_Is_Occupying_The_Space(user_occupying_space);
-        break;
-    case 30:
-        s30.Set_Which_User_Is_Occupying_The_Space(user_occupying_space);
-        break;
-    case 31:
-        s31.Set_Which_User_Is_Occupying_The_Space(user_occupying_space);
-        break;
-    case 32:
-        s32.Set_Which_User_Is_Occupying_The_Space(user_occupying_space);
-        break;
-        
-    }
+    Space* space_object_ptr;
+    Set_The_Passed_Pointer_To_The_Corresponding_Space_Object(space_object_ptr, space_number);
+    space_object_ptr->Set_Which_User_Is_Occupying_The_Space(user_occupying_space);   
+    
 }
 
 void Graph::Set_The_Passed_Pointer_To_The_Corresponding_Space_Object(Space* & ptr, int space_number)
@@ -656,7 +560,7 @@ bool Graph::Can_Fighter_Use_Attacking_Cards(USER user_turn, ATTACKING_RANGE figh
             {
                 continue;
             }
-            if(Get_User_Occupying_Space(fighter_space_number) == user_turn || Get_User_Occupying_Space(fighter_space_number) == USER::NONE)
+            if(Get_User_Occupying_Space(i) == user_turn || Get_User_Occupying_Space(i) == USER::NONE)
             {
                 continue;
             }
