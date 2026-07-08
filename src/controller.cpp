@@ -45,8 +45,8 @@ Controller::Controller()
     Dracula_And_Sisters[static_cast<int>(Dracula_And_Sisters_Array_Index::SIS2)] = new Dracula_Sister(2);
     Dracula_And_Sisters[static_cast<int>(Dracula_And_Sisters_Array_Index::SIS3)] = new Dracula_Sister(3);
 
-    Sherklock_And_Watson[static_cast<int>(Sherlock_And_Watson_Array_Index::SHERLOCK)] = Sherlock::Get_Instance();
-    Sherklock_And_Watson[static_cast<int>(Sherlock_And_Watson_Array_Index::WATSON)] = Watson::Get_Instance();
+    sherlock_And_Watson[static_cast<int>(Sherlock_And_Watson_Array_Index::SHERLOCK)] = Sherlock::Get_Instance();
+    sherlock_And_Watson[static_cast<int>(Sherlock_And_Watson_Array_Index::WATSON)] = Watson::Get_Instance();
 
     dracula_deck={cards::FEEDING_FRENZY,cards::FEEDING_FRENZY,cards::MISTFORM,cards::MISTFORM,cards::AMBUSH,cards::AMBUSH,cards::BAPTISM_OF_BLOOD,cards::BAPTISM_OF_BLOOD,cards::BEASTFORM,cards::BEASTFORM,cards::DASH,cards::DASH,cards::DASH
     ,cards::EXPLOIT,cards::EXPLOIT,cards::EXPLOIT,cards::LOOK_INTO_MY_EYES,cards::LOOK_INTO_MY_EYES,cards::LOOK_INTO_MY_EYES,cards::PREY_UPON,cards::PREY_UPON,
@@ -120,11 +120,11 @@ void Controller::Fill_Fighter_Info_Struct(Fighters_Names fighter_name, Fighter_I
             break;
                 
         case Fighters_Names::SHERLOCK:
-            Base_Fighter_Class_Pointer = Sherklock_And_Watson[static_cast<int>(Sherlock_And_Watson_Array_Index::SHERLOCK)];
+            Base_Fighter_Class_Pointer = sherlock_And_Watson[static_cast<int>(Sherlock_And_Watson_Array_Index::SHERLOCK)];
             break;
                 
         case Fighters_Names::WATSON:
-            Base_Fighter_Class_Pointer = Sherklock_And_Watson[static_cast<int>(Sherlock_And_Watson_Array_Index::WATSON)];
+            Base_Fighter_Class_Pointer = sherlock_And_Watson[static_cast<int>(Sherlock_And_Watson_Array_Index::WATSON)];
             break;
                 
         case Fighters_Names::SIS1:
@@ -164,11 +164,11 @@ void Controller::Set_Fighter_Space_Number(Fighters_Names fighter_name, int new_s
         break;
     
     case Fighters_Names::SHERLOCK:
-        Sherklock_And_Watson[static_cast<int>(Sherlock_And_Watson_Array_Index::SHERLOCK)]->Set_Current_Fighter_Space_Number(new_space);
+        sherlock_And_Watson[static_cast<int>(Sherlock_And_Watson_Array_Index::SHERLOCK)]->Set_Current_Fighter_Space_Number(new_space);
         break;
     
     case Fighters_Names::WATSON:
-        Sherklock_And_Watson[static_cast<int>(Sherlock_And_Watson_Array_Index::WATSON)]->Set_Current_Fighter_Space_Number(new_space);
+        sherlock_And_Watson[static_cast<int>(Sherlock_And_Watson_Array_Index::WATSON)]->Set_Current_Fighter_Space_Number(new_space);
         break;
     
     case Fighters_Names::SIS1:
@@ -220,11 +220,11 @@ int Controller::Return_Hero_Space_Number(Fighters_Names fighter_name) const
             
         
         case Fighters_Names::SHERLOCK:
-            return Sherklock_And_Watson[static_cast<int>(Sherlock_And_Watson_Array_Index::SHERLOCK)]->Return_Fighter_Current_Space();
+            return sherlock_And_Watson[static_cast<int>(Sherlock_And_Watson_Array_Index::SHERLOCK)]->Return_Fighter_Current_Space();
             
             
         case Fighters_Names::WATSON:
-            return Sherklock_And_Watson[static_cast<int>(Sherlock_And_Watson_Array_Index::WATSON)]->Return_Fighter_Current_Space();
+            return sherlock_And_Watson[static_cast<int>(Sherlock_And_Watson_Array_Index::WATSON)]->Return_Fighter_Current_Space();
            
     }
 }
@@ -311,14 +311,20 @@ int Controller::Return_Fighter_Move_Value(Fighters_Names fighter_name) const
         return Dracula_And_Sisters[static_cast<int>(Dracula_And_Sisters_Array_Index::SIS3)]->Return_Fighter_Current_Move_Value();
         
     case Fighters_Names::SHERLOCK:
-        return Sherklock_And_Watson[static_cast<int>(Sherlock_And_Watson_Array_Index::SHERLOCK)]->Return_Fighter_Current_Move_Value();
+        return sherlock_And_Watson[static_cast<int>(Sherlock_And_Watson_Array_Index::SHERLOCK)]->Return_Fighter_Current_Move_Value();
     case Fighters_Names::WATSON:
-        return Sherklock_And_Watson[static_cast<int>(Sherlock_And_Watson_Array_Index::WATSON)]->Return_Fighter_Current_Move_Value();
+        return sherlock_And_Watson[static_cast<int>(Sherlock_And_Watson_Array_Index::WATSON)]->Return_Fighter_Current_Move_Value();
         
     default:
         break;
     }   
 }
+
+void Controller::Set_Current_User_Action(USER_ACTION user_action)
+{
+    this->current_user_action = user_action;
+}
+
 
 bool Controller::Manage_UserAction_Numbers_And_Return_True_TO_Change_Turn()
 {
@@ -360,10 +366,10 @@ bool Controller::Return_Is_Fighter_Alive(Fighters_Names name) const
         Dracula_And_Sisters[static_cast<int>(Dracula_And_Sisters_Array_Index::SIS3)]->return_is_fighter_alive();
         break;
     case Fighters_Names::SHERLOCK:
-    Sherklock_And_Watson[static_cast<int>(Sherlock_And_Watson_Array_Index::SHERLOCK)]->return_is_fighter_alive();
+    sherlock_And_Watson[static_cast<int>(Sherlock_And_Watson_Array_Index::SHERLOCK)]->return_is_fighter_alive();
         break;
     case Fighters_Names::WATSON:
-    Sherklock_And_Watson[static_cast<int>(Sherlock_And_Watson_Array_Index::WATSON)]->return_is_fighter_alive();
+    sherlock_And_Watson[static_cast<int>(Sherlock_And_Watson_Array_Index::WATSON)]->return_is_fighter_alive();
         break;
     }
 }
@@ -698,10 +704,10 @@ void Controller::change_fighter_health(Fighters_Names fighter ,int amount)
         Dracula_And_Sisters[3]->change_health(amount);
         break;
     case Fighters_Names::SHERLOCK :
-        Sherklock_And_Watson[0]->change_health(amount);
+        sherlock_And_Watson[0]->change_health(amount);
         break;
     case Fighters_Names::WATSON :
-        Sherklock_And_Watson[1]->change_health(amount);
+        sherlock_And_Watson[1]->change_health(amount);
         break;
     default:
         break;
@@ -802,10 +808,10 @@ ATTACKING_RANGE Controller::Return_Fighter_Attacking_Range(Fighters_Names select
         switch (selected_fighter)
         {
         case Fighters_Names::DRACULA:
-            return Sherklock_And_Watson[static_cast<int>(Sherlock_And_Watson_Array_Index::SHERLOCK)]->Return_Fighter_Attacking_Range_Enum_Type();
+            return sherlock_And_Watson[static_cast<int>(Sherlock_And_Watson_Array_Index::SHERLOCK)]->Return_Fighter_Attacking_Range_Enum_Type();
         
         case Fighters_Names::SIS1:
-            return Sherklock_And_Watson[static_cast<int>(Sherlock_And_Watson_Array_Index::WATSON)]->Return_Fighter_Attacking_Range_Enum_Type();
+            return sherlock_And_Watson[static_cast<int>(Sherlock_And_Watson_Array_Index::WATSON)]->Return_Fighter_Attacking_Range_Enum_Type();
         
         }
     }

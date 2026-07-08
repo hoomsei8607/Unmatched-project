@@ -543,10 +543,20 @@ holmes_fixed_point_in_a_changing_age::holmes_fixed_point_in_a_changing_age()
 }
 void holmes_fixed_point_in_a_changing_age::card_effect(Controller& controler,USER user_turn)
 {
+    bool heal=false;
     Graph *location =Graph::Get_Map_Graph_Pointer();
     std::vector<int> fighter_space_numbers;
     int watson_location = (controler.Return_Hero_Space_Number(Fighters_Names::WATSON));
     int sherlock_location = (controler.Return_Hero_Space_Number(Fighters_Names::SHERLOCK));
+    fighter_space_numbers=location->return_adjacent_allies(user_turn,sherlock_location);
+    for(auto item:fighter_space_numbers)
+    {
+        if (watson_location==item)
+        {
+            controler.change_fighter_health(Fighters_Names::SHERLOCK , +1);
+            controler.change_fighter_health(Fighters_Names::WATSON , +1);
+        }
+    }
 }
 holmes_master_of_disguise::holmes_master_of_disguise()
 {

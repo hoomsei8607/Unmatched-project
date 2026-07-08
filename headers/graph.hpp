@@ -25,6 +25,7 @@ class Graph // a singleton object
         USER Get_User_Occupying_Space(int space_number);
         void Set_The_Passed_Pointer_To_The_Corresponding_Space_Object(Space* & ptr, int space_number);
         std::vector<int> return_enemies_in_melee_range(USER user_turn ,int space_number);
+        std::vector<int> return_adjacent_allies(USER user_turn, int sapce_number);
         ~Graph();
 
 

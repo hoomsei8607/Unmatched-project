@@ -49,12 +49,13 @@ class Controller
         std::vector<Card_Base_Class*> Return_A_Copy_Of_User_Hand(USER user_turn);
         ftxui::Element Return_Hand_Elements_For_Boost_Screen_Render(int selected_card_to_be_boosted);
         ATTACKING_RANGE Return_Fighter_Attacking_Range(Fighters_Names selected_fighter);
+        void Set_Current_User_Action(USER_ACTION user_action);
         ~Controller();
     private:
         User user1;
         User user2;
         Fighter_Base_Class* Dracula_And_Sisters[4];
-        Fighter_Base_Class* Sherklock_And_Watson[2];
+        Fighter_Base_Class* sherlock_And_Watson[2];
         std::vector <Card_Base_Class*>  User1_Hand;
         std::vector <Card_Base_Class*>  User2_Hand;
         std::map <int, Space_Row_And_Column_In_Array> Space_To_Array_Index_Map;

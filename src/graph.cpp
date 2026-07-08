@@ -593,3 +593,17 @@ std::vector<int> Graph::return_enemies_in_melee_range(USER user_turn, int sapce_
     }
     return temp_vec;
 }
+std::vector<int> Graph::return_adjacent_allies(USER user_turn, int sapce_number)
+{
+    std::vector<int> temp_vec;
+    for(auto space : Game_Map_Graph[sapce_number])
+    {
+        if(space->Get_Which_User_Is_Occupying_The_Space() != user_turn && space->Get_Which_User_Is_Occupying_The_Space() == USER::NONE )
+        {
+            continue;
+        }
+        temp_vec.push_back(space->Get_Space_Number());
+
+    }
+    return temp_vec;
+}
