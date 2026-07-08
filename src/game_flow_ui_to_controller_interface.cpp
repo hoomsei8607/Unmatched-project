@@ -34,13 +34,6 @@ bool User_Choice_Manager::Screen_Manager(USER user_turn, Controller& control, co
             Maneuver_Screen(user_turn, control, map_and_user_info, fighter_printing_info, fighters_count);
             return true;
 
-        case GAME_FLOW_SCREENS::SCHEME:
-            // Scheme_Screen(user_turn, control, map_and_user_info);
-            return true;
-
-        case GAME_FLOW_SCREENS::ATTACK:
-            // Attack_Screen(user_turn, control, map_and_user_info);
-            return true;
 
         case GAME_FLOW_SCREENS::Card_Selection_Screen:
             Select_Card_Screen(user_turn, control, map_and_user_info);
@@ -82,7 +75,10 @@ void User_Choice_Manager::Maneuver_Screen(USER user_turn, Controller& control, c
 
 
     Component Maneuver_Confirm_Button = Button("Confirm", [&]{
+        USER space_occupied_by_which_user = game_graph->Get_User_Occupying_Space(control.Return_Hero_Space_Number(selected_fighter));
+        game_graph->Set_User_Occupying_Space(USER::NONE, control.Return_Hero_Space_Number(selected_fighter));
         control.Set_Fighter_Space_Number(selected_fighter, std::stoi(Spaces_That_Fighter_Can_Move_To_RadioBox_Option[Selected_Space_For_Move])) ;
+        game_graph->Set_User_Occupying_Space(space_occupied_by_which_user, control.Return_Hero_Space_Number(selected_fighter));
         Space_Row_And_Column_In_Array temp_struct_to_update_fighter_position_on_screen;
         control.Convert_Space_Number_To_Row_And_Column_Index(control.Return_Hero_Space_Number(selected_fighter), temp_struct_to_update_fighter_position_on_screen);
         fighter_printing_info[static_cast<int>(selected_fighter)].Row_Index = temp_struct_to_update_fighter_position_on_screen.row_index;
@@ -246,6 +242,7 @@ void User_Choice_Manager::Choose_Action_Screen(USER user_turn, Controller& contr
 void User_Choice_Manager::Select_Card_Screen(USER user_turn, Controller& control, const ftxui::Element& map_and_use_info)
 {
     std::string user_trun_name_string;
+    Graph* map_graph = Graph::Get_Map_Graph_Pointer();
     std::vector<std::string> Card_Options = control.Return_Hand_As_String(user_turn);
     int selected = 0;
 
@@ -260,7 +257,18 @@ void User_Choice_Manager::Select_Card_Screen(USER user_turn, Controller& control
         user_trun_name_string = control.Return_User2_Username();
     }
 
-    Component Confirm_Button = Button("CONFIRM", [&]{});
+    Component Confirm_Button = Button("CONFIRM", [&]{
+        CARD_TYPE selected_card_type = control.Return_Selected_Card_Type(user_turn, selected);
+        if(selected_card_type == CARD_TYPE::ATTACK || selected_card_type == CARD_TYPE::VERSATILE )
+        {
+            game_current_screen == GAME_FLOW_SCREENS::FIGHTING_SCREEN;
+        }
+        if(selected_card_type == CARD_TYPE::SCHEME)
+        {
+
+        }
+
+    });
 
     Component Undo_Button = Button("UNDO", [&]{
         game_current_screen = GAME_FLOW_SCREENS::CHOOSE_ACTION;
@@ -274,7 +282,35 @@ void User_Choice_Manager::Select_Card_Screen(USER user_turn, Controller& control
     });
 
     Boost_Button = Boost_Button | Maybe([&]{
-       return !control.Is_Selected_Card_A_Scheme_Card(user_turn, selected); 
+       if(control.Return_Selected_Card_Type(user_turn, selected) == CARD_TYPE::SCHEME || control.Return_Selected_Card_Type(user_turn, selected) == CARD_TYPE::DEFENCE)
+       {
+        return false;
+       }
+       if(control.Return_Selected_Card_Type(user_turn, selected) == CARD_TYPE::ATTACK || control.Return_Selected_Card_Type(user_turn, selected) == CARD_TYPE::VERSATILE)
+       {
+            if(!map_graph->Can_Fighter_Use_Attacking_Cards(user_turn, control.Return_Fighter_Attacking_Range(selected_fighter), control.Return_Hero_Space_Number(selected_fighter)))
+            {
+                return false;
+            }
+       }
+       return true;
+    });
+
+    Confirm_Button = Confirm_Button | Maybe([&]{
+        if(control.Return_Selected_Card_Type(user_turn, selected) == CARD_TYPE::DEFENCE)
+        {
+            return false;
+        }
+        if(control.Return_Selected_Card_Type(user_turn, selected) == CARD_TYPE::VERSATILE || control.Return_Selected_Card_Type(user_turn, selected) == CARD_TYPE::ATTACK )
+        {
+            if(!map_graph->Can_Fighter_Use_Attacking_Cards(user_turn,control.Return_Fighter_Attacking_Range(selected_fighter), control.Return_Hero_Space_Number(selected_fighter)))
+            {
+                return false;
+            }
+            
+        }
+        
+        return true;
     });
 
     Component Card_Select_RadioBox = Toggle(&Card_Options, &selected);
@@ -301,7 +337,11 @@ void User_Choice_Manager::boost_Card_Screen(USER user_turn, Controller& control,
     std::string user_turn_name;
     std::string card_being_boosted_name;
 
-    auto Confirm_Button = Button("CONFIRM", [&]{});
+    auto Confirm_Button = Button("CONFIRM", [&]{
+
+
+
+    });
 
 
     auto Undo_Button = Button("UNDO", [&]{
