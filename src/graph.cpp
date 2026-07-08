@@ -578,3 +578,18 @@ bool Graph::Can_Fighter_Use_Attacking_Cards(USER user_turn, ATTACKING_RANGE figh
     }
     return false;
 }
+
+std::vector<int> Graph::return_enemies_in_melee_range(USER user_turn, int sapce_number)
+{
+    std::vector<int> temp_vec;
+    for(auto space : Game_Map_Graph[sapce_number])
+    {
+        if(space->Get_Which_User_Is_Occupying_The_Space() == user_turn && space->Get_Which_User_Is_Occupying_The_Space() == USER::NONE )
+        {
+            continue;
+        }
+        temp_vec.push_back(space->Get_Space_Number());
+
+    }
+    return temp_vec;
+}
