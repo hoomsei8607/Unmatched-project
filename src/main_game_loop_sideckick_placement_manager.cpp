@@ -57,8 +57,7 @@ void SideKick_Placement_Screen_Manager::Dispaly_Watson_Screen(Fighters_Print_Inf
     Component Placement_Select_Handler;
     Component Available_Spaces_RadioBox;
     Element To_Be_Rendered;
-    bool Is_Younger_User_Turn = control.Return_Younger_User() == control.Return_User_Turn();
-    // screen.Loop(Renderer(Placement_Select_Handler))
+    bool Is_Younger_User_Turn = (control.Return_Younger_User() == control.Return_User_Turn());
 
         if(Is_Younger_User_Turn)
         {
@@ -74,7 +73,6 @@ void SideKick_Placement_Screen_Manager::Dispaly_Watson_Screen(Fighters_Print_Inf
                 SideKick_Space_Confirm_Button
             });
             
-            // screen.Loop(Renderer(Placement_Select_Handler, [&]{return To_Be_Rendered;}));
 
         }
         else
@@ -91,7 +89,6 @@ void SideKick_Placement_Screen_Manager::Dispaly_Watson_Screen(Fighters_Print_Inf
                 SideKick_Space_Confirm_Button
             });
             
-            // screen.Loop(Renderer(Placement_Select_Handler, [&]{return To_Be_Rendered;}));
         }
 
         screen.Loop(Renderer(Placement_Select_Handler, [&]{
@@ -134,7 +131,7 @@ void SideKick_Placement_Screen_Manager::Display_Sis1_Screen(Fighters_Print_Info&
     Component Placement_Select_Handler;
     Component Available_Spaces_RadioBox;
     Element To_Be_Rendered;
-    bool Is_Younger_User_Turn = control.Return_Younger_User() == control.Return_User_Turn();
+    bool Is_Younger_User_Turn = (control.Return_Younger_User() == control.Return_User_Turn());
     
     if(Is_Younger_User_Turn)
     {
@@ -213,7 +210,7 @@ void SideKick_Placement_Screen_Manager::Display_Sis2_Screen(Fighters_Print_Info&
     Component Placement_Select_Handler;
     Component Available_Spaces_RadioBox;
     Element To_Be_Rendered;
-    bool Is_Younger_User_Turn = control.Return_Younger_User() == control.Return_User_Turn();
+    bool Is_Younger_User_Turn = (control.Return_Younger_User() == control.Return_User_Turn());
 
     if(Is_Younger_User_Turn)
     {
@@ -264,7 +261,7 @@ void SideKick_Placement_Screen_Manager::Display_Sis2_Screen(Fighters_Print_Info&
         else
         {
             To_Be_Rendered = vbox({
-            hbox({text("User Turn: "), text(control.Return_Younger_User_Name())}),
+            hbox({text("User Turn: "), text(control.Return_Older_User_Name())}),
             map_and_user_info,
             text("Where do you want to place sister2? "),
             Placement_Select_Handler->Render()
@@ -290,7 +287,7 @@ void SideKick_Placement_Screen_Manager::Display_Sis3_Screen(Fighters_Print_Info&
     Component Placement_Select_Handler;
     Component Available_Spaces_RadioBox;
     Element To_Be_Rendered;
-    bool Is_Younger_User_Turn = control.Return_Younger_User() == control.Return_User_Turn();
+    bool Is_Younger_User_Turn = (control.Return_Younger_User() == control.Return_User_Turn());
 
     if(Is_Younger_User_Turn)
     {
@@ -342,7 +339,7 @@ void SideKick_Placement_Screen_Manager::Display_Sis3_Screen(Fighters_Print_Info&
         else
         {
             To_Be_Rendered = vbox({
-            hbox({text("User Turn: "), text(control.Return_Younger_User_Name())}),
+            hbox({text("User Turn: "), text(control.Return_Older_User_Name())}),
             map_and_user_info,
             text("Where do you want to place sister3? "),
             Placement_Select_Handler->Render()

@@ -816,3 +816,8 @@ ATTACKING_RANGE Controller::Return_Fighter_Attacking_Range(Fighters_Names select
         }
     }
 }
+
+void Controller::Set_User_Turn(USER user_turn)
+{
+    this->User_Turn = user_turn;
+}

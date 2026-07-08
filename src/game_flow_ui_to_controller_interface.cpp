@@ -78,6 +78,7 @@ void User_Choice_Manager::Maneuver_Screen(USER user_turn, Controller& control, c
         USER space_occupied_by_which_user = game_graph->Get_User_Occupying_Space(control.Return_Hero_Space_Number(selected_fighter));
         game_graph->Set_User_Occupying_Space(USER::NONE, control.Return_Hero_Space_Number(selected_fighter));
         control.Set_Fighter_Space_Number(selected_fighter, std::stoi(Spaces_That_Fighter_Can_Move_To_RadioBox_Option[Selected_Space_For_Move])) ;
+        control.draw(user_turn);
         game_graph->Set_User_Occupying_Space(space_occupied_by_which_user, control.Return_Hero_Space_Number(selected_fighter));
         Space_Row_And_Column_In_Array temp_struct_to_update_fighter_position_on_screen;
         control.Convert_Space_Number_To_Row_And_Column_Index(control.Return_Hero_Space_Number(selected_fighter), temp_struct_to_update_fighter_position_on_screen);
