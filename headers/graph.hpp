@@ -24,6 +24,7 @@ class Graph // a singleton object
         bool Can_Fighter_Use_Attacking_Cards(USER user_turn, ATTACKING_RANGE fighter_range, int fighter_space_number);
         USER Get_User_Occupying_Space(int space_number);
         void Set_The_Passed_Pointer_To_The_Corresponding_Space_Object(Space* & ptr, int space_number);
+        std::vector<int> return_enemies_in_melee_range(USER user_turn ,int space_number);
         ~Graph();
 
 

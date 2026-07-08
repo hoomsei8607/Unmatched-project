@@ -55,7 +55,7 @@ class dracula_prey_upon : public Card_Base_Class
 {
     public:
     dracula_prey_upon();
-    void card_effect(Controller& controler);
+    void card_effect(Controller& controler,USER user_turn);
 };
 class dracula_ravening_seduction : public Card_Base_Class
 {
@@ -85,41 +85,49 @@ class holmes_confirm_suspicion : public Card_Base_Class
 {
     public:
     holmes_confirm_suspicion();
+    void card_effect(Controller& controler,USER user_turn);
 };
 class holmes_counterpunch : public Card_Base_Class
 {
     public:
     holmes_counterpunch();
+    void card_effect(Controller& controler,Fighters_Names enemy_fighter,USER user_turn);
 };
 class holmes_deduce_strategy : public Card_Base_Class
 {
     public:
     holmes_deduce_strategy();
+    void card_effect(Controller& controler,USER user_turn);
 };
 class holmes_education_never_ends : public Card_Base_Class
 {
     public:
     holmes_education_never_ends();
+    void card_effect(Controller& controler,USER user_turn);
 };
 class holmes_elementary : public Card_Base_Class
 {
     public:
     holmes_elementary();
+    void card_effect(Controller& controler,USER user_turn);
 };
 class holmes_eliminate_the_impossible : public Card_Base_Class
 {
     public:
     holmes_eliminate_the_impossible();
+    void card_effect(Controller& controler,USER user_turn,int choice);
 };
 class holmes_feint : public Card_Base_Class
 {
     public:
     holmes_feint();
+    void card_effect(Controller& controler,USER user_turn);
 };
 class holmes_fixed_point_in_a_changing_age : public Card_Base_Class
 {
     public:
     holmes_fixed_point_in_a_changing_age();
+    void card_effect(Controller& controler,USER user_turn);
 };
 class holmes_master_of_disguise : public Card_Base_Class
 {

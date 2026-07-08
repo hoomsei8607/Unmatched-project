@@ -17,28 +17,123 @@ dracula_feedingfrenzy::dracula_feedingfrenzy()
 }
 void dracula_feedingfrenzy::card_effect(Controller& control,Fighters_Names enemy)
 {
+    int number_of_sisters=0;
     Graph *location =Graph::Get_Map_Graph_Pointer();
-    // std::array<ZONE_COLORS,3> 
+    std::array<ZONE_COLORS,3> zone_array_sister1;
+    std::array<ZONE_COLORS,3> zone_array_sister2;
+    std::array<ZONE_COLORS,3> zone_array_sister3;
     int sisters_number_locations[3];
     sisters_number_locations[0] = control.Return_Hero_Space_Number(Fighters_Names::SIS1);
     sisters_number_locations[1] = control.Return_Hero_Space_Number(Fighters_Names::SIS2);
     sisters_number_locations[2] = control.Return_Hero_Space_Number(Fighters_Names::SIS3);
+    zone_array_sister1=location->return_zone(sisters_number_locations[0]);
+    zone_array_sister2=location->return_zone(sisters_number_locations[1]);
+    zone_array_sister3=location->return_zone(sisters_number_locations[2]);
     if (enemy==Fighters_Names::SHERLOCK)
     {
+        int flag=0;
+        std::array<ZONE_COLORS,3> zone_array_Sherlock;
         int enemy_location = (control.Return_Hero_Space_Number(Fighters_Names::SHERLOCK));
+        zone_array_Sherlock=location->return_zone(enemy_location);
+        for (int i = 0; i < 3; i++)
+        {
+            for (int j = 0; j < 3; j++)
+            {
+                if(zone_array_sister1[i]==zone_array_Sherlock[j])
+                {
+                    flag=1;
+                }
+            } 
+        }
+        if (flag==1)
+        {
+            number_of_sisters++;
+            flag=0;
+        }
+        for (int i = 0; i < 3; i++)
+        {
+            for (int j = 0; j < 3; j++)
+            {
+                if(zone_array_sister2[i]==zone_array_Sherlock[j])
+                {
+                    flag=1;
+                }
+            } 
+        }
+        if (flag==1)
+        {
+            number_of_sisters++;
+            flag=0;
+        }
+        for (int i = 0; i < 3; i++)
+        {
+            for (int j = 0; j < 3; j++)
+            {
+                if(zone_array_sister3[i]==zone_array_Sherlock[j])
+                {
+                    flag=1;
+                }
+            } 
+        }
+        if (flag==1)
+        {
+            number_of_sisters++;
+            flag=0;
+        }
     }
     else if (enemy==Fighters_Names::WATSON)
     {
-        int watson_location =(control.Return_Hero_Space_Number(Fighters_Names::WATSON));
+        int flag=0;
+        std::array<ZONE_COLORS,3> zone_array_Watson;
+        int enemy_location =(control.Return_Hero_Space_Number(Fighters_Names::WATSON));
+        zone_array_Watson=location->return_zone(enemy_location);
+        for (int i = 0; i < 3; i++)
+        {
+            for (int j = 0; j < 3; j++)
+            {
+                if(zone_array_sister1[i]==zone_array_Watson[j])
+                {
+                    flag=1;
+                }
+            } 
+        }
+        if (flag==1)
+        {
+            number_of_sisters++;
+            flag=0;
+        }
+        for (int i = 0; i < 3; i++)
+        {
+            for (int j = 0; j < 3; j++)
+            {
+                if(zone_array_sister2[i]==zone_array_Watson[j])
+                {
+                    flag=1;
+                }
+            } 
+        }
+        if (flag==1)
+        {
+            number_of_sisters++;
+            flag=0;
+        }
+        for (int i = 0; i < 3; i++)
+        {
+            for (int j = 0; j < 3; j++)
+            {
+                if(zone_array_sister3[i]==zone_array_Watson[j])
+                {
+                    flag=1;
+                }
+            } 
+        }
+        if (flag==1)
+        {
+            number_of_sisters++;
+            flag=0;
+        }
     }
-    
-    //to do tommorow!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-    
-    location->return_zone(sisters_number_locations[0]);
-    //find fighter places and check for sisters to be the same zone as enemy
-    
-    
-
+    Card_Value+=number_of_sisters;
 }
 dracula_mistform::dracula_mistform()
 {
@@ -179,12 +274,43 @@ dracula_prey_upon::dracula_prey_upon()
     card_number=2;
     card_effect_description="Deal 1 damage to all opposing fighters\n adjacent to dracula. Dracula recovers\n 1 health for each damage dealt.";
 }
-void dracula_prey_upon::card_effect(Controller& controler)
+void dracula_prey_upon::card_effect(Controller& controler,USER user_turn)
 {
+    int heal_number=0;
+    Graph *location =Graph::Get_Map_Graph_Pointer();
+    std::vector<int> fighter_space_numbers;
     int dracula_location = (controler.Return_Hero_Space_Number(Fighters_Names::DRACULA));
     int sherlock_location = (controler.Return_Hero_Space_Number(Fighters_Names::SHERLOCK));
-    int watson_location =(controler.Return_Hero_Space_Number(Fighters_Names::WATSON));
+    int watson_location = (controler.Return_Hero_Space_Number(Fighters_Names::WATSON));
+    
+    if (!location->Can_Fighter_Use_Attacking_Cards(user_turn,ATTACKING_RANGE::MELEE,dracula_location))
+    {
+        return;
+    }
+    if (user_turn==USER::USER1)
+    {
+    fighter_space_numbers=location->return_enemies_in_melee_range(USER::USER1,dracula_location);    
+    }
+    else if (user_turn==USER::USER2)
+    {
+    fighter_space_numbers=location->return_enemies_in_melee_range(USER::USER2,dracula_location);    
+    }
 
+    for (auto item:fighter_space_numbers)
+    {
+        if(sherlock_location==item)
+        {
+            controler.change_fighter_health(Fighters_Names::SHERLOCK, -1);
+            heal_number++;
+        }
+        if (watson_location==item)
+        {
+            controler.change_fighter_health(Fighters_Names::WATSON,-1);
+            heal_number++;
+        }  
+    }
+    
+    controler.change_fighter_health(Fighters_Names::DRACULA , +heal_number);
 }
 dracula_ravening_seduction::dracula_ravening_seduction()
 {
@@ -257,6 +383,10 @@ holmes_confirm_suspicion::holmes_confirm_suspicion()
     card_number=3;
     card_effect_description="Choose an opponent and name a value.\nYour opponent must choose and discard\none card matching that attack or defense\nvalue. Their hero takes damage equal to\nthe BOOST value of the discarded card.\nIf they do not have a card of the named value, they must reveal their hand instead.";
 }
+void holmes_confirm_suspicion::card_effect(Controller& controler,USER user_turn)
+{
+
+}
 holmes_counterpunch::holmes_counterpunch()
 {
     card_name="Counterpunch";
@@ -267,6 +397,34 @@ holmes_counterpunch::holmes_counterpunch()
     type=CARD_TYPE::VERSATILE;
     card_number=3;
     card_effect_description="AFTER COMBAT: IF Holmes is adjacent\nto the opposing fighter, deal 2 damage\nto that fighter. ";
+}
+void holmes_counterpunch::card_effect(Controller& controler,Fighters_Names enemy_fighter,USER user_turn)
+{
+    Graph *location =Graph::Get_Map_Graph_Pointer();
+    std::vector<int> fighter_space_numbers;
+    int enemy_location = (controler.Return_Hero_Space_Number(enemy_fighter));
+    int sherlock_location = (controler.Return_Hero_Space_Number(Fighters_Names::SHERLOCK));
+    
+    if (!location->Can_Fighter_Use_Attacking_Cards(user_turn,ATTACKING_RANGE::MELEE,sherlock_location))
+    {
+        return;
+    }
+    if (user_turn==USER::USER1)
+    {
+    fighter_space_numbers=location->return_enemies_in_melee_range(USER::USER1,sherlock_location);    
+    }
+    else if (user_turn==USER::USER2)
+    {
+    fighter_space_numbers=location->return_enemies_in_melee_range(USER::USER2,sherlock_location);    
+    }
+
+    for (auto item:fighter_space_numbers)
+    {
+        if(enemy_location==item)
+        {
+            controler.change_fighter_health(enemy_fighter, -2);
+        }
+    }
 }
 holmes_deduce_strategy::holmes_deduce_strategy()
 {
@@ -279,6 +437,10 @@ holmes_deduce_strategy::holmes_deduce_strategy()
     card_number=3;
     card_effect_description="DURING COMBAT: You may change the\nprinted value of the opponents's card to\nits BOOST value.(if a card does not have a\nBOOST value,it is treated as 0.) ";
 }
+void holmes_deduce_strategy::card_effect(Controller& controler,USER user_turn)
+{
+    // get enemy card info and change boost value and card value
+}
 holmes_education_never_ends::holmes_education_never_ends()
 {
     card_name="Education Never Ends";
@@ -289,6 +451,33 @@ holmes_education_never_ends::holmes_education_never_ends()
     type=CARD_TYPE::VERSATILE;
     card_number=2;\
     card_effect_description="AFTER COMBAT: if you won the\ncombat,your opponent draws 1 card.\nIf you lost the combat , you\ndraw 2 cards.";
+}
+void holmes_education_never_ends::card_effect(Controller& controler,USER user_turn)
+{
+    if (user_turn==USER::USER1)
+    {
+        //if(win)
+            //{
+            controler.draw(USER::USER2);
+            //}
+        //if(lose)
+            //{
+            controler.draw(USER::USER1);
+            controler.draw(USER::USER1);
+            //}
+    }
+    else if (user_turn==USER::USER2)
+    {
+        //if(win)
+            //{
+            controler.draw(USER::USER1);
+            //}
+        //if(lose)
+            //{
+            controler.draw(USER::USER2);
+            controler.draw(USER::USER2);
+            //}
+    }
 }
 holmes_elementary::holmes_elementary()
 {
@@ -301,6 +490,10 @@ holmes_elementary::holmes_elementary()
     card_number=2;
     card_effect_description="Play this card face up. Predict the printed\nattack value of the opponent's card.\nDURING COMBAT: if you predicted the\ncorrect value, cancel all effects on\n your opponent's card and ignore\nattack value. ";
 }
+void holmes_elementary::card_effect(Controller& controler,USER user_turn)
+{
+
+}
 holmes_eliminate_the_impossible::holmes_eliminate_the_impossible()
 {
     card_name="Eliminate The Impossible";
@@ -310,6 +503,17 @@ holmes_eliminate_the_impossible::holmes_eliminate_the_impossible()
     type=CARD_TYPE::SCHEME;
     card_number=2;
     card_effect_description="Choose an opponent.Look at their\nhand and choose 1 card for them\nto discard";
+}
+void holmes_eliminate_the_impossible::card_effect(Controller& controler,USER user_turn,int choice)
+{
+    if(user_turn==USER::USER1)
+    {
+    controler.discard(choice,USER::USER2);
+    }
+    else if( user_turn==USER::USER2)
+    {
+    controler.discard(choice,USER::USER1);
+    }
 }
 holmes_feint::holmes_feint()
 {
@@ -322,6 +526,10 @@ holmes_feint::holmes_feint()
     card_number=3;
     card_effect_description="IMMEDIATELY: Cancel all effects on\nyour opponents's card.";
 }
+void holmes_feint::card_effect(Controller& controler,USER user_turn)
+{
+
+}
 holmes_fixed_point_in_a_changing_age::holmes_fixed_point_in_a_changing_age()
 {
     card_name="Fixed Point In A Changing Age";
@@ -332,6 +540,13 @@ holmes_fixed_point_in_a_changing_age::holmes_fixed_point_in_a_changing_age()
     type=CARD_TYPE::VERSATILE;
     card_number=2;
     card_effect_description="AFTER COMBAT: If Dr.Watson is\nadjacent to Holmes,they each\nrecover 1 health.";
+}
+void holmes_fixed_point_in_a_changing_age::card_effect(Controller& controler,USER user_turn)
+{
+    Graph *location =Graph::Get_Map_Graph_Pointer();
+    std::vector<int> fighter_space_numbers;
+    int watson_location = (controler.Return_Hero_Space_Number(Fighters_Names::WATSON));
+    int sherlock_location = (controler.Return_Hero_Space_Number(Fighters_Names::SHERLOCK));
 }
 holmes_master_of_disguise::holmes_master_of_disguise()
 {
