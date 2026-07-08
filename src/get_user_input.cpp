@@ -6,7 +6,7 @@
 using namespace ftxui;
 enum Screen_State {USER1_NAME_INPUT, USER2_NAME_INPUT, USER1_AGE_INPUT, USER2_AGE_INPUT, HERO_NAME_INPUT};
 
-User1_And_User2_Info User_Interface::Get_User_Input()
+User1_And_User2_Info User_Interface::Get_User_Input(Controller& control)
 {
     auto screen = ScreenInteractive::Fullscreen();
     std::string User1_Name = "";
@@ -35,10 +35,12 @@ User1_And_User2_Info User_Interface::Get_User_Input()
          if(std::stoi(User1_Age) > std::stoi(User2_Age))
         {
             turn = 2;
+            control.Set_User_Turn(USER::USER2);
         }
         else
         {
             turn = 1;
+            control.Set_User_Turn(USER::USER1);
         }
         // Current_Screen_State = SCREEN_STATE::GAME_LOOP;
         // screen.ExitLoopClosure()();

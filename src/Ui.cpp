@@ -16,7 +16,7 @@ bool User_Interface::Manage_Screen(Controller& control)
         return true;
     
     case SCREEN_STATE::PROMPT_INPUT:
-        control.Set_User1_And_User2_Info(Get_User_Input());
+        control.Set_User1_And_User2_Info(Get_User_Input(control));
         return true;
         
     case SCREEN_STATE::GAME_LOOP:
