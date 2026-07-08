@@ -133,11 +133,13 @@ class holmes_master_of_disguise : public Card_Base_Class
 {
     public:
     holmes_master_of_disguise();
+    void card_effect(Controller& controler,USER user_turn);
 };
 class holmes_the_game_is_afoot : public Card_Base_Class
 {
     public:
     holmes_the_game_is_afoot();
+    void card_effect(Controller& controler,USER user_turn);
 };
 class holmes_service_revolver : public Card_Base_Class
 {
@@ -148,4 +150,5 @@ class holmes_study_methods : public Card_Base_Class
 {
     public:
     holmes_study_methods();
+    void card_effect(Controller& controler,USER user_turn);
 };

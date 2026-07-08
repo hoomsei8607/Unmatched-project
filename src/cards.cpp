@@ -568,6 +568,10 @@ holmes_master_of_disguise::holmes_master_of_disguise()
     card_number=2;
     card_effect_description="Choose an opponent.Holmes swaps\nspaces wioth their hero.Deal 1 damage\nto that hero.";
 }
+void holmes_master_of_disguise::card_effect(Controller& controler,USER user_turn)
+{
+    
+}
 holmes_the_game_is_afoot::holmes_the_game_is_afoot()
 {
     card_name="The Game Is Afoot";
@@ -578,6 +582,10 @@ holmes_the_game_is_afoot::holmes_the_game_is_afoot()
     type=CARD_TYPE::ATTACK;
     card_number=2;
     card_effect_description="AFTER COMBAT: Move Holmes\nup to 3 spaces.";
+}
+void holmes_the_game_is_afoot::card_effect(Controller& controler,USER user_turn)
+{
+
 }
 holmes_service_revolver::holmes_service_revolver()
 {
@@ -600,4 +608,8 @@ holmes_study_methods::holmes_study_methods()
     type=CARD_TYPE::VERSATILE;
     card_number=2;
     card_effect_description="AFTER COMBAT: if you won the\ncombat,look at your opponent's hand. ";
+}
+void holmes_study_methods::card_effect(Controller& controler,USER user_turn)
+{
+
 }

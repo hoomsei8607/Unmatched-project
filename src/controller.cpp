@@ -1,7 +1,7 @@
 #include "../headers/controller.hpp"
 #include "../headers/fighters_sub_classes.hpp"
 #include "../headers/structs.hpp"
-#include "../headers/cards.hpp"\
+#include "../headers/cards.hpp"
 #include <algorithm>
 #include <random>
 
@@ -227,6 +227,7 @@ int Controller::Return_Hero_Space_Number(Fighters_Names fighter_name) const
             return sherlock_And_Watson[static_cast<int>(Sherlock_And_Watson_Array_Index::WATSON)]->Return_Fighter_Current_Space();
            
     }
+    return -1;
 }
 
 void Controller::Set_Younger_User_Variable_Value()
@@ -315,9 +316,8 @@ int Controller::Return_Fighter_Move_Value(Fighters_Names fighter_name) const
     case Fighters_Names::WATSON:
         return sherlock_And_Watson[static_cast<int>(Sherlock_And_Watson_Array_Index::WATSON)]->Return_Fighter_Current_Move_Value();
         
-    default:
-        break;
     }   
+    return -1;
 }
 
 void Controller::Set_Current_User_Action(USER_ACTION user_action)
@@ -347,6 +347,7 @@ bool Controller::Manage_UserAction_Numbers_And_Return_True_TO_Change_Turn()
         return true;
     
     }
+    return false;
 }
 bool Controller::Return_Is_Fighter_Alive(Fighters_Names name) const
 {
@@ -372,6 +373,7 @@ bool Controller::Return_Is_Fighter_Alive(Fighters_Names name) const
     sherlock_And_Watson[static_cast<int>(Sherlock_And_Watson_Array_Index::WATSON)]->return_is_fighter_alive();
         break;
     }
+    return false;
 }
 
 std::string Controller::Return_User1_Username() const
@@ -633,7 +635,7 @@ int Controller::return_card_boost_value(int card,USER user_turn)
     else if (user_turn==USER::USER2)
     {
         return User1_Hand[card]->get_Card_Boost_Value();
-    }                           
+    }         
 }
 void Controller::discard(int card,USER user_turn)
 {
