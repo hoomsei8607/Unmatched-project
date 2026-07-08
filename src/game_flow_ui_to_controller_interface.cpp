@@ -64,7 +64,7 @@ void User_Choice_Manager::Maneuver_Screen(USER user_turn, Controller& control, c
     
     //this function assigns all the available spaces to the local set we just created
     (*game_graph).Recursive_Path_Finder(Available_Spaces, control.Return_Hero_Space_Number(selected_fighter), control.Return_Fighter_Move_Value(selected_fighter), user_turn);
-    
+    Available_Spaces.erase(control.Return_Hero_Space_Number(selected_fighter));
 
     for(auto element: Available_Spaces)
     {

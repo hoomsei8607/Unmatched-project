@@ -36,14 +36,14 @@ User1_And_User2_Info User_Interface::Get_User_Input(Controller& control)
         {
             turn = 2;
             control.Set_User_Turn(USER::USER2);
+            control.Set_Current_User_Action(USER_ACTION::USER2_ACTION1);
         }
         else
         {
             turn = 1;
             control.Set_User_Turn(USER::USER1);
+            control.Set_Current_User_Action(USER_ACTION::USER1_ACTION1);
         }
-        // Current_Screen_State = SCREEN_STATE::GAME_LOOP;
-        // screen.ExitLoopClosure()();
     });
    
     std::vector<std::string> Hero_Options {"DRACULA", "SHERLOCK"};
