@@ -255,14 +255,6 @@ std::string Return_Map_To_Be_Rendered(int Array_Element_Count, Fighters_Print_In
     mymap[10][19] = '5';
     mymap[10][20] = ')';
     
-    // mymap[10][24] = '3';
-    // mymap[10][25] = '0';
-    // mymap[10][26] = ')';
-    
-    
-    // mymap[10][36] = '2';
-    // mymap[10][37] = '7';
-    // mymap[10][38] = ')';
     
     mymap[10][42] = '2';
     mymap[10][43] = '7';
