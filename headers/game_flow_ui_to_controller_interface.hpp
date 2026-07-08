@@ -8,7 +8,7 @@
 #include <ftxui/dom/elements.hpp>
 #include <ftxui/screen/screen.hpp>
 
-enum class GAME_FLOW_SCREENS {CHOOSE_FIGHTER, CHOOSE_ACTION, MANEUVER, SCHEME, ATTACK, Card_Selection_Screen, Card_Boost_Selection_Screen, GO_BACK_TO_MAIN_LOOP};
+enum class GAME_FLOW_SCREENS {CHOOSE_FIGHTER, CHOOSE_ACTION, MANEUVER, FIGHTING_SCREEN, Card_Selection_Screen, Card_Boost_Selection_Screen, GO_BACK_TO_MAIN_LOOP};
 
 class User_Choice_Manager
 {
