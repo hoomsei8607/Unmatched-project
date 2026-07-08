@@ -268,6 +268,7 @@ void User_Choice_Manager::Select_Card_Screen(USER user_turn, Controller& control
         {
 
         }
+        screen.ExitLoopClosure()();
 
     });
 
