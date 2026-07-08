@@ -1,5 +1,10 @@
 #include "../headers/space.hpp"
 
+Space::Space()
+{
+    occupied_by_whom = USER::NONE;
+}
+
 void Space::Change_Occupied_Status()
 {
     this->Is_Occupied = !Is_Occupied;
@@ -52,4 +57,12 @@ std::array<ZONE_COLORS,3> Space::return_zone_color(int space_number)
     location_colors[1]=zone[1];
     location_colors[2]=zone[2];
     return location_colors;
+}
+void Space::Set_Which_User_Is_Occupying_The_Space(USER user_occupying_space)
+{
+    occupied_by_whom = user_occupying_space;
+}
+USER Space::Get_Which_User_Is_Occupying_The_Space()
+{
+    return occupied_by_whom;
 }

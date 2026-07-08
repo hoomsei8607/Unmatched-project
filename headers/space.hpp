@@ -6,6 +6,7 @@
 class Space
 {
     public:
+    Space();
     void Change_Occupied_Status(); //reverses the occupied status
     bool Get_Occupied_Status() const;//returns wether  a space is occupied or not
     bool Get_Secret_Pathway_Status() const; //returns a boolian wether a space is a secret path way or not
@@ -14,6 +15,8 @@ class Space
     int Get_Space_Number() const;
     void Set_Info(bool Is_Multi_zone, bool Is_Occupied, bool Has_Secret_Path, int Space_Number, const std::array<ZONE_COLORS, 3>& Colors);
     std::array<ZONE_COLORS,3> return_zone_color(int space_number);
+    USER Get_Which_User_Is_Occupying_The_Space();
+    void Set_Which_User_Is_Occupying_The_Space(USER user_occupying_space);
 
     private:
     bool Is_Multi_Zone;
@@ -21,6 +24,7 @@ class Space
     bool Has_Secret_Path;
     int Space_Number;
     ZONE_COLORS zone[3];
+    USER occupied_by_whom;
 
 
 };
