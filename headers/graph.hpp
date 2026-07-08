@@ -21,6 +21,9 @@ class Graph // a singleton object
         void Change_Space_Occiupied_Status(int space_number);//if the space is empty changes to occiupied and vice versa
         std::array<ZONE_COLORS,3> return_zone(int space);
         void Set_User_Occupying_Space(USER user_occupying_space, int space_number);
+        bool Can_Fighter_Use_Attacking_Cards(USER user_turn, ATTACKING_RANGE fighter_range, int fighter_space_number);
+        USER Get_User_Occupying_Space(int space_number);
+        void Set_The_Passed_Pointer_To_The_Corresponding_Space_Object(Space* & ptr, int space_number);
         ~Graph();
 
 

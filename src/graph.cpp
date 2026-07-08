@@ -410,105 +410,7 @@ void Graph::Change_Space_Occiupied_Status(int space_number)
 std::array<ZONE_COLORS,3> Graph::return_zone(int space_number)
 {
     Space * space_object;
-    switch (space_number)
-    {
-    case 1:
-        space_object=&s1;
-        break;
-    case 2:
-        space_object=&s2;
-        break;
-    case 3:
-        space_object=&s3;
-        break;
-    case 4:
-        space_object=&s4;
-        break;
-    case 5:
-        space_object=&s5;
-        break;
-    case 6:
-        space_object=&s6;
-        break;
-    case 7:
-        space_object=&s7;
-        break;
-    case 8:
-        space_object=&s8;
-        break;
-    case 9:
-        space_object=&s9;
-        break;
-    case 10:
-        space_object=&s10;
-        break;
-    case 11:
-        space_object=&s11;
-        break;
-    case 12:
-        space_object=&s12;
-        break;
-    case 13:
-        space_object=&s13;
-        break;
-    case 14:
-        space_object=&s14;
-        break;
-    case 15:
-        space_object=&s15;
-        break;
-    case 16:
-        space_object=&s16;
-        break;
-    case 17:
-        space_object=&s17;
-        break;
-    case 18:
-        space_object=&s18;
-        break;
-    case 19:
-        space_object=&s19;
-        break;
-    case 20:
-        space_object=&s20;
-        break;
-    case 21:
-        space_object=&s21;
-        break;
-    case 22:
-        space_object=&s22;
-        break;
-    case 23:
-        space_object=&s23;
-        break;
-    case 24:
-        space_object=&s24;
-        break;
-    case 25:
-        space_object=&s25;
-        break;
-    case 26:
-        space_object=&s26;
-        break;
-    case 27:
-        space_object=&s27;
-        break;
-    case 28:
-        space_object=&s28;
-        break;
-    case 29:
-        space_object=&s29;
-        break;
-    case 30:
-        space_object=&s30;
-        break;
-    case 31:
-        space_object=&s31;
-        break;
-    case 32:
-        space_object=&s32;
-        break; 
-    }
+    Set_The_Passed_Pointer_To_The_Corresponding_Space_Object(space_object, space_number);
     return space_object->return_zone_color(space_number);
 }
 void Graph::Set_User_Occupying_Space(USER user_occupying_space, int space_number)
@@ -613,4 +515,162 @@ void Graph::Set_User_Occupying_Space(USER user_occupying_space, int space_number
         break;
         
     }
+}
+
+void Graph::Set_The_Passed_Pointer_To_The_Corresponding_Space_Object(Space* & ptr, int space_number)
+{
+    switch (space_number)
+    {
+    case 1:
+        ptr = &s1;
+        break;
+    case 2:
+        ptr = &s2;
+        break;
+    case 3:
+        ptr = &s3;
+        break;
+    case 4:
+        ptr = &s4;
+        break;
+    case 5:
+        ptr = &s5;
+        break;
+    case 6:
+        ptr = &s6;
+        break;
+    case 7:
+        ptr = &s7;
+        break;
+    case 8:
+        ptr = &s8;
+        break;
+    case 9:
+        ptr = &s9;
+        break;
+    case 10:
+        ptr = &s10;
+        break;
+    case 11:
+        ptr = &s11;
+        break;
+    case 12:
+        ptr = &s12;
+        break;
+    case 13:
+        ptr = &s13;
+        break;
+    case 14:
+        ptr = &s14;
+        break;
+    case 15:
+        ptr = &s15;
+        break;
+    case 16:
+        ptr = &s16;
+        break;
+    case 17:
+        ptr = &s17;
+        break;
+    case 18:
+        ptr = &s18;
+        break;
+    case 19:
+        ptr = &s19;
+        break;
+    case 20:
+        ptr = &s20;
+        break;
+    case 21:
+        ptr = &s21;
+        break;
+    case 22:
+        ptr = &s22;
+        break;
+    case 23:
+        ptr = &s23;
+        break;
+    case 24:
+        ptr = &s24;
+        break;
+    case 25:
+        ptr = &s25;
+        break;
+    case 26:
+        ptr = &s26;
+        break;
+    case 27:
+        ptr = &s27;
+        break;
+    case 28:
+        ptr = &s28;
+        break;
+    case 29:
+        ptr = &s29;
+        break;
+    case 30:
+        ptr = &s30;
+        break;
+    case 31:
+        ptr = &s31;
+        break;
+    case 32:
+        ptr = &s32;
+        break; 
+
+    default:
+        ptr = nullptr;
+        break;
+    }
+
+}
+
+
+USER Graph::Get_User_Occupying_Space(int space_number)
+{
+    Space* space_ptr;
+    Set_The_Passed_Pointer_To_The_Corresponding_Space_Object(space_ptr, space_number);
+    return space_ptr->Get_Which_User_Is_Occupying_The_Space();
+}
+
+
+bool Graph::Can_Fighter_Use_Attacking_Cards(USER user_turn, ATTACKING_RANGE fighter_range, int fighter_space_number)
+{
+    if(fighter_range == ATTACKING_RANGE::MELEE)
+    {
+        for(auto space : Game_Map_Graph[fighter_space_number])
+        {
+            if(space->Get_Which_User_Is_Occupying_The_Space() != user_turn && space->Get_Which_User_Is_Occupying_The_Space() != USER::NONE)
+            {
+                return true;
+            }
+        }
+    }
+    else if(fighter_range == ATTACKING_RANGE::RANGED)
+    {
+        std::array <ZONE_COLORS, 3> fighter_space_zones = return_zone(fighter_space_number);
+        std::array <ZONE_COLORS, 3> potential_enemy_space_zones;
+        for(int i = 1 ; i < 33 ; i++)
+        {
+            if(i == fighter_space_number)
+            {
+                continue;
+            }
+            if(Get_User_Occupying_Space(fighter_space_number) == user_turn || Get_User_Occupying_Space(fighter_space_number) == USER::NONE)
+            {
+                continue;
+            }
+            
+
+            potential_enemy_space_zones = return_zone(i);
+            for(int j = 0 ; j < 3 ; j++)
+            {
+                if(fighter_space_zones[j] == potential_enemy_space_zones[j])
+                {
+                    return true;
+                }
+            }
+        }
+    }
+    return false;
 }
