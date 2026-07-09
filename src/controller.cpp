@@ -654,6 +654,18 @@ void Controller::discard(int card,USER user_turn)
     }
 }
 
+void Controller::Draw_Card_For_User(USER user_turn, cards card)
+{
+    if(user_turn == USER::USER1)
+    {
+        user1.user_draw(card);
+    }
+    else if(user_turn == USER::USER2)
+    {
+        user2.user_draw(card);
+    }
+}
+
 void Controller::draw(USER user)
 {
     if(user==USER::USER1)

@@ -345,7 +345,7 @@ void User_Choice_Manager::Select_Card_Screen(USER user_turn, Controller& control
 void User_Choice_Manager::boost_Card_Screen(USER user_turn, Controller& control, const ftxui::Element& map_and_user_info)
 {
     auto screen = ScreenInteractive::Fullscreen();
-    std::vector<Card_Base_Class*> temp_user_hand;
+    std::vector<Card_Base_Class*> temp_user_hand = control.Return_A_Copy_Of_User_Hand(user_turn);
     std::string user_turn_name;
     std::string card_being_boosted_name;
     int selected_card = 0;
@@ -367,7 +367,8 @@ void User_Choice_Manager::boost_Card_Screen(USER user_turn, Controller& control,
 
     auto Undo_Button = Button("UNDO", [&]{
         game_current_screen = GAME_FLOW_SCREENS::Card_Selection_Screen;
-        control.Instantiate_Card_Object(user_turn, temp_user_hand[selected_card_index_for_boosting].car)
+        control.Instantiate_Card_Object(user_turn, temp_user_hand[selected_card_index_for_boosting]->Get_Card_Name_Enum());
+        control.Draw_Card_For_User(user_turn, temp_user_hand[selected_card_index_for_boosting]->Get_Card_Name_Enum());
         screen.ExitLoopClosure()();
     });
 
@@ -385,7 +386,7 @@ void User_Choice_Manager::boost_Card_Screen(USER user_turn, Controller& control,
     }
 
     std::vector <std::string> Boost_Card_Options;
-    std::vector <Card_Base_Class*> temp_user_hand = control.Return_A_Copy_Of_User_Hand(user_turn);
+    
     card_being_boosted_name = temp_user_hand[selected_card_index_for_boosting]->get_card_name();
     temp_user_hand.erase(temp_user_hand.begin() + selected_card_index_for_boosting);
     for(auto card : temp_user_hand)

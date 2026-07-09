@@ -289,13 +289,13 @@ void SideKick_Placement_Screen_Manager::Display_Sis3_Screen(Fighters_Print_Info&
     Element To_Be_Rendered;
     bool Is_Younger_User_Turn = (control.Return_Younger_User() == control.Return_User_Turn());
 
+     
     if(Is_Younger_User_Turn)
     {
         Available_Spaces_RadioBox = Radiobox(&Young_User_SideKick_Spaces_Available, &selected_space);
         SideKick_Space_Confirm_Button = Button("Confirm", [&]{
             current_placement = SideKick_Placement_Screen::WATSON_SCREEN;
             control.Set_Fighter_Space_Number(Fighters_Names::SIS3, std::stoi(Young_User_SideKick_Spaces_Available[selected_space]));
-            control.Change_User_Turn(); 
             sis3_struct_info.Is_Placed_On_Map = true;
             sis3_struct_info.Sis_Number = '3';
             Young_User_SideKick_Spaces_Available.erase(Young_User_SideKick_Spaces_Available.begin() + selected_space);
@@ -313,7 +313,6 @@ void SideKick_Placement_Screen_Manager::Display_Sis3_Screen(Fighters_Print_Info&
         SideKick_Space_Confirm_Button = Button("Confirm", [&]{
             current_placement = SideKick_Placement_Screen::CONTINUE_TO_THE_MAIN_MANAGER;
             control.Set_Fighter_Space_Number(Fighters_Names::SIS3, std::stoi(Older_User_SideKick_Spaces_Available[selected_space]));
-            control.Change_User_Turn(); 
             sis3_struct_info.Is_Placed_On_Map = true;
             sis3_struct_info.Sis_Number = '3';
             Older_User_SideKick_Spaces_Available.erase(Older_User_SideKick_Spaces_Available.begin() + selected_space);
@@ -325,6 +324,7 @@ void SideKick_Placement_Screen_Manager::Display_Sis3_Screen(Fighters_Print_Info&
         });
         
     }
+    control.Change_User_Turn();
     screen.Loop(Renderer(Placement_Select_Handler, [&]{
         
         if(Is_Younger_User_Turn)
