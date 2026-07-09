@@ -20,6 +20,7 @@ class Card_Base_Class
     std::string Get_Card_Effect_As_String();
     void Boost_Card_Value(int boost_value);
     virtual void Just_To_Make_Polymorphism_Available();
+    cards Get_Card_Name_Enum();
     
     protected:
     int Card_Value;
@@ -27,6 +28,7 @@ class Card_Base_Class
     CARD_EFFECT_TYPE effect;
     CARD_TYPE type;
     CARD_OWNER owner;
+    cards card_name_enum;
     bool is_discarded;   
     int card_number;        
     std::string card_name;

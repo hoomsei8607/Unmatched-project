@@ -86,5 +86,10 @@ void Card_Base_Class::Boost_Card_Value(int boost_value)
 
 void Card_Base_Class::Just_To_Make_Polymorphism_Available()
 {
-    
+
+}
+
+cards Card_Base_Class::Get_Card_Name_Enum()
+{
+    return this->card_name_enum;
 }

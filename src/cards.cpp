@@ -12,6 +12,7 @@ dracula_feedingfrenzy::dracula_feedingfrenzy()
     owner=CARD_OWNER::DRACULA;
     effect=CARD_EFFECT_TYPE::DURING_COMBAT;
     type=CARD_TYPE::ATTACK;
+    card_name_enum = cards::FEEDING_FRENZY;
     card_number=2;
     card_effect_description="DURING COMBAT: This card's value is\n +1 for each sister in the same zone as\n the opposing fighter.";
 }
