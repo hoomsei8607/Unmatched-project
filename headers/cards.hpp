@@ -31,7 +31,7 @@ class dracula_beastform : public Card_Base_Class
 {
     public:
     dracula_beastform();
-    void card_effect(User &user_handler);
+    void card_effect(Controller& controler);
 };
 class dracula_dash : public Card_Base_Class
 {
@@ -49,7 +49,7 @@ class dracula_look_into_my_eyes : public Card_Base_Class
 {
     public:
     dracula_look_into_my_eyes();
-    void card_effect(User &user_handler);
+    void card_effect(Controller& controler);
 };
 class dracula_prey_upon : public Card_Base_Class
 {
@@ -69,12 +69,12 @@ class dracula_thirst_For_sustenance : public Card_Base_Class
     dracula_thirst_For_sustenance();
     void card_effect();
 };
-class dracula_feint : public Card_Base_Class
-{
-    public:
-    dracula_feint();
-    void card_effect();
-};
+// class dracula_feint : public Card_Base_Class
+// {
+//     public:
+//     dracula_feint();
+//     void card_effect();
+// };
 class holmes_administer_aid : public Card_Base_Class
 {
     public:
@@ -117,12 +117,7 @@ class holmes_eliminate_the_impossible : public Card_Base_Class
     holmes_eliminate_the_impossible();
     void card_effect(Controller& controler,USER user_turn,int choice);
 };
-class holmes_feint : public Card_Base_Class
-{
-    public:
-    holmes_feint();
-    void card_effect(Controller& controler,USER user_turn);
-};
+
 class holmes_fixed_point_in_a_changing_age : public Card_Base_Class
 {
     public:
@@ -150,5 +145,12 @@ class holmes_study_methods : public Card_Base_Class
 {
     public:
     holmes_study_methods();
+    void card_effect(Controller& controler,USER user_turn);
+};
+
+class feint : public Card_Base_Class
+{
+    public:
+    feint();
     void card_effect(Controller& controler,USER user_turn);
 };

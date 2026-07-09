@@ -211,7 +211,7 @@ dracula_beastform::dracula_beastform()
     card_number=2;
     card_effect_description="DURING COMBAT: You may discard\n any number of cards from your hand.\n This card's value is +1 for each card\n you discard.";
 }
-void dracula_beastform::card_effect(User &user_handler)
+void dracula_beastform::card_effect(Controller& controler)
 {
     int discarded_number;
     //input to choose to discard cards or not
@@ -260,7 +260,7 @@ dracula_look_into_my_eyes::dracula_look_into_my_eyes()
     card_number=3;
     card_effect_description="DURING COMBAT: Add the BOOST value\n from your opponent's attack card to\n the defense value of this card.";
 }
-void dracula_look_into_my_eyes::card_effect(User &user_handler)
+void dracula_look_into_my_eyes::card_effect(Controller& controler)
 {
     Card_Boost_Value/*+= enemy's played card*/;
 }
@@ -341,21 +341,21 @@ void dracula_thirst_For_sustenance::card_effect()
 {
     //if win move dracula adjacent to the enemy fighter
 }
-dracula_feint::dracula_feint()
-{
-    card_name="Feint";
-    Card_Value=2;
-    Card_Boost_Value=2;
-    owner=CARD_OWNER::ANY;
-    effect=CARD_EFFECT_TYPE::IMMEDIATE;
-    type=CARD_TYPE::VERSATILE;
-    card_number=3;
-    card_effect_description="IMMEDIATELY:Cancel all effects on\n your opponent's card.";
-}
-void dracula_feint::card_effect()
-{
+// dracula_feint::dracula_feint()
+// {
+//     card_name="Feint";
+//     Card_Value=2;
+//     Card_Boost_Value=2;
+//     owner=CARD_OWNER::ANY;
+//     effect=CARD_EFFECT_TYPE::IMMEDIATE;
+//     type=CARD_TYPE::VERSATILE;
+//     card_number=3;
+//     card_effect_description="IMMEDIATELY:Cancel all effects on\n your opponent's card.";
+// }
+// void dracula_feint::card_effect()
+// {
     
-}
+// }
 holmes_administer_aid::holmes_administer_aid()
 {
     card_name="Administer Aid";
@@ -515,21 +515,6 @@ void holmes_eliminate_the_impossible::card_effect(Controller& controler,USER use
     controler.discard(choice,USER::USER1);
     }
 }
-holmes_feint::holmes_feint()
-{
-    card_name="Feint";
-    Card_Value=2;
-    Card_Boost_Value=1;
-    owner=CARD_OWNER::ANY;
-    effect=CARD_EFFECT_TYPE::IMMEDIATE;
-    type=CARD_TYPE::VERSATILE;
-    card_number=3;
-    card_effect_description="IMMEDIATELY: Cancel all effects on\nyour opponents's card.";
-}
-void holmes_feint::card_effect(Controller& controler,USER user_turn)
-{
-
-}
 holmes_fixed_point_in_a_changing_age::holmes_fixed_point_in_a_changing_age()
 {
     card_name="Fixed Point In A Changing Age";
@@ -610,6 +595,22 @@ holmes_study_methods::holmes_study_methods()
     card_effect_description="AFTER COMBAT: if you won the\ncombat,look at your opponent's hand. ";
 }
 void holmes_study_methods::card_effect(Controller& controler,USER user_turn)
+{
+
+}
+
+feint::feint()
+{
+    card_name="Feint";
+    Card_Value=2;
+    Card_Boost_Value=1;
+    owner=CARD_OWNER::ANY;
+    effect=CARD_EFFECT_TYPE::IMMEDIATE;
+    type=CARD_TYPE::VERSATILE;
+    card_number=3;
+    card_effect_description="IMMEDIATELY: Cancel all effects on\nyour opponents's card.";
+}
+void feint::card_effect(Controller& controler,USER user_turn)
 {
 
 }
