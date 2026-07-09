@@ -25,7 +25,8 @@ class User_Choice_Manager
         GAME_FLOW_SCREENS game_current_screen;
         Fighters_Names selected_fighter;
         int selected_card_index_for_boosting;
-        bool selected_card_has_been_boosted;
+        int selected_Attacker_card_index;
+        int attacker_card_value;
 };
 
 

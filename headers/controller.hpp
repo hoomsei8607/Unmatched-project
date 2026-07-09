@@ -55,6 +55,7 @@ class Controller
         void Call_Card_Effect_Function(USER user_turn, cards card_name, int index, Fighters_Names selected_enemy = Fighters_Names::NONE, int choice = -1);
         void Boost_Selected_Card_Value(USER user_turn, int index, int boost_value);
         void Draw_Card_For_User(USER user_turn, cards card);
+        int Return_card_Value(USER user_turn, int index);
         ~Controller();
     private:
         User user1;

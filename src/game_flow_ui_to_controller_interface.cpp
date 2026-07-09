@@ -2,6 +2,7 @@
 #include "../headers/graph.hpp"
 #include "../headers/cards.hpp"
 #include "../headers/controller.hpp"
+#include "../headers/Fighting_Screen_Manager_Class.hpp"
 #include <vector>
 #include <string>
 #include <set>
@@ -16,7 +17,6 @@ using namespace ftxui;
 User_Choice_Manager::User_Choice_Manager()
 {
     game_current_screen = GAME_FLOW_SCREENS::CHOOSE_FIGHTER;
-    selected_card_has_been_boosted = false;
 
 }
 
@@ -221,6 +221,7 @@ void User_Choice_Manager::Choose_Action_Screen(USER user_turn, Controller& contr
     });
     Component Undo_Button = Button("Undo", [&]{
         game_current_screen = GAME_FLOW_SCREENS::CHOOSE_FIGHTER;
+        control.Change_User_Turn();
         screen.ExitLoopClosure()();
     });
     Component Action_Select_Container = Container::Vertical({radio_box, confirm_button, Undo_Button});
@@ -269,6 +270,9 @@ void User_Choice_Manager::Select_Card_Screen(USER user_turn, Controller& control
         if(selected_card_type == CARD_TYPE::ATTACK || selected_card_type == CARD_TYPE::VERSATILE )
         {
             game_current_screen == GAME_FLOW_SCREENS::FIGHTING_SCREEN;
+            selected_Attacker_card_index = selected;
+            attacker_card_value = control.Return_card_Value(control.Return_User_Turn(), selected);
+            control.Change_User_Turn();
         }
         if(selected_card_type == CARD_TYPE::SCHEME)
         {
@@ -357,8 +361,10 @@ void User_Choice_Manager::boost_Card_Screen(USER user_turn, Controller& control,
         if(boosted_card_type == CARD_TYPE::ATTACK || boosted_card_type == CARD_TYPE::VERSATILE)
         {
             game_current_screen = GAME_FLOW_SCREENS::FIGHTING_SCREEN;
-            selected_card_has_been_boosted = true;
+            selected_Attacker_card_index = selected_card_index_for_boosting;
+            attacker_card_value = control.Return_card_Value(control.Return_User_Turn(), selected_card_index_for_boosting);
         }
+        control.Change_User_Turn();
         screen.ExitLoopClosure()();
 
 
@@ -411,16 +417,15 @@ void User_Choice_Manager::boost_Card_Screen(USER user_turn, Controller& control,
 
 void User_Choice_Manager::Fighting_Screen(USER user_turn, Controller& control, const ftxui::Element& map_and_user_info)
 {
-    auto screen = ScreenInteractive::Fullscreen();
-    std::string User_turn_Name_string;
-    if(user_turn == USER::USER1)
+    Fighting_Screen_Manager fighting_screen_manager_object( attacker_card_value, selected_Attacker_card_index);
+    while (true)
     {
-        User_turn_Name_string = control.Return_User1_Username();
+        if(!fighting_screen_manager_object.Screen_Manager(control))
+        {
+            break;
+        }
     }
-    else if(user_turn == USER::USER2)
-    {
-        User_turn_Name_string = control.Return_User2_Username();
-    }
+    
 
 
 }

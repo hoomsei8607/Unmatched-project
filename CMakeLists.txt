@@ -23,6 +23,7 @@ add_library(My_Written_Code
                 src/space.cpp
                 src/cards.cpp
                 src/card_abstract.cpp
+                src/Fighting_Screen_Manager_Class.cpp
                 )
 target_link_directories(My_Written_Code PUBLIC headers)
 

@@ -256,6 +256,21 @@ void Controller::Change_User_Turn()
     }
 }
 
+int Controller::Return_card_Value(USER user_turn, int index)
+{
+    int to_be_returned;
+
+    if(user_turn == USER::USER1)
+    {
+        to_be_returned = User1_Hand[index]->get_card_value();
+    }
+    else if (user_turn == USER::USER2)
+    {
+        to_be_returned = User2_Hand[index]->get_card_value();
+    }
+    return to_be_returned;
+}
+
 USER Controller::Return_User_Turn() const
 {
     return User_Turn;
