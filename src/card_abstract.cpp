@@ -78,3 +78,13 @@ std::string Card_Base_Class::Get_Card_Effect_As_String()
 {
     return card_effect_description;
 }
+
+void Card_Base_Class::Boost_Card_Value(int boost_value)
+{
+    Card_Value += boost_value;
+}
+
+void Card_Base_Class::Just_To_Make_Polymorphism_Available()
+{
+    
+}

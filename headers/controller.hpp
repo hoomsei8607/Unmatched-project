@@ -51,6 +51,9 @@ class Controller
         ftxui::Element Return_Hand_Elements_For_Boost_Screen_Render(int selected_card_to_be_boosted);
         ATTACKING_RANGE Return_Fighter_Attacking_Range(Fighters_Names selected_fighter);
         void Set_Current_User_Action(USER_ACTION user_action);
+        std::string Return_Card_Name(USER user_turn, int index);
+        void Call_Card_Effect_Function(USER user_turn, cards card_name, int index, Fighters_Names selected_enemy = Fighters_Names::NONE, int choice = -1);
+        void Boost_Selected_Card_Value(USER user_turn, int index, int boost_value);
         ~Controller();
     private:
         User user1;

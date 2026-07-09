@@ -1,5 +1,6 @@
 #include "../headers/game_flow_ui_to_controller_interface.hpp"
 #include "../headers/graph.hpp"
+#include "../headers/cards.hpp"
 #include "../headers/controller.hpp"
 #include <vector>
 #include <string>
@@ -15,6 +16,7 @@ using namespace ftxui;
 User_Choice_Manager::User_Choice_Manager()
 {
     game_current_screen = GAME_FLOW_SCREENS::CHOOSE_FIGHTER;
+    selected_card_has_been_boosted = false;
 
 }
 
@@ -41,6 +43,10 @@ bool User_Choice_Manager::Screen_Manager(USER user_turn, Controller& control, co
 
         case GAME_FLOW_SCREENS::Card_Boost_Selection_Screen:
             boost_Card_Screen(user_turn, control, map_and_user_info);
+            return true;
+        
+        case GAME_FLOW_SCREENS::FIGHTING_SCREEN:
+            Fighting_Screen(user_turn, control, map_and_user_info);
             return true;
 
         case GAME_FLOW_SCREENS::GO_BACK_TO_MAIN_LOOP:
@@ -266,7 +272,10 @@ void User_Choice_Manager::Select_Card_Screen(USER user_turn, Controller& control
         }
         if(selected_card_type == CARD_TYPE::SCHEME)
         {
-
+            if(control.Return_Card_Name(user_turn, selected) == "Prey Upon")
+            {
+                
+            }
         }
         screen.ExitLoopClosure()();
 
@@ -338,9 +347,18 @@ void User_Choice_Manager::boost_Card_Screen(USER user_turn, Controller& control,
     auto screen = ScreenInteractive::Fullscreen();
     std::string user_turn_name;
     std::string card_being_boosted_name;
+    int selected_card = 0;
 
     auto Confirm_Button = Button("CONFIRM", [&]{
-
+        control.Boost_Selected_Card_Value(user_turn, selected_card_index_for_boosting, control.return_card_boost_value(selected_card,user_turn));
+        control.discard(selected_card, user_turn);
+        CARD_TYPE boosted_card_type = control.Return_Selected_Card_Type(user_turn, selected_card_index_for_boosting);
+        if(boosted_card_type == CARD_TYPE::ATTACK || boosted_card_type == CARD_TYPE::VERSATILE)
+        {
+            game_current_screen = GAME_FLOW_SCREENS::FIGHTING_SCREEN;
+            selected_card_has_been_boosted = true;
+        }
+        screen.ExitLoopClosure()();
 
 
     });
@@ -368,7 +386,7 @@ void User_Choice_Manager::boost_Card_Screen(USER user_turn, Controller& control,
     {
         Boost_Card_Options.push_back(card->get_card_name());
     }
-    int selected_card = 0;
+    
     auto card_select_radiobox = Toggle(&Boost_Card_Options, &selected_card);
     auto container = Container::Vertical({card_select_radiobox, Confirm_Button, Undo_Button});
 
@@ -382,4 +400,20 @@ void User_Choice_Manager::boost_Card_Screen(USER user_turn, Controller& control,
         });
     }));
     
+}
+
+void User_Choice_Manager::Fighting_Screen(USER user_turn, Controller& control, const ftxui::Element& map_and_user_info)
+{
+    auto screen = ScreenInteractive::Fullscreen();
+    std::string User_turn_Name_string;
+    if(user_turn == USER::USER1)
+    {
+        User_turn_Name_string = control.Return_User1_Username();
+    }
+    else if(user_turn == USER::USER2)
+    {
+        User_turn_Name_string = control.Return_User2_Username();
+    }
+
+
 }

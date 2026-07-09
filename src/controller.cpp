@@ -2,6 +2,7 @@
 #include "../headers/fighters_sub_classes.hpp"
 #include "../headers/structs.hpp"
 #include "../headers/cards.hpp"
+#include <stdexcept>
 #include <algorithm>
 #include <random>
 
@@ -487,7 +488,7 @@ void Controller::Instantiate_Card_Object(USER user, cards card_name)
             break;
         
         case cards::FEINT : 
-            temp_card_ptr = new dracula_feint;
+            temp_card_ptr = new feint;
             break;
         }
     }
@@ -517,7 +518,7 @@ void Controller::Instantiate_Card_Object(USER user, cards card_name)
             temp_card_ptr = new holmes_eliminate_the_impossible;
             break;
         case cards::FEINT :
-            temp_card_ptr = new holmes_feint;
+            temp_card_ptr = new feint;
             break;
         case cards::FIXED_POINT_IN_A_CHANGING_AGE :
             temp_card_ptr = new holmes_fixed_point_in_a_changing_age;
@@ -641,11 +642,13 @@ void Controller::discard(int card,USER user_turn)
 {
     if (user_turn==USER::USER1)
     {
+        delete User1_Hand[card];
         User1_Hand.erase(User1_Hand.begin()+card);
         user1.user_discard(card);
     }
     else if (user_turn==USER::USER2)
     {
+        delete User2_Hand[card];
         User2_Hand.erase(User1_Hand.begin()+card);
         user2.user_discard(card);
     }
@@ -830,4 +833,338 @@ ATTACKING_RANGE Controller::Return_Fighter_Attacking_Range(Fighters_Names select
 void Controller::Set_User_Turn(USER user_turn)
 {
     this->User_Turn = user_turn;
+}
+
+std::string Controller::Return_Card_Name(USER user_turn, int index)
+{
+    std::string to_be_returned;
+    if(user_turn == USER::USER1)
+    {
+        to_be_returned = User1_Hand[index]->get_card_name();
+    }
+    else if(user_turn == USER::USER2)
+    {   
+        to_be_returned = User2_Hand[index]->get_card_name();
+    }
+    return to_be_returned;
+}
+
+void Controller::Call_Card_Effect_Function(USER user_turn, cards card_name, int index, Fighters_Names selected_enemy, int choice)
+{
+    std::vector<Card_Base_Class*>* pointer_to_user_hand;
+    if(user_turn == USER::USER1)
+    {
+        pointer_to_user_hand = &User1_Hand;
+    }
+    else if(user_turn == USER::USER2)
+    {
+        pointer_to_user_hand = &User2_Hand;
+    }
+
+    switch (card_name)
+    {
+    case cards::AMBUSH:
+    {
+        dracula_ambush* ptr = nullptr;
+        ptr = dynamic_cast<dracula_ambush*>((*pointer_to_user_hand)[index]);
+        if(ptr == nullptr)
+        {
+            throw std::logic_error("Couldn't down cast for ambush card"); 
+        }
+        ptr->card_effect((*this), user_turn);
+        break;
+    }
+    case cards::AMINISTER_AID:
+    {
+        holmes_administer_aid* ptr = nullptr;
+        ptr = dynamic_cast<holmes_administer_aid*>((*pointer_to_user_hand)[index]);
+        if(ptr == nullptr)
+        {
+            throw std::logic_error("Couldn't down cast for aminister aid card"); 
+        }
+        ptr->card_effect((*this), user_turn);
+        break;
+    }
+    case cards::BAPTISM_OF_BLOOD:
+    {
+        dracula_baptism_of_blood* ptr = nullptr;
+        ptr = dynamic_cast<dracula_baptism_of_blood*>((*pointer_to_user_hand)[index]);
+        if(ptr == nullptr)
+        {
+            throw std::logic_error("Couldn't down cast for baptism of blood card"); 
+        }
+            ptr->card_effect((*this));
+        break;
+    }
+    
+    case cards::BEASTFORM:
+    {
+        dracula_beastform* ptr = nullptr;
+        ptr = dynamic_cast<dracula_beastform*>((*pointer_to_user_hand)[index]);
+        if(ptr == nullptr)
+        {
+            throw std::logic_error("Couldn't down cast for beastform card"); 
+        }
+        ptr->card_effect((*this));
+        break;
+    }
+    
+    case cards::CONFIRM_SUSPICION:
+    {
+        holmes_confirm_suspicion* ptr = nullptr;
+        ptr = dynamic_cast<holmes_confirm_suspicion*>((*pointer_to_user_hand)[index]);
+        if(ptr == nullptr)
+        {
+            throw std::logic_error("Couldn't down cast for confirm suspicion card"); 
+        }
+        ptr->card_effect((*this), user_turn);
+        break;
+    }
+    
+    case cards::COUNTERPUNCH:
+    {
+        holmes_counterpunch* ptr = nullptr;
+        ptr = dynamic_cast<holmes_counterpunch*>((*pointer_to_user_hand)[index]);
+        if(ptr == nullptr)
+        {
+            throw std::logic_error("Couldn't down cast for holmes counter punsh card"); 
+        }
+        if(selected_enemy == Fighters_Names::NONE)
+        {
+            throw std::logic_error("no enemy has been selected for the card effect");
+        }
+        ptr->card_effect((*this), selected_enemy, user_turn);
+        break;
+
+    }
+    
+    case cards::DASH:
+    {
+        dracula_dash* ptr = nullptr;
+        ptr = dynamic_cast<dracula_dash*>((*pointer_to_user_hand)[index]);
+        if(ptr == nullptr)
+        {
+            throw std::logic_error("Couldn't down cast for dracula dash card"); 
+        }
+        ptr->card_effect((*this));
+        break;
+    }
+    
+    case cards::DEDUCE_STRATEGY:
+    {
+        holmes_deduce_strategy* ptr = nullptr;
+        ptr = dynamic_cast<holmes_deduce_strategy*>((*pointer_to_user_hand)[index]);
+        if(ptr == nullptr)
+        {
+            throw std::logic_error("Couldn't down cast for deduce strategy card"); 
+        }
+        ptr->card_effect((*this), user_turn);
+        break;
+    }
+    
+    case cards::EDUCATION_NEVER_ENDS:
+    {
+        holmes_education_never_ends* ptr = nullptr;
+        ptr = dynamic_cast<holmes_education_never_ends*>((*pointer_to_user_hand)[index]);
+        if(ptr == nullptr)
+        {
+            throw std::logic_error("Couldn't down cast for education never ends card"); 
+        }
+        ptr->card_effect((*this), user_turn);
+        break;
+    }
+    
+    case cards::ELEMENTARY:
+    {
+        holmes_elementary* ptr = nullptr;
+        ptr = dynamic_cast<holmes_elementary*>((*pointer_to_user_hand)[index]);
+        if(ptr == nullptr)
+        {
+            throw std::logic_error("Couldn't down cast for holems elementary card"); 
+        }
+        ptr->card_effect((*this), user_turn);
+        break;
+    }
+    
+    case cards::ELIMINATE_THE_IMPOSSIBLE:
+    {
+        holmes_eliminate_the_impossible* ptr = nullptr;
+        ptr = dynamic_cast<holmes_eliminate_the_impossible*>((*pointer_to_user_hand)[index]);
+        if(ptr == nullptr)
+        {
+            throw std::logic_error("Couldn't down cast for holmes eliminate the impossible card"); 
+        }
+        if(choice == -1)
+        {
+            throw std::logic_error("card has not been choosen from enemy deck");
+        }
+        ptr->card_effect((*this), user_turn, choice);
+        break;
+    }
+    
+    case cards::EXPLOIT:
+    {
+        dracula_exploit* ptr = nullptr;
+        ptr = dynamic_cast<dracula_exploit*>((*pointer_to_user_hand)[index]);
+        if(ptr == nullptr)
+        {
+            throw std::logic_error("Couldn't down cast for dracula exploit card"); 
+        }
+        ptr->card_effect((*this), user_turn);
+        break;
+    }
+    
+    case cards::FEEDING_FRENZY:
+    {
+        dracula_feedingfrenzy* ptr = nullptr;
+        ptr = dynamic_cast<dracula_feedingfrenzy*>((*pointer_to_user_hand)[index]);
+        if(ptr == nullptr)
+        {
+            throw std::logic_error("Couldn't down cast for feeding frenzy card"); 
+        }
+        if(selected_enemy == Fighters_Names::NONE)
+        {
+            throw std::logic_error("no enemy has been selected for the card effect");
+        }
+        ptr->card_effect((*this), selected_enemy);
+        break;
+    }
+    
+    case cards::FEINT:
+    {
+        feint* ptr = nullptr;
+        ptr = dynamic_cast<feint*>((*pointer_to_user_hand)[index]);
+        if(ptr == nullptr)
+        {
+            throw std::logic_error("Couldn't down cast for feint card"); 
+        }
+        ptr->card_effect((*this), user_turn);
+        break;
+    }
+    
+    case cards::FIXED_POINT_IN_A_CHANGING_AGE:
+    {
+        holmes_fixed_point_in_a_changing_age* ptr = nullptr;
+        ptr = dynamic_cast<holmes_fixed_point_in_a_changing_age*>((*pointer_to_user_hand)[index]);
+        if(ptr == nullptr)
+        {
+            throw std::logic_error("Couldn't down cast for fixed point changing type card"); 
+        }
+        ptr->card_effect((*this), user_turn);
+        break;
+    }   
+    
+    case cards::LOOK_INTO_MY_EYES:
+    {
+        dracula_look_into_my_eyes* ptr = nullptr;
+        ptr = dynamic_cast<dracula_look_into_my_eyes*>((*pointer_to_user_hand)[index]);
+        if(ptr == nullptr)
+        {
+            throw std::logic_error("Couldn't down cast for dracula look into my eyes card"); 
+        }
+        ptr->card_effect((*this));
+        break;
+    }
+    
+    case cards::MASTER_OF_DISGUISE:
+    {
+        holmes_master_of_disguise* ptr = nullptr;
+        ptr = dynamic_cast<holmes_master_of_disguise*>((*pointer_to_user_hand)[index]);
+        if(ptr == nullptr)
+        {
+            throw std::logic_error("Couldn't down cast for master of disguise card"); 
+        }
+        ptr->card_effect((*this), user_turn);
+        break;
+    }
+    
+    case cards::MISTFORM:
+    {
+        dracula_mistform* ptr = nullptr;
+        ptr = dynamic_cast<dracula_mistform*>((*pointer_to_user_hand)[index]);
+        if(ptr == nullptr)
+        {
+            throw std::logic_error("Couldn't down cast for dracula mistform card"); 
+        }
+        ptr->card_effect((*this));
+        break;
+    }
+
+    case cards::PREY_UPON:
+    {
+        dracula_prey_upon* ptr = nullptr;
+        ptr = dynamic_cast<dracula_prey_upon*>((*pointer_to_user_hand)[index]);
+        if(ptr == nullptr)
+        {
+            throw std::logic_error("Couldn't down cast for dracula prey upon card"); 
+        }
+        ptr->card_effect((*this), user_turn);
+        break;
+    }    
+    
+    case cards::RAVENING_SEDUCTION:
+    {
+        dracula_ravening_seduction* ptr = nullptr;
+        ptr = dynamic_cast<dracula_ravening_seduction*>((*pointer_to_user_hand)[index]);
+        if(ptr == nullptr)
+        {
+            throw std::logic_error("Couldn't down cast for dracula ravening seduction card"); 
+        }
+        ptr->card_effect();
+        break;
+    }    
+    
+    case cards::SERVICE_REVOLVER:
+    {
+        break;
+    }    
+    
+    case cards::STUDY_METHODS:
+    {
+        holmes_study_methods* ptr = nullptr;
+        ptr = dynamic_cast<holmes_study_methods*>((*pointer_to_user_hand)[index]);
+        if(ptr == nullptr)
+        {
+            throw std::logic_error("Couldn't down cast for holmes study method card"); 
+        }
+        ptr->card_effect((*this), user_turn);
+        break;
+    }    
+    
+    case cards::THE_GAME_IS_AFOOT:
+    {
+        holmes_the_game_is_afoot* ptr = nullptr;
+        ptr = dynamic_cast<holmes_the_game_is_afoot*>((*pointer_to_user_hand)[index]);
+        if(ptr == nullptr)
+        {
+            throw std::logic_error("Couldn't down cast for holmes game is afoot card"); 
+        }
+        ptr->card_effect((*this), user_turn);
+        break;
+    }    
+    
+    case cards::THIRST_FOR_SUSTENANCE:
+    {
+        dracula_thirst_For_sustenance* ptr = nullptr;
+        ptr = dynamic_cast<dracula_thirst_For_sustenance*>((*pointer_to_user_hand)[index]);
+        if(ptr == nullptr)
+        {
+            throw std::logic_error("Couldn't down cast for dracula thirst for sustenance card"); 
+        }
+        ptr->card_effect();
+        break;
+    }   
+    }
+}
+
+void Controller::Boost_Selected_Card_Value(USER user_turn, int index, int boost_value)
+{
+    if(user_turn == USER::USER1)
+    {
+        User1_Hand[index]->Boost_Card_Value(boost_value);
+    }
+    else if(user_turn == USER::USER2)
+    {
+        User2_Hand[index]->Boost_Card_Value(boost_value);
+    }
 }

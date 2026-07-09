@@ -18,6 +18,8 @@ class Card_Base_Class
     std::string Get_Card_Type_As_String();
     std::string Get_Card_Effect_Timing_As_String();
     std::string Get_Card_Effect_As_String();
+    void Boost_Card_Value(int boost_value);
+    virtual void Just_To_Make_Polymorphism_Available();
     
     protected:
     int Card_Value;

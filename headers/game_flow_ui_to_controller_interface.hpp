@@ -20,10 +20,12 @@ class User_Choice_Manager
         void Maneuver_Screen(USER user_turn, Controller& control, const ftxui::Element& map_and_user_info, Fighters_Print_Info* fighter_printing_info, int fighters_count);
         void Select_Card_Screen(USER user_turn, Controller& control, const ftxui::Element& map_and_use_info);
         void boost_Card_Screen(USER user_turn, Controller& control, const ftxui::Element& map_and_user_info);
+        void Fighting_Screen(USER user_turn, Controller& control, const ftxui::Element& map_and_user_info);
     private:
         GAME_FLOW_SCREENS game_current_screen;
         Fighters_Names selected_fighter;
         int selected_card_index_for_boosting;
+        bool selected_card_has_been_boosted;
 };
 
 
