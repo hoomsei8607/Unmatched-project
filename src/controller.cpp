@@ -778,6 +778,7 @@ CARD_TYPE Controller::Return_Selected_Card_Type(USER user_turn, int index)
 ATTACKING_RANGE Controller::Return_Fighter_Attacking_Range(Fighters_Names selected_fighter)
 {
     HERO_NAME user_hero;
+    ATTACKING_RANGE to_be_returned;
     if(User_Turn == USER::USER1)
     {
         user_hero = user1.Return_Hero_Type();
@@ -792,16 +793,20 @@ ATTACKING_RANGE Controller::Return_Fighter_Attacking_Range(Fighters_Names select
         switch (selected_fighter)
         {
         case Fighters_Names::DRACULA:
-            return Dracula_And_Sisters[static_cast<int>(Dracula_And_Sisters_Array_Index::DRACULA)]->Return_Fighter_Attacking_Range_Enum_Type();
+            to_be_returned = Dracula_And_Sisters[static_cast<int>(Dracula_And_Sisters_Array_Index::DRACULA)]->Return_Fighter_Attacking_Range_Enum_Type();
+            break;
         
         case Fighters_Names::SIS1:
-            return Dracula_And_Sisters[static_cast<int>(Dracula_And_Sisters_Array_Index::SIS1)]->Return_Fighter_Attacking_Range_Enum_Type();
+            to_be_returned = Dracula_And_Sisters[static_cast<int>(Dracula_And_Sisters_Array_Index::SIS1)]->Return_Fighter_Attacking_Range_Enum_Type();
+            break;
         
         case Fighters_Names::SIS2:
-            return Dracula_And_Sisters[static_cast<int>(Dracula_And_Sisters_Array_Index::SIS2)]->Return_Fighter_Attacking_Range_Enum_Type();
+            to_be_returned = Dracula_And_Sisters[static_cast<int>(Dracula_And_Sisters_Array_Index::SIS2)]->Return_Fighter_Attacking_Range_Enum_Type();
+            break;
         
         case Fighters_Names::SIS3:
-            return Dracula_And_Sisters[static_cast<int>(Dracula_And_Sisters_Array_Index::SIS3)]->Return_Fighter_Attacking_Range_Enum_Type();
+            to_be_returned = Dracula_And_Sisters[static_cast<int>(Dracula_And_Sisters_Array_Index::SIS3)]->Return_Fighter_Attacking_Range_Enum_Type();
+            break;
         
         }
     }
@@ -810,13 +815,16 @@ ATTACKING_RANGE Controller::Return_Fighter_Attacking_Range(Fighters_Names select
         switch (selected_fighter)
         {
         case Fighters_Names::DRACULA:
-            return sherlock_And_Watson[static_cast<int>(Sherlock_And_Watson_Array_Index::SHERLOCK)]->Return_Fighter_Attacking_Range_Enum_Type();
+            to_be_returned = sherlock_And_Watson[static_cast<int>(Sherlock_And_Watson_Array_Index::SHERLOCK)]->Return_Fighter_Attacking_Range_Enum_Type();
+            break;
         
         case Fighters_Names::SIS1:
-            return sherlock_And_Watson[static_cast<int>(Sherlock_And_Watson_Array_Index::WATSON)]->Return_Fighter_Attacking_Range_Enum_Type();
+            to_be_returned = sherlock_And_Watson[static_cast<int>(Sherlock_And_Watson_Array_Index::WATSON)]->Return_Fighter_Attacking_Range_Enum_Type();
+            break;
         
         }
     }
+    return to_be_returned;
 }
 
 void Controller::Set_User_Turn(USER user_turn)
