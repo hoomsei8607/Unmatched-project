@@ -370,23 +370,22 @@ bool Controller::Return_Is_Fighter_Alive(Fighters_Names name) const
     switch (name)
     {
     case Fighters_Names::DRACULA:
-        Dracula_And_Sisters[static_cast<int>(Dracula_And_Sisters_Array_Index::DRACULA)]->return_is_fighter_alive();
+        return Dracula_And_Sisters[static_cast<int>(Dracula_And_Sisters_Array_Index::DRACULA)]->return_is_fighter_alive();
         break;
-    
     case Fighters_Names::SIS1:
-        Dracula_And_Sisters[static_cast<int>(Dracula_And_Sisters_Array_Index::SIS1)]->return_is_fighter_alive();
+        return Dracula_And_Sisters[static_cast<int>(Dracula_And_Sisters_Array_Index::SIS1)]->return_is_fighter_alive();
         break;
     case Fighters_Names::SIS2:
-        Dracula_And_Sisters[static_cast<int>(Dracula_And_Sisters_Array_Index::SIS2)]->return_is_fighter_alive();
+        return Dracula_And_Sisters[static_cast<int>(Dracula_And_Sisters_Array_Index::SIS2)]->return_is_fighter_alive();
         break;
     case Fighters_Names::SIS3:
-        Dracula_And_Sisters[static_cast<int>(Dracula_And_Sisters_Array_Index::SIS3)]->return_is_fighter_alive();
+        return Dracula_And_Sisters[static_cast<int>(Dracula_And_Sisters_Array_Index::SIS3)]->return_is_fighter_alive();
         break;
     case Fighters_Names::SHERLOCK:
-    sherlock_And_Watson[static_cast<int>(Sherlock_And_Watson_Array_Index::SHERLOCK)]->return_is_fighter_alive();
+        return sherlock_And_Watson[static_cast<int>(Sherlock_And_Watson_Array_Index::SHERLOCK)]->return_is_fighter_alive();
         break;
     case Fighters_Names::WATSON:
-    sherlock_And_Watson[static_cast<int>(Sherlock_And_Watson_Array_Index::WATSON)]->return_is_fighter_alive();
+        return sherlock_And_Watson[static_cast<int>(Sherlock_And_Watson_Array_Index::WATSON)]->return_is_fighter_alive();
         break;
     }
     return false;
@@ -664,7 +663,7 @@ void Controller::discard(int card,USER user_turn)
     else if (user_turn==USER::USER2)
     {
         delete User2_Hand[card];
-        User2_Hand.erase(User1_Hand.begin()+card);
+        User2_Hand.erase(User2_Hand.begin()+card);
         user2.user_discard(card);
     }
 }
@@ -696,7 +695,7 @@ void Controller::draw(USER user)
         {
             Instantiate_Card_Object(user,sherlock_deck.back());
             user1.user_draw(sherlock_deck.back());
-            dracula_deck.pop_back();
+            sherlock_deck.pop_back();
             return;
         }
     }
@@ -713,7 +712,7 @@ void Controller::draw(USER user)
         {
             Instantiate_Card_Object(user,sherlock_deck.back());
             user2.user_draw(sherlock_deck.back());
-            dracula_deck.pop_back();
+            sherlock_deck.pop_back();
             return;
         }
     }
@@ -800,7 +799,7 @@ CARD_TYPE Controller::Return_Selected_Card_Type(USER user_turn, int index)
     }
     else if(user_turn == USER::USER2)
     {
-        return User1_Hand[index]->get_type();
+        return User2_Hand[index]->get_type();
     }
 }
 
@@ -844,11 +843,11 @@ ATTACKING_RANGE Controller::Return_Fighter_Attacking_Range(Fighters_Names select
     {
         switch (selected_fighter)
         {
-        case Fighters_Names::DRACULA:
+        case Fighters_Names::SHERLOCK:
             to_be_returned = sherlock_And_Watson[static_cast<int>(Sherlock_And_Watson_Array_Index::SHERLOCK)]->Return_Fighter_Attacking_Range_Enum_Type();
             break;
         
-        case Fighters_Names::SIS1:
+        case Fighters_Names::WATSON:
             to_be_returned = sherlock_And_Watson[static_cast<int>(Sherlock_And_Watson_Array_Index::WATSON)]->Return_Fighter_Attacking_Range_Enum_Type();
             break;
         

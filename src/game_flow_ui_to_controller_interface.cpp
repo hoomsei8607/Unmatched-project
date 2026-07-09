@@ -221,7 +221,6 @@ void User_Choice_Manager::Choose_Action_Screen(USER user_turn, Controller& contr
     });
     Component Undo_Button = Button("Undo", [&]{
         game_current_screen = GAME_FLOW_SCREENS::CHOOSE_FIGHTER;
-        control.Change_User_Turn();
         screen.ExitLoopClosure()();
     });
     Component Action_Select_Container = Container::Vertical({radio_box, confirm_button, Undo_Button});
@@ -269,7 +268,7 @@ void User_Choice_Manager::Select_Card_Screen(USER user_turn, Controller& control
         CARD_TYPE selected_card_type = control.Return_Selected_Card_Type(user_turn, selected);
         if(selected_card_type == CARD_TYPE::ATTACK || selected_card_type == CARD_TYPE::VERSATILE )
         {
-            game_current_screen == GAME_FLOW_SCREENS::FIGHTING_SCREEN;
+            game_current_screen = GAME_FLOW_SCREENS::FIGHTING_SCREEN;
             selected_Attacker_card_index = selected;
             attacker_card_value = control.Return_card_Value(control.Return_User_Turn(), selected);
             control.Change_User_Turn();
