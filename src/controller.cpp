@@ -726,11 +726,11 @@ int Controller::return_card_boost_value(int card,USER user_turn)
 {
     if (user_turn==USER::USER1)
     {
-        return User2_Hand[card]->get_Card_Boost_Value();
+        return User1_Hand[card]->get_Card_Boost_Value();
     }
     else if (user_turn==USER::USER2)
     {
-        return User1_Hand[card]->get_Card_Boost_Value();
+        return User2_Hand[card]->get_Card_Boost_Value();
     }         
 }
 void Controller::discard(int card,USER user_turn)

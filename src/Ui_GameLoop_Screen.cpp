@@ -43,9 +43,9 @@ void User_Interface::Game_Loop_Screen(Controller& control)
     else if(control.Return_Younger_Hero_Name() == HERO_NAME::SHERLOCK)
     {
         control.Set_Fighter_Space_Number(Fighters_Names::DRACULA, 22);
-        game_map_ptr->Set_User_Occupying_Space(control.Return_Younger_User(), 22);
+        game_map_ptr->Set_User_Occupying_Space(control.Return_Older_User(), 22);
         control.Set_Fighter_Space_Number(Fighters_Names::SHERLOCK, 9);
-        game_map_ptr->Set_User_Occupying_Space(control.Return_Older_User(), 9);
+        game_map_ptr->Set_User_Occupying_Space(control.Return_Younger_User(), 9);
     }
     game_map_ptr->Change_Space_Occiupied_Status(22);
     game_map_ptr->Change_Space_Occiupied_Status(9);
