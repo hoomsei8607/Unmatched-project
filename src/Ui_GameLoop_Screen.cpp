@@ -192,6 +192,56 @@ void User_Interface::Game_Loop_Screen(Controller& control)
         control.Fill_Fighter_Info_Struct(Fighters_Names::SIS2, Dracula_Sis2_Info);
         control.Fill_Fighter_Info_Struct(Fighters_Names::SIS3, Dracula_Sis3_Info);
 
+
+        if(user_info_struct.User1_Hero_Type == HERO_NAME::DRACULA)
+        {
+            Player1_HeroInfo_Box = vbox({
+                text("DRACULA"),
+                hbox({text("Hp: "), text(std::to_string(Dracula_Info.Current_Hp)), text("/"), text(std::to_string(Dracula_Info.Initial_Hp))}),
+                gauge((float)Dracula_Info.Current_Hp/ Dracula_Info.Initial_Hp),
+                hbox({text("Move Value: "), text(std::to_string(Dracula_Info.Move_Value))}),
+                hbox({text("Range: "), text(std::to_string(Dracula_Info.Range))}),
+                text(user_info_struct.User1_Name)
+            }) | border;
+        }
+        else if(user_info_struct.User1_Hero_Type == HERO_NAME::SHERLOCK)
+        {
+            Player1_HeroInfo_Box = vbox({
+                text("SHERLOCK"),
+                hbox({text("Hp: "), text(std::to_string(Sherlock_Info.Current_Hp)), text("/"), text(std::to_string(Sherlock_Info.Initial_Hp))}),
+                gauge((float)Sherlock_Info.Current_Hp/ Sherlock_Info.Initial_Hp),
+                hbox({text("Move Value: "), text(std::to_string(Sherlock_Info.Move_Value))}),
+                hbox({text("Range: "), text(std::to_string(Sherlock_Info.Range))}),
+                text(user_info_struct.User1_Name)
+                
+            }) | border;
+        }
+
+
+        if(user_info_struct.User2_Hero_Type == HERO_NAME::SHERLOCK)
+        {
+            Player2_HeroInfo_Box = vbox({
+                text("SHERLOCK"),
+                hbox({text("Hp: "), text(std::to_string(Sherlock_Info.Current_Hp)), text("/"), text(std::to_string(Sherlock_Info.Initial_Hp))}),
+                gauge((float)Sherlock_Info.Current_Hp/ Sherlock_Info.Initial_Hp),
+                hbox({text("Move Value: "), text(std::to_string(Sherlock_Info.Move_Value))}),
+                hbox({text("Range: "), text(std::to_string(Sherlock_Info.Range))}),
+                text(user_info_struct.User2_Name)
+            }) | border;
+        }
+        else if(user_info_struct.User2_Hero_Type == HERO_NAME::DRACULA)
+        {
+            Player2_HeroInfo_Box = vbox({
+                text("DRACULA"),
+                hbox({text("Hp: "), text(std::to_string(Dracula_Info.Current_Hp)), text("/"), text(std::to_string(Dracula_Info.Initial_Hp))}),
+                gauge((float)Dracula_Info.Current_Hp/ Dracula_Info.Initial_Hp),
+                hbox({text("Move Value: "), text(std::to_string(Dracula_Info.Move_Value))}),
+                hbox({text("Range: "), text(std::to_string(Dracula_Info.Range))}),
+                text(user_info_struct.User2_Name)
+            }) | border;
+    
+        }
+
         //recreating each element because information can change 
         auto Terminal_Out_Map = vbox
         ({

@@ -88,9 +88,12 @@ void User_Choice_Manager::Maneuver_Screen(USER user_turn, Controller& control, c
     Component Maneuver_Confirm_Button = Button("Confirm", [&]{
         USER space_occupied_by_which_user = game_graph->Get_User_Occupying_Space(control.Return_Hero_Space_Number(selected_fighter));
         game_graph->Set_User_Occupying_Space(USER::NONE, control.Return_Hero_Space_Number(selected_fighter));
+        game_graph->Change_Space_Occiupied_Status(control.Return_Hero_Space_Number(selected_fighter));
+
         control.Set_Fighter_Space_Number(selected_fighter, std::stoi(Spaces_That_Fighter_Can_Move_To_RadioBox_Option[Selected_Space_For_Move])) ;
         control.draw(user_turn);
         game_graph->Set_User_Occupying_Space(space_occupied_by_which_user, control.Return_Hero_Space_Number(selected_fighter));
+        game_graph->Change_Space_Occiupied_Status(control.Return_Hero_Space_Number(selected_fighter));
         Space_Row_And_Column_In_Array temp_struct_to_update_fighter_position_on_screen;
         control.Convert_Space_Number_To_Row_And_Column_Index(control.Return_Hero_Space_Number(selected_fighter), temp_struct_to_update_fighter_position_on_screen);
         fighter_printing_info[static_cast<int>(selected_fighter)].Row_Index = temp_struct_to_update_fighter_position_on_screen.row_index;
@@ -104,6 +107,7 @@ void User_Choice_Manager::Maneuver_Screen(USER user_turn, Controller& control, c
         {
             game_current_screen = GAME_FLOW_SCREENS::CHOOSE_ACTION;
         }
+        control.Reset_Fighter_Move_Value(selected_fighter);
         screen.ExitLoopClosure()();
     });
 
@@ -195,7 +199,7 @@ void User_Choice_Manager::Choose_Fighter_Screen(USER user_turn, Controller& cont
     Component Fighter_Selection_Container = Container::Vertical({Fighters_RadioBox, Confirm_Button});
     screen.Loop(Renderer(Fighter_Selection_Container, [&]{
         return vbox({
-            hbox({text("USER TURN: "), User_Turn_Text}),
+            User_Turn_Text,
             map_and_user_info,
             Text_Explanation,
             Fighter_Selection_Container->Render()
