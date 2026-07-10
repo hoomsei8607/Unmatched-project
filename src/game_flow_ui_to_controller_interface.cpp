@@ -355,6 +355,7 @@ void User_Choice_Manager::Fighting_Screen(USER user_turn, Controller& control, c
 void User_Choice_Manager::Choose_Maneuver_Type(Controller& control)
 {
     auto screen = ScreenInteractive::Fullscreen();
+    bool Is_User_Hand_Empty = control.Is_User_Hand_Empty(control.Return_User_Turn());
     std::string user_turn_name_string;
 
     if(control.Return_User_Turn() == USER::USER1)
@@ -383,7 +384,7 @@ void User_Choice_Manager::Choose_Maneuver_Type(Controller& control)
     });
 
     boost_button = boost_button | Maybe([&]{
-        return control.Is_User_Hand_Empty(control.Return_User_Turn());
+        return !Is_User_Hand_Empty;
     });
 
     auto container = Container::Vertical({
@@ -414,6 +415,7 @@ void User_Choice_Manager::Choose_Card_To_Boost_Maneuver_With(USER user_turn, Con
 
     auto confirm_button = Button("CONRIM", [&]{
         control.Boost_Fighter_Move_Value(selected_fighter, control.return_card_boost_value(selected_card, user_turn));
+        control.discard(selected_card, user_turn);
         game_current_screen = GAME_FLOW_SCREENS::MANEUVER;
         screen.ExitLoopClosure()();
     });
