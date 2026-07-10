@@ -23,10 +23,14 @@ class Controller
         int Return_Hero_Space_Number(Fighters_Names fighter_Name) const;
         void Convert_Space_Number_To_Row_And_Column_Index(int space_number, Space_Row_And_Column_In_Array& info_struct);
         void Set_Younger_User_Variable_Value();
+        bool Is_User_Hand_Empty(USER user_turn);
         void Change_User_Turn();
         USER Return_User_Turn() const;
         USER Return_Younger_User() const;
         USER Return_Older_User() const;
+        std::string Conver_Fighter_Name_Enum_To_String(Fighters_Names fighter_name);
+        void Boost_Fighter_Move_Value(Fighters_Names fighter_name, int boost_value);
+        void Reset_Fighter_Move_Value(Fighters_Names fighter_name);
         std::string Return_Younger_User_Name() const;
         std::string Return_Older_User_Name() const;
         std::string Return_User1_Username() const;

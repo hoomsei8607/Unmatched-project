@@ -14,6 +14,8 @@ class Fighter_Base_Class
         void Set_Current_Fighter_Space_Number(int new_space);
         void change_health(int);
         bool return_is_fighter_alive();
+        void Boost_Move_Value(int boost_value);
+        void Reset_Move_Value();
 
     protected:
         int Initial_Hp;

@@ -46,6 +46,14 @@ bool User_Choice_Manager::Screen_Manager(USER user_turn, Controller& control, co
             Fighting_Screen(control.Return_User_Turn(), control, map_and_user_info);
             return true;
 
+        case GAME_FLOW_SCREENS::CHOOSE_MANEUVER_TYPE:
+            Choose_Maneuver_Type(control);
+            return true;
+
+        case GAME_FLOW_SCREENS::MANEUVER_BOOST_SCREEN:
+            Choose_Card_To_Boost_Maneuver_With(control.Return_User_Turn(), control);
+            return true;
+
         case GAME_FLOW_SCREENS::GO_BACK_TO_MAIN_LOOP:
             return false;
         
@@ -58,7 +66,7 @@ void User_Choice_Manager::Maneuver_Screen(USER user_turn, Controller& control, c
 {
 
     auto screen = ScreenInteractive::Fullscreen();
-
+    std::string selected_hero_name = control.Conver_Fighter_Name_Enum_To_String(selected_fighter);
     Graph* game_graph = Graph::Get_Map_Graph_Pointer();
     
     std::vector <std::string> Spaces_That_Fighter_Can_Move_To_RadioBox_Option;
@@ -114,6 +122,7 @@ void User_Choice_Manager::Maneuver_Screen(USER user_turn, Controller& control, c
 
     screen.Loop(Renderer(Moving_Fighter_Interactive_Ui, [&]{
         return vbox({
+            hbox({text("SELECTED FIGHTER: "), text(selected_hero_name)}),
             map_and_user_info,
             text("Choose space: "),
             Moving_Fighter_Interactive_Ui->Render()
@@ -186,7 +195,7 @@ void User_Choice_Manager::Choose_Fighter_Screen(USER user_turn, Controller& cont
     Component Fighter_Selection_Container = Container::Vertical({Fighters_RadioBox, Confirm_Button});
     screen.Loop(Renderer(Fighter_Selection_Container, [&]{
         return vbox({
-            User_Turn_Text,
+            hbox({text("USER TURN: "), User_Turn_Text}),
             map_and_user_info,
             Text_Explanation,
             Fighter_Selection_Container->Render()
@@ -207,7 +216,7 @@ void User_Choice_Manager::Choose_Action_Screen(USER user_turn, Controller& contr
     Component confirm_button = Button("Confirm", [&]{
         if(selected == 0)
         {
-            game_current_screen = GAME_FLOW_SCREENS::MANEUVER;
+            game_current_screen = GAME_FLOW_SCREENS::CHOOSE_MANEUVER_TYPE;
         }
         else if(selected == 1)
         {
@@ -340,5 +349,104 @@ void User_Choice_Manager::Fighting_Screen(USER user_turn, Controller& control, c
     }
     
 
+
+}
+
+void User_Choice_Manager::Choose_Maneuver_Type(Controller& control)
+{
+    auto screen = ScreenInteractive::Fullscreen();
+    std::string user_turn_name_string;
+
+    if(control.Return_User_Turn() == USER::USER1)
+    {
+        user_turn_name_string = control.Return_User1_Username();
+    }
+    else
+    {
+        user_turn_name_string = control.Return_User2_Username();
+    }
+
+
+    auto normal_button = Button("NORMAL MANEUVER", [&]{
+        game_current_screen = GAME_FLOW_SCREENS::MANEUVER;
+        screen.ExitLoopClosure()();
+    });
+
+    auto boost_button = Button("BOOST MANEUVER", [&]{
+        game_current_screen = GAME_FLOW_SCREENS::MANEUVER_BOOST_SCREEN;
+        screen.ExitLoopClosure()();
+    });
+
+    auto undo_button = Button("UNDO", [&]{
+        game_current_screen = GAME_FLOW_SCREENS::CHOOSE_ACTION;
+        screen.ExitLoopClosure()();
+    });
+
+    boost_button = boost_button | Maybe([&]{
+        return control.Is_User_Hand_Empty(control.Return_User_Turn());
+    });
+
+    auto container = Container::Vertical({
+        normal_button,
+        boost_button,
+        undo_button
+    });
+
+    screen.Loop(Renderer(container, [&]{
+        return vbox({
+            hbox({text("USER TURN: "), text(user_turn_name_string)}),
+            container->Render()
+        });
+    }));
+
+}
+
+void User_Choice_Manager::Choose_Card_To_Boost_Maneuver_With(USER user_turn, Controller& control)
+{
+    std::string user_turn_name_string;
+    std::string selected_fighter_name = control.Conver_Fighter_Name_Enum_To_String(selected_fighter);
+
+    Element user_hand_for_render = control.Return_Hand_Elements_For_Render(user_turn);
+    std::vector<std::string> user_hand_selectable = control.Return_Hand_As_String(user_turn);
+    int selected_card = 0;
+
+    auto screen = ScreenInteractive::Fullscreen();
+
+    auto confirm_button = Button("CONRIM", [&]{
+        control.Boost_Fighter_Move_Value(selected_fighter, control.return_card_boost_value(selected_card, user_turn));
+        game_current_screen = GAME_FLOW_SCREENS::MANEUVER;
+        screen.ExitLoopClosure()();
+    });
+
+    auto undo_button = Button("UNDO", [&]{
+        game_current_screen = GAME_FLOW_SCREENS::CHOOSE_MANEUVER_TYPE;
+        screen.ExitLoopClosure()();
+    });
+
+    if(user_turn == USER::USER1)
+    {
+        user_turn_name_string = control.Return_User1_Username();
+    }
+    else
+    {
+        user_turn_name_string = control.Return_User2_Username();
+    }
+
+
+    auto options_toggle_box = Toggle(&user_hand_selectable, &selected_card);
+    auto container = Container::Vertical({
+        options_toggle_box,
+        confirm_button,
+        undo_button
+    });
+
+    screen.Loop(Renderer(container,  [&]{
+        return vbox({
+            hbox({text("USER TURN: "), text(user_turn_name_string)}),
+            hbox({text("SELECTED FIGHTER: "), text(selected_fighter_name)}),
+            user_hand_for_render,
+            container->Render()
+        });
+    }));
 
 }

@@ -42,3 +42,13 @@ ATTACKING_RANGE Fighter_Base_Class::Return_Fighter_Attacking_Range_Enum_Type() c
 {
     return Range_Type;
 }
+
+void Fighter_Base_Class::Reset_Move_Value()
+{
+    Current_Move_Value = Base_Move_Value;
+}
+
+void Fighter_Base_Class::Boost_Move_Value(int boost_value)
+{
+    Current_Move_Value += boost_value;
+}

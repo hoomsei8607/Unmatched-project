@@ -231,6 +231,87 @@ int Controller::Return_Hero_Space_Number(Fighters_Names fighter_name) const
     return -1;
 }
 
+bool Controller::Is_User_Hand_Empty(USER user_turn)
+{
+    if(user_turn == USER::USER1)
+    {
+       return User1_Hand.empty();
+    }
+    else
+    {
+        return User2_Hand.empty();
+    }
+}
+
+std::string Controller::Conver_Fighter_Name_Enum_To_String(Fighters_Names fighter_name)
+{
+    std::string to_be_returned;
+    switch (fighter_name)
+    {
+    case Fighters_Names::DRACULA:
+        to_be_returned = "DRACULA";
+        break;
+    
+    case Fighters_Names::SIS1:
+        to_be_returned = "SISTER1";
+        break;
+    
+    case Fighters_Names::SIS2:
+        to_be_returned = "SISTER2";
+        break;
+    
+    case Fighters_Names::SIS3:
+        to_be_returned = "SISTER3";
+        break;
+    
+    case Fighters_Names::SHERLOCK:
+        to_be_returned = "SHERLOCK";
+        break;
+    
+    case Fighters_Names::WATSON:
+        to_be_returned = "WATSON";
+        break;
+    
+    }
+    return to_be_returned;
+}
+
+void Controller::Boost_Fighter_Move_Value(Fighters_Names fighter_name, int boost_value)
+{
+    switch (fighter_name)
+    {
+    case Fighters_Names::DRACULA:
+        Dracula_And_Sisters[static_cast<int>(Dracula_And_Sisters_Array_Index::DRACULA)]->Boost_Move_Value(boost_value);
+        break;
+    
+    case Fighters_Names::SIS1:
+        Dracula_And_Sisters[static_cast<int>(Dracula_And_Sisters_Array_Index::SIS1)]->Boost_Move_Value(boost_value);
+        break;
+    
+    case Fighters_Names::SIS2:
+        Dracula_And_Sisters[static_cast<int>(Dracula_And_Sisters_Array_Index::SIS2)]->Boost_Move_Value(boost_value);
+        break;
+    
+    case Fighters_Names::SIS3:
+        Dracula_And_Sisters[static_cast<int>(Dracula_And_Sisters_Array_Index::SIS3)]->Boost_Move_Value(boost_value);
+        break;
+    
+    case Fighters_Names::SHERLOCK:
+        sherlock_And_Watson[static_cast<int>(Sherlock_And_Watson_Array_Index::SHERLOCK)]->Boost_Move_Value(boost_value);
+        break;
+    
+    case Fighters_Names::WATSON:
+        sherlock_And_Watson[static_cast<int>(Sherlock_And_Watson_Array_Index::WATSON)]->Boost_Move_Value(boost_value);
+        break;
+    
+    }
+}
+
+void Controller::Reset_Fighter_Move_Value(Fighters_Names fighter_name)
+{
+
+}
+
 void Controller::Set_Younger_User_Variable_Value()
 {
     if(user1.Return_User_Age() > user2.Return_User_Age())
