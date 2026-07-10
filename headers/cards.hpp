@@ -49,7 +49,7 @@ class dracula_look_into_my_eyes : public Card_Base_Class
 {
     public:
     dracula_look_into_my_eyes();
-    void card_effect(Controller& controler);
+    void card_effect(Controller& controler,USER user_turn,int selected_card);
 };
 class dracula_prey_upon : public Card_Base_Class
 {
@@ -97,7 +97,7 @@ class holmes_deduce_strategy : public Card_Base_Class
 {
     public:
     holmes_deduce_strategy();
-    void card_effect(Controller& controler,USER user_turn);
+    void card_effect(Controller& controler,USER user_turn,int selceted_card);
 };
 class holmes_education_never_ends : public Card_Base_Class
 {

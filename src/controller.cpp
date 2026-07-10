@@ -6,6 +6,10 @@
 #include <algorithm>
 #include <random>
 
+#include <iostream>
+#include <chrono>
+#include <thread>
+
 Controller::Controller()
 {
     Space_To_Array_Index_Map[1] = {2, 12};   
@@ -110,11 +114,65 @@ Controller::~Controller()
     delete Dracula_And_Sisters[static_cast<int>(Dracula_And_Sisters_Array_Index::SIS3)];
 }
 
+
+CARD_EFFECT_TYPE Controller::Return_Selected_Card_Effect_Type(USER user_turn, int index)
+{
+    CARD_EFFECT_TYPE to_be_returned;
+    if(user_turn == USER::USER1)
+    {
+        to_be_returned = User1_Hand[index]->get_effect();
+    }
+    else
+    {
+        to_be_returned = User2_Hand[index]->get_effect();
+    }
+    return to_be_returned;
+}
+
+std::string Controller::Get_Card_Immediate_Result_Log(USER user_turn, int index)
+{
+    std::string to_be_returned;
+    if(user_turn == USER::USER1)
+    {
+        to_be_returned = User1_Hand[index]->Get_Card_Effect_Log();
+    }
+    else
+    {
+        to_be_returned = User2_Hand[index]->Get_Card_Effect_Log();
+    }
+    return to_be_returned;
+}
+
+cards Controller::Return_Selected_Card_Name_As_An_Enum(USER user_turn, int index)
+{
+    cards to_be_returned;
+    if(user_turn == USER::USER1)
+    {
+        to_be_returned = User1_Hand[index]->Get_Card_Name_Enum();
+    }
+    else
+    {
+        to_be_returned = User2_Hand[index]->Get_Card_Name_Enum();
+    }
+    return to_be_returned;
+}
+
 ftxui::Element Controller::Return_A_Single_Card_Graphical_Representation(USER user_turn, int selected_card)
 {
     ftxui::Element element_to_be_returned;
-    if(user_turn == USER::USER1)
+
+
+    if(selected_card == -1)
     {
+        element_to_be_returned = ftxui::vbox({ftxui::text("EMPTY SELECTION")}) | ftxui::border;
+        return element_to_be_returned;
+    }
+
+    if(user_turn == USER::USER1 )
+    {
+
+        
+
         element_to_be_returned = ftxui::vbox({
             
             ftxui::text(User1_Hand[selected_card]->get_card_name()) | ftxui::center,
@@ -127,7 +185,7 @@ ftxui::Element Controller::Return_A_Single_Card_Graphical_Representation(USER us
             
         }) | ftxui::border;
     }
-    else
+    else if(user_turn == USER::USER2)
     {
         element_to_be_returned = ftxui::vbox({
             
@@ -141,6 +199,7 @@ ftxui::Element Controller::Return_A_Single_Card_Graphical_Representation(USER us
             
         }) | ftxui::border;
     }
+    
     return element_to_be_returned;
 }
 
@@ -990,7 +1049,7 @@ std::string Controller::Return_Card_Name(USER user_turn, int index)
     return to_be_returned;
 }
 
-void Controller::Call_Card_Effect_Function(USER user_turn, cards card_name, int index, Fighters_Names selected_enemy, int choice)
+void Controller::Call_Card_Effect_Function(USER user_turn, cards card_name, int index, Fighters_Names selected_enemy, int choice,int selected_card)
 {
     std::vector<Card_Base_Class*>* pointer_to_user_hand;
     if(user_turn == USER::USER1)
@@ -1099,7 +1158,7 @@ void Controller::Call_Card_Effect_Function(USER user_turn, cards card_name, int 
         {
             throw std::logic_error("Couldn't down cast for deduce strategy card"); 
         }
-        ptr->card_effect((*this), user_turn);
+        ptr->card_effect((*this), user_turn,selected_card);
         break;
     }
     
@@ -1203,7 +1262,7 @@ void Controller::Call_Card_Effect_Function(USER user_turn, cards card_name, int 
         {
             throw std::logic_error("Couldn't down cast for dracula look into my eyes card"); 
         }
-        ptr->card_effect((*this));
+        ptr->card_effect((*this),user_turn,selected_card);
         break;
     }
     
@@ -1308,4 +1367,31 @@ void Controller::Boost_Selected_Card_Value(USER user_turn, int index, int boost_
     {
         User2_Hand[index]->Boost_Card_Value(boost_value);
     }
+}
+
+void Controller::change_boost_with_value(USER user_turn , int card_index)
+{
+    if (user_turn==USER::USER1)
+    {
+        int temp=User1_Hand[card_index]->get_card_value();
+
+        User1_Hand[card_index]->set_card_value(User1_Hand[card_index]->get_Card_Boost_Value());
+        User1_Hand[card_index]->set_card_boost(temp);
+    }
+    if (user_turn==USER::USER2)
+    {
+        int temp=User2_Hand[card_index]->get_card_value();
+
+        User2_Hand[card_index]->set_card_value(User2_Hand[card_index]->get_Card_Boost_Value());
+        User2_Hand[card_index]->set_card_boost(temp);
+    }
+    
+}
+int Controller::get_attacker_selected_card_index()
+{
+    return attacker_selected_card_index;
+}
+int Controller::get_defender_selected_card_index()
+{
+    return defender_selected_card_index;
 }

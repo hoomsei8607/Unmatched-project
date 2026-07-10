@@ -16,6 +16,7 @@ class Fighting_Screen_Manager
         Fighting_Screen_Manager(int attacker_card_value, int attacker_card_index);
         bool Screen_Manager(Controller& control);
         void Show_Immediate_Combat_Results(Controller& control);
+        void During_Combat_Screen(Controller& control);
         void Taking_Defender_Input_Screen(Controller& control);
 
     private:

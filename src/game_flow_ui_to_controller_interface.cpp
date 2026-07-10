@@ -341,8 +341,6 @@ void User_Choice_Manager::Select_Card_Screen(USER user_turn, Controller& control
 
 void User_Choice_Manager::Fighting_Screen(USER user_turn, Controller& control, const ftxui::Element& map_and_user_info)
 {
-    std::cout << "entered fighting screen \n";
-    std::this_thread::sleep_for(std::chrono::seconds(3));
     Fighting_Screen_Manager fighting_screen_manager_object( attacker_card_value, selected_Attacker_card_index);
     while (true)
     {

@@ -30,16 +30,19 @@ class Controller
         void draw(USER user);
         void Set_User_Turn(USER user_turn);
         void change_fighter_health(Fighters_Names fighter,int amount);
-        void Call_Card_Effect_Function(USER user_turn, cards card_name, int index, Fighters_Names selected_enemy = Fighters_Names::NONE, int choice = -1);
+        void Call_Card_Effect_Function(USER user_turn, cards card_name, int index, Fighters_Names selected_enemy = Fighters_Names::NONE, int choice = -1,int selected_card=-1);
         void Boost_Selected_Card_Value(USER user_turn, int index, int boost_value);
         void Draw_Card_For_User(USER user_turn, cards card);
         void Set_Current_User_Action(USER_ACTION user_action);
+        void change_boost_with_value(USER user_turn , int card_index);
         
         
         int Return_Fighter_Move_Value(Fighters_Names fighter_name) const;
         int Return_Hero_Space_Number(Fighters_Names fighter_Name) const;
         int return_card_boost_value(int card,USER user_turn);
         int Return_card_Value(USER user_turn, int index);
+        int get_attacker_selected_card_index();
+        int get_defender_selected_card_index();
         
         bool Is_User_Hand_Empty(USER user_turn);
         bool Manage_UserAction_Numbers_And_Return_True_TO_Change_Turn();
@@ -57,6 +60,7 @@ class Controller
         std::string Return_Older_User_Name() const;
         std::string Return_User1_Username() const;
         std::string Return_User2_Username() const;
+        std::string Get_Card_Immediate_Result_Log(USER user_turn, int index);
         
         HERO_NAME Return_Younger_Hero_Name() const;
         HERO_NAME Return_User1_Hero_Name() const;
@@ -71,6 +75,9 @@ class Controller
 
         CARD_TYPE Return_Selected_Card_Type(USER user_turn, int index);
 
+        CARD_EFFECT_TYPE Return_Selected_Card_Effect_Type(USER user_turn, int index);
+
+        cards Return_Selected_Card_Name_As_An_Enum(USER user_tunr, int index);
 
         ATTACKING_RANGE Return_Fighter_Attacking_Range(Fighters_Names selected_fighter);
 
@@ -88,5 +95,7 @@ class Controller
         USER_ACTION current_user_action;
         std::vector <cards> sherlock_deck;
         std::vector <cards> dracula_deck;
+        int attacker_selected_card_index;
+        int defender_selected_card_index;
     };
 #endif

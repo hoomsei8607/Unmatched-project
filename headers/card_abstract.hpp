@@ -18,8 +18,11 @@ class Card_Base_Class
     std::string Get_Card_Type_As_String();
     std::string Get_Card_Effect_Timing_As_String();
     std::string Get_Card_Effect_As_String();
+    std::string Get_Card_Effect_Log();
     void Boost_Card_Value(int boost_value);
     virtual void Just_To_Make_Polymorphism_Available();
+    void set_card_value(int value);
+    void set_card_boost(int boost);
     cards Get_Card_Name_Enum();
     
     protected:
@@ -33,6 +36,7 @@ class Card_Base_Class
     int card_number;        
     std::string card_name;
     std::string card_effect_description;
+    std::string card_effect_log;
 };
 
 #endif

@@ -93,3 +93,15 @@ cards Card_Base_Class::Get_Card_Name_Enum()
 {
     return this->card_name_enum;
 }
+std::string Card_Base_Class::Get_Card_Effect_Log()
+{
+    return card_effect_log;
+}
+void Card_Base_Class::set_card_boost(int boost)
+{
+    Card_Boost_Value=boost;
+}
+void Card_Base_Class::set_card_value(int value)
+{
+    Card_Value=value;
+}

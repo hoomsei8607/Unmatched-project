@@ -15,6 +15,7 @@ dracula_feedingfrenzy::dracula_feedingfrenzy()
     card_name_enum = cards::FEEDING_FRENZY;
     card_number=2;
     card_effect_description="DURING COMBAT: This card's value is\n +1 for each sister in the same zone as\n the opposing fighter.";
+
 }
 void dracula_feedingfrenzy::card_effect(Controller& control,Fighters_Names enemy)
 {
@@ -135,6 +136,15 @@ void dracula_feedingfrenzy::card_effect(Controller& control,Fighters_Names enemy
         }
     }
     Card_Value+=number_of_sisters;
+    if (number_of_sisters>0)
+    {
+        card_effect_log="Boosted damage by "+std::to_string(number_of_sisters);
+    }
+    else if(number_of_sisters==0)
+    {
+        card_effect_log="Didn't boost damage.";
+    }
+    
 }
 dracula_mistform::dracula_mistform()
 {
@@ -166,19 +176,21 @@ dracula_ambush::dracula_ambush()
 }
 void dracula_ambush::card_effect(Controller& controler,USER user_turn)
 {
-    int enemy_card=rand()%5;
+    int enemy_card;
     if(user_turn==USER::USER1)
     {
+        enemy_card=rand()%controler.Return_A_Copy_Of_User_Hand(USER::USER2).size();
         Card_Value+=controler.return_card_boost_value(enemy_card,USER::USER2);
+        card_effect_log="Card value increased by"+std::to_string(controler.return_card_boost_value(enemy_card,USER::USER2));
         controler.discard(enemy_card,USER::USER2);
     }
     if(user_turn==USER::USER2)
     {
+        enemy_card=rand()%controler.Return_A_Copy_Of_User_Hand(USER::USER1).size();
         Card_Value+=controler.return_card_boost_value(enemy_card,USER::USER1);
+        card_effect_log="Card value increased by"+std::to_string(controler.return_card_boost_value(enemy_card,USER::USER1));
         controler.discard(enemy_card,USER::USER1);
     }
-    
-
 }
 dracula_baptism_of_blood::dracula_baptism_of_blood()
 {
@@ -230,6 +242,15 @@ void dracula_beastform::card_effect(Controller& controler)
     //if discard:
     //need discard index for calling discard
     Card_Value+=discarded_number;
+    if (discarded_number>0)
+    {
+        card_effect_log="Card value increased by " +std::to_string(discarded_number);
+    }
+    else if (discarded_number==0)
+    {
+        card_effect_log="Card value wasn't increased";
+    }
+    
 }
 dracula_dash::dracula_dash()
 {
@@ -275,9 +296,11 @@ dracula_look_into_my_eyes::dracula_look_into_my_eyes()
     card_number=3;
     card_effect_description="DURING COMBAT: Add the BOOST value\n from your opponent's attack card to\n the defense value of this card.";
 }
-void dracula_look_into_my_eyes::card_effect(Controller& controler)
+void dracula_look_into_my_eyes::card_effect(Controller& controler,USER user_turn,int selected_card)
 {
-    Card_Boost_Value/*+= enemy's played card*/;
+    //add enemy's attacking card's boost value to this
+    Card_Value+=controler.return_card_boost_value(selected_card,user_turn);
+    card_effect_log="Card value increased by "+std::to_string(controler.return_card_boost_value(selected_card,user_turn));
 }
 dracula_prey_upon::dracula_prey_upon()
 {
@@ -459,8 +482,14 @@ holmes_deduce_strategy::holmes_deduce_strategy()
     card_number=3;
     card_effect_description="DURING COMBAT: You may change the\nprinted value of the opponents's card to\nits BOOST value.(if a card does not have a\nBOOST value,it is treated as 0.) ";
 }
-void holmes_deduce_strategy::card_effect(Controller& controler,USER user_turn)
+void holmes_deduce_strategy::card_effect(Controller& controler,USER user_turn,int selected_card)
 {
+    if (selected_card==-1)
+    {
+        return;
+    }
+        controler.change_boost_with_value(user_turn,selected_card);
+        card_effect_log="Card value increased by "+std::to_string(controler.return_card_boost_value(selected_card,user_turn));
     // get enemy card info and change boost value and card value
 }
 holmes_education_never_ends::holmes_education_never_ends()
@@ -640,6 +669,7 @@ feint::feint()
     type=CARD_TYPE::VERSATILE;
     card_number=3;
     card_effect_description="IMMEDIATELY: Cancel all effects on\nyour opponents's card.";
+    card_effect_log="Canceled all effects on enemy card.";
 }
 void feint::card_effect(Controller& controler,USER user_turn)
 {

@@ -569,9 +569,12 @@ bool Graph::Can_Fighter_Use_Attacking_Cards(USER user_turn, ATTACKING_RANGE figh
             potential_enemy_space_zones = return_zone(i);
             for(int j = 0 ; j < 3 ; j++)
             {
-                if(fighter_space_zones[j] == potential_enemy_space_zones[j])
+                for(int k=0 ; k < 3 ; k++)
                 {
-                    return true;
+                    if(fighter_space_zones[j] == potential_enemy_space_zones[k])
+                    {
+                        return true;
+                    }
                 }
             }
         }
