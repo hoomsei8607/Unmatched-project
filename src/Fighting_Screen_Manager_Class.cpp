@@ -21,7 +21,7 @@ bool Fighting_Screen_Manager::Screen_Manager(Controller& control)
         Taking_Defender_Input_Screen(control);
         return true;
 
-
+ 
     case FIGHTING_SCREEN_SUB_SCREENS::IMMIDATE_RESULTS_SCREEN:
 
         return true;
@@ -110,6 +110,61 @@ void Fighting_Screen_Manager::Taking_Defender_Input_Screen(Controller& control)
             text("CHOOSE A CARD OR SKIP"),
             defender_hand,
             container->Render()
+        });
+    }));
+}
+
+void Fighting_Screen_Manager::Show_Immediate_Combat_Results(Controller& control)
+{
+    auto screen = ScreenInteractive::Fullscreen();
+    USER Attacker = control.Return_User_Turn();
+    USER Defender;
+    std::string immediate_effects_results_log;
+    if(Attacker == USER::USER1)
+    {
+        Defender = USER::USER2;
+    }
+    else
+    {
+        Defender = USER::USER1;
+    }
+    std::vector<Card_Base_Class*> attacker_hand_copy = control.Return_A_Copy_Of_User_Hand(Attacker); 
+    std::vector<Card_Base_Class*> defender_hand_copy = control.Return_A_Copy_Of_User_Hand(Defender);
+    Element attacker_selected_card_element = control.Return_A_Single_Card_Graphical_Representation(Attacker, Attacker_Selected_Card_Index);
+    Element defender_selected_card_element = control.Return_A_Single_Card_Graphical_Representation(Defender, Defender_Selected_Card_Index);
+
+    if(attacker_hand_copy[Attacker_Selected_Card_Index]->get_effect() != CARD_EFFECT_TYPE::IMMEDIATE && defender_hand_copy[Defender_Selected_Card_Index]->get_effect() != CARD_EFFECT_TYPE::IMMEDIATE)
+    {
+        immediate_effects_results_log = "NO IMMEDIATE EFFECTS OCCURED";
+    }
+    else
+    {
+        
+    }
+
+
+
+    auto Continue_Button = Button("CONTINUE", [&]{
+        current_screen = FIGHTING_SCREEN_SUB_SCREENS::DURING_FIGHT_SCREEN;
+        screen.ExitLoopClosure()();
+    });
+
+    screen.Loop(Renderer(Continue_Button,[&]{
+        return vbox({
+            text("IMMEDIATE EFFECTS"),
+            hbox({
+                vbox({
+                    text("ATTACKER CARD"),
+                    attacker_selected_card_element
+                }),
+                vbox({
+                    text("DEFENDER CARD"),
+                    defender_selected_card_element
+                })
+            }),
+            separator(),
+            text("IMMIDIATE EFFECTS RESULT LOG"),
+
         });
     }));
 }

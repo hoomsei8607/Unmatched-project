@@ -110,6 +110,40 @@ Controller::~Controller()
     delete Dracula_And_Sisters[static_cast<int>(Dracula_And_Sisters_Array_Index::SIS3)];
 }
 
+ftxui::Element Controller::Return_A_Single_Card_Graphical_Representation(USER user_turn, int selected_card)
+{
+    ftxui::Element element_to_be_returned;
+    if(user_turn == USER::USER1)
+    {
+        element_to_be_returned = ftxui::vbox({
+            
+            ftxui::text(User1_Hand[selected_card]->get_card_name()) | ftxui::center,
+            ftxui::hbox({ftxui::text("OWNER: "), ftxui::text(User1_Hand[selected_card]->Get_Card_Owner_Name_As_String())}),
+            ftxui::hbox({ftxui::text("CARD VALUE: "), ftxui::text(std::to_string(User1_Hand[selected_card]->get_card_value()))}),
+            ftxui::hbox({ftxui::text("CARD BOOST VALUE: "), ftxui::text(std::to_string(User1_Hand[selected_card]->get_Card_Boost_Value()))}),
+            ftxui::hbox({ftxui::text("CARD TYPE: "), ftxui::text(User1_Hand[selected_card]->Get_Card_Type_As_String())}),
+            ftxui::separator(),
+            ftxui::paragraph(User1_Hand[selected_card]->Get_Card_Effect_As_String())
+            
+        }) | ftxui::border;
+    }
+    else
+    {
+        element_to_be_returned = ftxui::vbox({
+            
+            ftxui::text(User2_Hand[selected_card]->get_card_name()) | ftxui::center,
+            ftxui::hbox({ftxui::text("OWNER: "), ftxui::text(User2_Hand[selected_card]->Get_Card_Owner_Name_As_String())}),
+            ftxui::hbox({ftxui::text("CARD VALUE: "), ftxui::text(std::to_string(User2_Hand[selected_card]->get_card_value()))}),
+            ftxui::hbox({ftxui::text("CARD BOOST VALUE: "), ftxui::text(std::to_string(User2_Hand[selected_card]->get_Card_Boost_Value()))}),
+            ftxui::hbox({ftxui::text("CARD TYPE: "), ftxui::text(User2_Hand[selected_card]->Get_Card_Type_As_String())}),
+            ftxui::separator(),
+            ftxui::paragraph(User2_Hand[selected_card]->Get_Card_Effect_As_String())
+            
+        }) | ftxui::border;
+    }
+    return element_to_be_returned;
+}
+
 void Controller::Fill_Fighter_Info_Struct(Fighters_Names fighter_name, Fighter_Info& info_struct) const
 {
     Fighter_Base_Class* Base_Fighter_Class_Pointer = nullptr;

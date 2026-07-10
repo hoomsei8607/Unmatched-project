@@ -18,48 +18,62 @@ class Controller
         void Set_User1_And_User2_Info(const User1_And_User2_Info& info_struct);
         void Fill_Users_Info_Struct(User1_And_User2_Info& info_struct) const; 
         void Fill_Fighter_Info_Struct(Fighters_Names fighter_name, Fighter_Info& info_struct) const;
-        HERO_NAME Return_Younger_Hero_Name() const;
         void Set_Fighter_Space_Number(Fighters_Names fighter_name, int new_space);
-        int Return_Hero_Space_Number(Fighters_Names fighter_Name) const;
         void Convert_Space_Number_To_Row_And_Column_Index(int space_number, Space_Row_And_Column_In_Array& info_struct);
         void Set_Younger_User_Variable_Value();
-        bool Is_User_Hand_Empty(USER user_turn);
         void Change_User_Turn();
-        USER Return_User_Turn() const;
-        USER Return_Younger_User() const;
-        USER Return_Older_User() const;
-        std::string Conver_Fighter_Name_Enum_To_String(Fighters_Names fighter_name);
         void Boost_Fighter_Move_Value(Fighters_Names fighter_name, int boost_value);
         void Reset_Fighter_Move_Value(Fighters_Names fighter_name);
-        std::string Return_Younger_User_Name() const;
-        std::string Return_Older_User_Name() const;
-        std::string Return_User1_Username() const;
-        std::string Return_User2_Username() const;
-        HERO_NAME Return_User1_Hero_Name() const;
-        HERO_NAME Return_User2_Hero_Name() const;
-        int Return_Fighter_Move_Value(Fighters_Names fighter_name) const;
-        bool Manage_UserAction_Numbers_And_Return_True_TO_Change_Turn();
-        bool Return_Is_Fighter_Alive(Fighters_Names name) const;
         void Initialize_Users_hands();
         void Instantiate_Card_Object(USER user, cards card_name);
-        ftxui::Element Return_Hand_Elements_For_Render(USER user_turn);
-        std::vector<std::string> Return_Hand_As_String(USER user_turn);
-        bool Is_Selected_Card_A_Scheme_Card(USER user_turn, int index);
-        CARD_TYPE Return_Selected_Card_Type(USER user_turn, int index);
-        int return_card_boost_value(int card,USER user_turn);
         void discard(int card,USER user_turn);
         void draw(USER user);
         void Set_User_Turn(USER user_turn);
         void change_fighter_health(Fighters_Names fighter,int amount);
-        std::vector<Card_Base_Class*> Return_A_Copy_Of_User_Hand(USER user_turn);
-        ftxui::Element Return_Hand_Elements_For_Boost_Screen_Render(int selected_card_to_be_boosted);
-        ATTACKING_RANGE Return_Fighter_Attacking_Range(Fighters_Names selected_fighter);
-        void Set_Current_User_Action(USER_ACTION user_action);
-        std::string Return_Card_Name(USER user_turn, int index);
         void Call_Card_Effect_Function(USER user_turn, cards card_name, int index, Fighters_Names selected_enemy = Fighters_Names::NONE, int choice = -1);
         void Boost_Selected_Card_Value(USER user_turn, int index, int boost_value);
         void Draw_Card_For_User(USER user_turn, cards card);
+        void Set_Current_User_Action(USER_ACTION user_action);
+        
+        
+        int Return_Fighter_Move_Value(Fighters_Names fighter_name) const;
+        int Return_Hero_Space_Number(Fighters_Names fighter_Name) const;
+        int return_card_boost_value(int card,USER user_turn);
         int Return_card_Value(USER user_turn, int index);
+        
+        bool Is_User_Hand_Empty(USER user_turn);
+        bool Manage_UserAction_Numbers_And_Return_True_TO_Change_Turn();
+        bool Return_Is_Fighter_Alive(Fighters_Names name) const;
+        bool Is_Selected_Card_A_Scheme_Card(USER user_turn, int index);
+        
+        
+        USER Return_User_Turn() const;
+        USER Return_Younger_User() const;
+        USER Return_Older_User() const;
+        
+        std::string Return_Card_Name(USER user_turn, int index);
+        std::string Conver_Fighter_Name_Enum_To_String(Fighters_Names fighter_name);
+        std::string Return_Younger_User_Name() const;
+        std::string Return_Older_User_Name() const;
+        std::string Return_User1_Username() const;
+        std::string Return_User2_Username() const;
+        
+        HERO_NAME Return_Younger_Hero_Name() const;
+        HERO_NAME Return_User1_Hero_Name() const;
+        HERO_NAME Return_User2_Hero_Name() const;
+        
+        ftxui::Element Return_Hand_Elements_For_Render(USER user_turn);
+        ftxui::Element Return_Hand_Elements_For_Boost_Screen_Render(int selected_card_to_be_boosted);
+        ftxui::Element Return_A_Single_Card_Graphical_Representation(USER user_turn, int selected_Card);
+
+        std::vector<Card_Base_Class*> Return_A_Copy_Of_User_Hand(USER user_turn);
+        std::vector<std::string> Return_Hand_As_String(USER user_turn);
+
+        CARD_TYPE Return_Selected_Card_Type(USER user_turn, int index);
+
+
+        ATTACKING_RANGE Return_Fighter_Attacking_Range(Fighters_Names selected_fighter);
+
         ~Controller();
     private:
         User user1;
