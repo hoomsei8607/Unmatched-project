@@ -166,11 +166,18 @@ dracula_ambush::dracula_ambush()
 }
 void dracula_ambush::card_effect(Controller& controler,USER user_turn)
 {
-    //give the enemy user arguement
-    
     int enemy_card=rand()%5;
-    Card_Value+=controler.return_card_boost_value(enemy_card,user_turn);
-    controler.discard(enemy_card,user_turn);
+    if(user_turn==USER::USER1)
+    {
+        Card_Value+=controler.return_card_boost_value(enemy_card,USER::USER2);
+        controler.discard(enemy_card,USER::USER2);
+    }
+    if(user_turn==USER::USER2)
+    {
+        Card_Value+=controler.return_card_boost_value(enemy_card,USER::USER1);
+        controler.discard(enemy_card,USER::USER1);
+    }
+    
 
 }
 dracula_baptism_of_blood::dracula_baptism_of_blood()
