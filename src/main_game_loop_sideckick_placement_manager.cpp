@@ -324,7 +324,7 @@ void SideKick_Placement_Screen_Manager::Display_Sis3_Screen(Fighters_Print_Info&
         });
         
     }
-    control.Change_User_Turn();
+    
     screen.Loop(Renderer(Placement_Select_Handler, [&]{
         
         if(Is_Younger_User_Turn)
@@ -350,6 +350,7 @@ void SideKick_Placement_Screen_Manager::Display_Sis3_Screen(Fighters_Print_Info&
     }));
     Space_Row_And_Column_In_Array Temp_Struct;
     control.Convert_Space_Number_To_Row_And_Column_Index(control.Return_Hero_Space_Number(Fighters_Names::SIS3), Temp_Struct);
+    control.Change_User_Turn();
     sis3_struct_info.Column_Index = Temp_Struct.column_index;
     sis3_struct_info.Row_Index = Temp_Struct.row_index;
     sis3_struct_info.Fighter_Name = 's';

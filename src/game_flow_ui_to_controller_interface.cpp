@@ -25,28 +25,25 @@ bool User_Choice_Manager::Screen_Manager(USER user_turn, Controller& control, co
     switch (game_current_screen)
     {
         case GAME_FLOW_SCREENS::CHOOSE_FIGHTER:
-            Choose_Fighter_Screen(user_turn, control, map_and_user_info);
+            Choose_Fighter_Screen(control.Return_User_Turn(), control, map_and_user_info);
             return true;
 
         case GAME_FLOW_SCREENS::CHOOSE_ACTION:
-            Choose_Action_Screen(user_turn, control, map_and_user_info);
+            Choose_Action_Screen(control.Return_User_Turn(), control, map_and_user_info);
             return true;
 
         case GAME_FLOW_SCREENS::MANEUVER:
-            Maneuver_Screen(user_turn, control, map_and_user_info, fighter_printing_info, fighters_count);
+            Maneuver_Screen(control.Return_User_Turn(), control, map_and_user_info, fighter_printing_info, fighters_count);
             return true;
 
 
         case GAME_FLOW_SCREENS::Card_Selection_Screen:
-            Select_Card_Screen(user_turn, control, map_and_user_info);
+            Select_Card_Screen(control.Return_User_Turn(), control, map_and_user_info);
             return true;
 
-        case GAME_FLOW_SCREENS::Card_Boost_Selection_Screen:
-            boost_Card_Screen(user_turn, control, map_and_user_info);
-            return true;
         
         case GAME_FLOW_SCREENS::FIGHTING_SCREEN:
-            Fighting_Screen(user_turn, control, map_and_user_info);
+            Fighting_Screen(control.Return_User_Turn(), control, map_and_user_info);
             return true;
 
         case GAME_FLOW_SCREENS::GO_BACK_TO_MAIN_LOOP:
@@ -221,7 +218,6 @@ void User_Choice_Manager::Choose_Action_Screen(USER user_turn, Controller& contr
     });
     Component Undo_Button = Button("Undo", [&]{
         game_current_screen = GAME_FLOW_SCREENS::CHOOSE_FIGHTER;
-        control.Change_User_Turn();
         screen.ExitLoopClosure()();
     });
     Component Action_Select_Container = Container::Vertical({radio_box, confirm_button, Undo_Button});
@@ -251,6 +247,7 @@ void User_Choice_Manager::Select_Card_Screen(USER user_turn, Controller& control
 {
     std::string user_trun_name_string;
     Graph* map_graph = Graph::Get_Map_Graph_Pointer();
+    std::vector<Card_Base_Class*>copy_of_user_hand;
     std::vector<std::string> Card_Options = control.Return_Hand_As_String(user_turn);
     int selected = 0;
 
@@ -259,22 +256,22 @@ void User_Choice_Manager::Select_Card_Screen(USER user_turn, Controller& control
     if(user_turn == USER::USER1)
     {
         user_trun_name_string = control.Return_User1_Username();
+        copy_of_user_hand = control.Return_A_Copy_Of_User_Hand(USER::USER1);
     }
     else
     {
         user_trun_name_string = control.Return_User2_Username();
+        copy_of_user_hand = control.Return_A_Copy_Of_User_Hand(USER::USER2);
     }
 
     Component Confirm_Button = Button("CONFIRM", [&]{
-        CARD_TYPE selected_card_type = control.Return_Selected_Card_Type(user_turn, selected);
-        if(selected_card_type == CARD_TYPE::ATTACK || selected_card_type == CARD_TYPE::VERSATILE )
+        if(copy_of_user_hand[selected]->get_type() == CARD_TYPE::ATTACK || copy_of_user_hand[selected]->get_type() == CARD_TYPE::VERSATILE )
         {
-            game_current_screen == GAME_FLOW_SCREENS::FIGHTING_SCREEN;
+            game_current_screen = GAME_FLOW_SCREENS::FIGHTING_SCREEN;
             selected_Attacker_card_index = selected;
             attacker_card_value = control.Return_card_Value(control.Return_User_Turn(), selected);
-            control.Change_User_Turn();
         }
-        if(selected_card_type == CARD_TYPE::SCHEME)
+        else if(copy_of_user_hand[selected]->get_type() == CARD_TYPE::SCHEME)
         {
             if(control.Return_Card_Name(user_turn, selected) == "Prey Upon")
             {
@@ -290,32 +287,14 @@ void User_Choice_Manager::Select_Card_Screen(USER user_turn, Controller& control
         
         screen.ExitLoopClosure()();
     });
-    Component Boost_Button = Button("BOOST", [&]{
-        game_current_screen = GAME_FLOW_SCREENS::Card_Boost_Selection_Screen;
-        selected_card_index_for_boosting = selected;
-        screen.ExitLoopClosure()();
-    });
 
-    Boost_Button = Boost_Button | Maybe([&]{
-       if(control.Return_Selected_Card_Type(user_turn, selected) == CARD_TYPE::SCHEME || control.Return_Selected_Card_Type(user_turn, selected) == CARD_TYPE::DEFENCE)
-       {
-        return false;
-       }
-       if(control.Return_Selected_Card_Type(user_turn, selected) == CARD_TYPE::ATTACK || control.Return_Selected_Card_Type(user_turn, selected) == CARD_TYPE::VERSATILE)
-       {
-            if(!map_graph->Can_Fighter_Use_Attacking_Cards(user_turn, control.Return_Fighter_Attacking_Range(selected_fighter), control.Return_Hero_Space_Number(selected_fighter)))
-            {
-                return false;
-            }
-       }
-       return true;
-    });
 
     Confirm_Button = Confirm_Button | Maybe([&]{
         if(control.Return_Selected_Card_Type(user_turn, selected) == CARD_TYPE::DEFENCE)
         {
             return false;
         }
+        
         if(control.Return_Selected_Card_Type(user_turn, selected) == CARD_TYPE::VERSATILE || control.Return_Selected_Card_Type(user_turn, selected) == CARD_TYPE::ATTACK )
         {
             if(!map_graph->Can_Fighter_Use_Attacking_Cards(user_turn,control.Return_Fighter_Attacking_Range(selected_fighter), control.Return_Hero_Space_Number(selected_fighter)))
@@ -330,7 +309,7 @@ void User_Choice_Manager::Select_Card_Screen(USER user_turn, Controller& control
 
     Component Card_Select_RadioBox = Toggle(&Card_Options, &selected);
 
-    Component card_select_container = Container::Vertical({Card_Select_RadioBox, Confirm_Button, Boost_Button, Undo_Button});
+    Component card_select_container = Container::Vertical({Card_Select_RadioBox, Confirm_Button, Undo_Button});
 
     
 
@@ -346,77 +325,11 @@ void User_Choice_Manager::Select_Card_Screen(USER user_turn, Controller& control
     screen.Loop(main_renderer);
 }
 
-void User_Choice_Manager::boost_Card_Screen(USER user_turn, Controller& control, const ftxui::Element& map_and_user_info)
-{
-    auto screen = ScreenInteractive::Fullscreen();
-    std::vector<Card_Base_Class*> temp_user_hand = control.Return_A_Copy_Of_User_Hand(user_turn);
-    std::string user_turn_name;
-    std::string card_being_boosted_name;
-    int selected_card = 0;
-
-    auto Confirm_Button = Button("CONFIRM", [&]{
-        control.Boost_Selected_Card_Value(user_turn, selected_card_index_for_boosting, control.return_card_boost_value(selected_card,user_turn));
-        control.discard(selected_card, user_turn);
-        CARD_TYPE boosted_card_type = control.Return_Selected_Card_Type(user_turn, selected_card_index_for_boosting);
-        if(boosted_card_type == CARD_TYPE::ATTACK || boosted_card_type == CARD_TYPE::VERSATILE)
-        {
-            game_current_screen = GAME_FLOW_SCREENS::FIGHTING_SCREEN;
-            selected_Attacker_card_index = selected_card_index_for_boosting;
-            attacker_card_value = control.Return_card_Value(control.Return_User_Turn(), selected_card_index_for_boosting);
-        }
-        control.Change_User_Turn();
-        screen.ExitLoopClosure()();
-
-
-    });
-
-
-    auto Undo_Button = Button("UNDO", [&]{
-        game_current_screen = GAME_FLOW_SCREENS::Card_Selection_Screen;
-        control.Instantiate_Card_Object(user_turn, temp_user_hand[selected_card_index_for_boosting]->Get_Card_Name_Enum());
-        control.Draw_Card_For_User(user_turn, temp_user_hand[selected_card_index_for_boosting]->Get_Card_Name_Enum());
-        screen.ExitLoopClosure()();
-    });
-
-    if(user_turn == USER::USER1)
-    {
-        user_turn_name = control.Return_User1_Username();
-        temp_user_hand = control.Return_A_Copy_Of_User_Hand(USER::USER1);
-        control.discard(selected_card_index_for_boosting,USER::USER1);
-    }
-    else if(user_turn == USER::USER2)
-    {
-        user_turn_name = control.Return_User2_Username();
-        temp_user_hand = control.Return_A_Copy_Of_User_Hand(USER::USER2);
-        control.discard(selected_card_index_for_boosting,USER::USER2);
-    }
-
-    std::vector <std::string> Boost_Card_Options;
-    
-    card_being_boosted_name = temp_user_hand[selected_card_index_for_boosting]->get_card_name();
-    temp_user_hand.erase(temp_user_hand.begin() + selected_card_index_for_boosting);
-    for(auto card : temp_user_hand)
-    {
-        Boost_Card_Options.push_back(card->get_card_name());
-    }
-    
-    auto card_select_radiobox = Toggle(&Boost_Card_Options, &selected_card);
-    auto container = Container::Vertical({card_select_radiobox, Confirm_Button, Undo_Button});
-
-    screen.Loop(Renderer(container, [&]{
-        return vbox({
-            hbox({text("USER TURN: "), text(user_turn_name)}),
-            map_and_user_info,
-            control.Return_Hand_Elements_For_Boost_Screen_Render(selected_card_index_for_boosting),
-            hbox({text("CHOOSE A CARD TO BOOST THE ") , text(card_being_boosted_name), text(" CARD WITH")}),
-            container->Render()
-        });
-    }));
-    
-}
 
 void User_Choice_Manager::Fighting_Screen(USER user_turn, Controller& control, const ftxui::Element& map_and_user_info)
 {
+    std::cout << "entered fighting screen \n";
+    std::this_thread::sleep_for(std::chrono::seconds(3));
     Fighting_Screen_Manager fighting_screen_manager_object( attacker_card_value, selected_Attacker_card_index);
     while (true)
     {

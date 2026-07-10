@@ -24,7 +24,6 @@ class User_Choice_Manager
     private:
         GAME_FLOW_SCREENS game_current_screen;
         Fighters_Names selected_fighter;
-        int selected_card_index_for_boosting;
         int selected_Attacker_card_index;
         int attacker_card_value;
 };

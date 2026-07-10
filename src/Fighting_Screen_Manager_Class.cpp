@@ -1,5 +1,9 @@
 #include "../headers/Fighting_Screen_Manager_Class.hpp"
 
+#include <chrono>
+#include <thread>
+#include <iostream>
+
 using namespace ftxui;
 
 Fighting_Screen_Manager::Fighting_Screen_Manager(int attacker_card_value, int attacker_card_index)
@@ -41,20 +45,23 @@ bool Fighting_Screen_Manager::Screen_Manager(Controller& control)
 void Fighting_Screen_Manager::Taking_Defender_Input_Screen(Controller& control)
 {
 
-    std::string User_turn_Name_string;
+
     auto screen = ScreenInteractive::Fullscreen();
-    USER defender = control.Return_User_Turn();
+    USER defender;
+    if(control.Return_User_Turn() == USER::USER1)
+    {
+        defender = USER::USER2;
+    }
+    else if(control.Return_User_Turn() == USER::USER2)
+    {
+        defender = USER::USER1;
+    }
+
+
+
     std::vector<Card_Base_Class*> copy_of_defender_hand = control.Return_A_Copy_Of_User_Hand(defender);
     std::string defender_name;
 
-    if(defender == USER::USER1)
-    {
-        User_turn_Name_string = control.Return_User1_Username();
-    }
-    else if(defender == USER::USER2)
-    {
-        User_turn_Name_string = control.Return_User2_Username();
-    }
 
     if(defender == USER::USER1)
     {
@@ -99,7 +106,7 @@ void Fighting_Screen_Manager::Taking_Defender_Input_Screen(Controller& control)
 
     screen.Loop(Renderer(container, [&]{
         return vbox({
-            hbox({text(User_turn_Name_string), text(": "), text("YOU ARE DEFEDING")}),
+            hbox({text(defender_name), text(": "), text("YOU ARE DEFEDING")}),
             text("CHOOSE A CARD OR SKIP"),
             defender_hand,
             container->Render()
