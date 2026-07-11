@@ -185,7 +185,7 @@ void dracula_ambush::card_effect(Controller& controler,USER user_turn)
         }
         enemy_card=rand()%controler.Return_A_Copy_Of_User_Hand(USER::USER2).size();
         Card_Value+=controler.return_card_boost_value(enemy_card,USER::USER2);
-        card_effect_log="Card value increased by"+std::to_string(controler.return_card_boost_value(enemy_card,USER::USER2));
+        card_effect_log="Card value increased by "+std::to_string(controler.return_card_boost_value(enemy_card,USER::USER2));
         controler.discard(enemy_card,USER::USER2);
     }
     if(user_turn==USER::USER2)
@@ -196,7 +196,7 @@ void dracula_ambush::card_effect(Controller& controler,USER user_turn)
         }
         enemy_card=rand()%controler.Return_A_Copy_Of_User_Hand(USER::USER1).size();
         Card_Value+=controler.return_card_boost_value(enemy_card,USER::USER1);
-        card_effect_log="Card value increased by"+std::to_string(controler.return_card_boost_value(enemy_card,USER::USER1));
+        card_effect_log="Card value increased by "+std::to_string(controler.return_card_boost_value(enemy_card,USER::USER1));
         controler.discard(enemy_card,USER::USER1);
     }
 }

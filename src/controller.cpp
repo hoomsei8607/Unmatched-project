@@ -1485,11 +1485,11 @@ Fighters_Names Controller::Return_Card_Owner_Name(USER user_turn, int index)
 {
     if(user_turn == USER::USER1)
     {
-        User1_Hand[index]->get_owner();
+        return User1_Hand[index]->get_owner();
     }
     else
     {
-        User2_Hand[index]->get_owner();
+        return User2_Hand[index]->get_owner();
     }
 }
 

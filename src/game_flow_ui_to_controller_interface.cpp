@@ -318,16 +318,15 @@ void User_Choice_Manager::Select_Card_Screen(USER user_turn, Controller& control
 
     Component Card_Select_RadioBox = Toggle(&Card_Options, &selected);
 
-    Component card_select_container = Container::Vertical({Card_Select_RadioBox, Confirm_Button, Undo_Button});
-
-
+    
+    
     Confirm_Button = Confirm_Button | Maybe([&]{
-
+        
         if(control.Return_Card_Owner_Name(control.Return_User_Turn(), selected) != Fighters_Names::ANY && control.Return_Card_Owner_Name(control.Return_User_Turn(), selected) != Attacker_Fighter_Name )
         {
             return false;
         }
-
+        
         if(control.Return_Selected_Card_Type(user_turn, selected) == CARD_TYPE::DEFENCE)
         {
             return false;
@@ -341,12 +340,13 @@ void User_Choice_Manager::Select_Card_Screen(USER user_turn, Controller& control
             }
             
         }
-
+        
         
         return true;
     });
-
-
+    Component card_select_container = Container::Vertical({Card_Select_RadioBox, Confirm_Button, Undo_Button});
+    
+    
 
     
 
