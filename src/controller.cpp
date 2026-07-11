@@ -69,8 +69,15 @@ Controller::Controller()
         std::shuffle(dracula_deck.begin(), dracula_deck.end(), random_number_generator);
         std::shuffle(sherlock_deck.begin(), sherlock_deck.end(), random_number_generator);
     }
+
+    Who_Won_The_Combat = USER::NONE;
  
 
+}
+
+void Controller::Set_Who_Has_Won_The_Combat_Variable(USER user)
+{
+    Who_Won_The_Combat = user;
 }
 
 
@@ -443,6 +450,18 @@ int Controller::Return_card_Value(USER user_turn, int index)
         to_be_returned = User2_Hand[index]->get_card_value();
     }
     return to_be_returned;
+}
+
+void Controller::Disable_Card_Effect(USER user, int index)
+{
+    if(user == USER::USER1)
+    {
+        User1_Hand[index]->Disable_Card_Effect_Boolian();
+    }
+    else
+    {
+        User2_Hand[index]->Disable_Card_Effect_Boolian();
+    }
 }
 
 USER Controller::Return_User_Turn() const
@@ -1049,6 +1068,21 @@ std::string Controller::Return_Card_Name(USER user_turn, int index)
     return to_be_returned;
 }
 
+bool Controller::Should_Card_Effect_Be_Executed(USER user, int index)
+{
+    bool to_be_returned;
+    if(user == USER::USER1)
+    {
+        to_be_returned = User1_Hand[index]->Is_Card_Effect_Available();
+    }
+    else
+    {
+        to_be_returned = User2_Hand[index]->Is_Card_Effect_Available();
+    }
+    return to_be_returned;
+
+}
+
 void Controller::Call_Card_Effect_Function(USER user_turn, cards card_name, int index, Fighters_Names selected_enemy, int choice,int selected_card)
 {
     std::vector<Card_Base_Class*>* pointer_to_user_hand;
@@ -1059,6 +1093,11 @@ void Controller::Call_Card_Effect_Function(USER user_turn, cards card_name, int 
     else if(user_turn == USER::USER2)
     {
         pointer_to_user_hand = &User2_Hand;
+    }
+
+    if(!(*pointer_to_user_hand)[index]->Is_Card_Effect_Available())
+    {
+        return;
     }
 
     switch (card_name)

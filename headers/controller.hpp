@@ -35,7 +35,8 @@ class Controller
         void Draw_Card_For_User(USER user_turn, cards card);
         void Set_Current_User_Action(USER_ACTION user_action);
         void change_boost_with_value(USER user_turn , int card_index);
-        
+        void Set_Who_Has_Won_The_Combat_Variable(USER user);
+        void Disable_Card_Effect(USER user, int index);
         
         int Return_Fighter_Move_Value(Fighters_Names fighter_name) const;
         int Return_Hero_Space_Number(Fighters_Names fighter_Name) const;
@@ -48,6 +49,7 @@ class Controller
         bool Manage_UserAction_Numbers_And_Return_True_TO_Change_Turn();
         bool Return_Is_Fighter_Alive(Fighters_Names name) const;
         bool Is_Selected_Card_A_Scheme_Card(USER user_turn, int index);
+        bool Should_Card_Effect_Be_Executed(USER user, int index);
         
         
         USER Return_User_Turn() const;
@@ -97,5 +99,6 @@ class Controller
         std::vector <cards> dracula_deck;
         int attacker_selected_card_index;
         int defender_selected_card_index;
+        USER Who_Won_The_Combat;
     };
 #endif

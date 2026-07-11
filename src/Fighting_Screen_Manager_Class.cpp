@@ -27,11 +27,16 @@ bool Fighting_Screen_Manager::Screen_Manager(Controller& control)
         return true;
 
     case FIGHTING_SCREEN_SUB_SCREENS::DURING_FIGHT_SCREEN:
-
+        During_Combat_Screen(control);
         return true;
 
     case FIGHTING_SCREEN_SUB_SCREENS::RESULTS_SCREEN:
+        Show_Fight_Results_Screen(control);
+        return true;
 
+
+    case FIGHTING_SCREEN_SUB_SCREENS::AFTER_COMBAT_SCREEN:
+        
         return true;
 
     case FIGHTING_SCREEN_SUB_SCREENS::RETURN_TO_MAIN_LOOP:
@@ -48,6 +53,7 @@ void Fighting_Screen_Manager::Taking_Defender_Input_Screen(Controller& control)
 
     auto screen = ScreenInteractive::Fullscreen();
     USER defender;
+
     if(control.Return_User_Turn() == USER::USER1)
     {
         defender = USER::USER2;
@@ -57,9 +63,6 @@ void Fighting_Screen_Manager::Taking_Defender_Input_Screen(Controller& control)
         defender = USER::USER1;
     }
 
-
-
-    std::vector<Card_Base_Class*> copy_of_defender_hand = control.Return_A_Copy_Of_User_Hand(defender);
     std::string defender_name;
 
 
@@ -96,7 +99,7 @@ void Fighting_Screen_Manager::Taking_Defender_Input_Screen(Controller& control)
     });
 
     Confirm_Button = Confirm_Button | Maybe([&]{
-        if(control.Return_Selected_Card_Type(defender, selected_card) == CARD_TYPE::VERSATILE || copy_of_defender_hand[selected_card]->get_type() == CARD_TYPE::DEFENCE)
+        if(control.Return_Selected_Card_Type(defender, selected_card) == CARD_TYPE::VERSATILE || control.Return_Selected_Card_Type(defender, selected_card) == CARD_TYPE::DEFENCE)
         {
             return true;
         }
@@ -174,11 +177,19 @@ void Fighting_Screen_Manager::Show_Immediate_Combat_Results(Controller& control)
         {
             if (control.Return_Selected_Card_Effect_Type(Defender, Defender_Selected_Card_Index)==CARD_EFFECT_TYPE::IMMEDIATE)
             {
+                if(control.Return_Selected_Card_Name_As_An_Enum(Defender, Defender_Selected_Card_Index) == cards::FEINT)
+                {
+                    control.Disable_Card_Effect(Attacker, Attacker_Selected_Card_Index);
+                }
                 control.Call_Card_Effect_Function(Defender,control.Return_Selected_Card_Name_As_An_Enum(Defender, Defender_Selected_Card_Index),Defender_Selected_Card_Index);
                 immediate_effects_results_log += control.Get_Card_Immediate_Result_Log(Defender, Defender_Selected_Card_Index);
             }
             if (control.Return_Selected_Card_Effect_Type(Attacker, Attacker_Selected_Card_Index) == CARD_EFFECT_TYPE::IMMEDIATE && control.Return_Selected_Card_Name_As_An_Enum(Defender, Defender_Selected_Card_Index) != cards::FEINT)
             {
+                if(control.Return_Selected_Card_Name_As_An_Enum(Attacker, Attacker_Selected_Card_Index) == cards::FEINT)
+                {
+                    control.Disable_Card_Effect(Defender, Defender_Selected_Card_Index);
+                }
                 control.Call_Card_Effect_Function(Attacker,control.Return_Selected_Card_Name_As_An_Enum(Attacker, Attacker_Selected_Card_Index),Attacker_Selected_Card_Index);
                 immediate_effects_results_log += control.Get_Card_Immediate_Result_Log(Attacker, Attacker_Selected_Card_Index);
             }
@@ -296,7 +307,7 @@ void Fighting_Screen_Manager::During_Combat_Screen(Controller& control)
 
     screen.Loop(Renderer(Continue_Button,[&]{
         return vbox({
-            text("IMMEDIATE EFFECTS"),
+            text("DURING FIGHT EFFECTS"),
             hbox({
                 vbox({
                     text("ATTACKER CARD"),
@@ -308,10 +319,68 @@ void Fighting_Screen_Manager::During_Combat_Screen(Controller& control)
                     defender_selected_card_element
                 })
             }),
-            text("IMMIDIATE EFFECTS RESULT LOG") | ftxui::underlined,
+            text("DURING FIGHT EFFECTS RESULT LOG") | ftxui::underlined,
             text(during_combat_result_log),
             Continue_Button->Render()
         });
     }));
 
+
+    Attacker_Card_Value = control.Return_card_Value(Attacker, Attacker_Selected_Card_Index);
+
+    if(Has_Defender_Skipped_Card_Selection)
+    {
+        Defender_Card_Value = 0;
+    }
+    else
+    {
+        Defender_Card_Value = control.Return_card_Value(Defender, Defender_Selected_Card_Index);
+    }
+
+}
+
+
+void Fighting_Screen_Manager::Show_Fight_Results_Screen(Controller& control)
+{
+    auto screen = ScreenInteractive::Fullscreen();
+    USER Attacker = control.Return_User_Turn();
+    USER Defender;
+    std::string Fight_Results;
+    std::string Damage_Dealt;
+
+    if(Attacker == USER::USER1)
+    {
+        Defender = USER::USER2;
+    }
+    else
+    {
+        Defender = USER::USER1;
+    }
+
+    if((Attacker_Card_Value - Defender_Card_Value) >= 1)
+    {
+        //attacker has won
+        Fight_Results = "ATTACKER WON THE COMBAT";
+        Damage_Dealt = std::to_string(Attacker_Card_Value - Defender_Card_Value);
+        control.Set_Who_Has_Won_The_Combat_Variable(Attacker);
+    }
+    else
+    {
+        Fight_Results = "DEFENDER WON THE COMBAT";
+        Damage_Dealt = std::to_string(Defender_Card_Value - Attacker_Card_Value);
+        control.Set_Who_Has_Won_The_Combat_Variable(Defender);
+    }
+
+    auto continue_button = Button("CONTINUE", [&]{
+        current_screen = FIGHTING_SCREEN_SUB_SCREENS::AFTER_COMBAT_SCREEN;
+        screen.ExitLoopClosure()();
+    });
+
+    screen.Loop(Renderer(continue_button, [&]{
+        return vbox({
+            text(Fight_Results) | center,
+            hbox({text("DAMAGE DEALT: "), text(Damage_Dealt)}) | center,
+            continue_button->Render() | center
+        }) | border;
+    }));
 }

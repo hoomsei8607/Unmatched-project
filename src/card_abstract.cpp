@@ -1,5 +1,20 @@
 #include "../headers/card_abstract.hpp"
 
+Card_Base_Class::Card_Base_Class()
+{
+    Should_Card_Effect_Be_Applied = true;
+}
+
+bool Card_Base_Class::Is_Card_Effect_Available()
+{
+    return Should_Card_Effect_Be_Applied;
+}
+
+void Card_Base_Class::Disable_Card_Effect_Boolian()
+{
+    Should_Card_Effect_Be_Applied = false;
+}
+
 int Card_Base_Class::get_card_value()
 {
     return Card_Value;
