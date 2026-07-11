@@ -67,7 +67,7 @@ class dracula_thirst_For_sustenance : public Card_Base_Class
 {
     public:
     dracula_thirst_For_sustenance();
-    void card_effect();
+    void card_effect(Controller& controler,USER user_turn);
 };
 // class dracula_feint : public Card_Base_Class
 // {

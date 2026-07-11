@@ -263,6 +263,7 @@ dracula_dash::dracula_dash()
     type=CARD_TYPE::VERSATILE;
     card_number=3;
     card_effect_description="AFTER COMBAT: Move your fighter up\n to 3 spaces.";
+    card_effect_log=" ";
 }
 void dracula_dash::card_effect(Controller& controler)
 {
@@ -279,6 +280,7 @@ dracula_exploit::dracula_exploit()
     type=CARD_TYPE::VERSATILE;
     card_number=3;
     card_effect_description="AFTER COMBAT: Draw 1 card.";
+    card_effect_log="Player drew 1 card";
 }
 void dracula_exploit::card_effect(Controller& controler,USER user_turn)
 {
@@ -378,9 +380,19 @@ dracula_thirst_For_sustenance::dracula_thirst_For_sustenance()
     card_number=3;
     card_effect_description="AFTER COMBAT: If you won the\n combat, place Dracula in any space\n adjacent to the opposing fighter.";
 }
-void dracula_thirst_For_sustenance::card_effect()
+void dracula_thirst_For_sustenance::card_effect(Controller& controler,USER user_turn)
 {
     //if win move dracula adjacent to the enemy fighter
+    if (user_turn==controler.return_who_won_the_combat())
+    {
+        card_effect_log="Dracula is set adjacent to opposing fighter.";
+    }
+    else if (user_turn!=controler.return_who_won_the_combat())
+    {
+        card_effect_log="Dracula didn't move.";
+    }
+    
+    
 }
 // dracula_feint::dracula_feint()
 // {
@@ -467,8 +479,12 @@ void holmes_counterpunch::card_effect(Controller& controler,Fighters_Names enemy
         if(enemy_location==item)
         {
             controler.change_fighter_health(enemy_fighter, -2);
+            card_effect_log="Holmes did a counterpunch and dealt 2 damage";
+            return ;
         }
     }
+    card_effect_log="Holmes didn't do a counterpunch.";
+
 }
 holmes_deduce_strategy::holmes_deduce_strategy()
 {
@@ -488,8 +504,15 @@ void holmes_deduce_strategy::card_effect(Controller& controler,USER user_turn,in
     {
         return;
     }
-        controler.change_boost_with_value(user_turn,selected_card);
-        card_effect_log="Card value increased by "+std::to_string(controler.return_card_boost_value(selected_card,user_turn));
+    if(user_turn==USER::USER1)
+    {
+        controler.change_boost_with_value(USER::USER2,selected_card);
+    }
+    else if(user_turn==USER::USER2)
+    {
+        controler.change_boost_with_value(USER::USER1,selected_card);
+    }
+        card_effect_log="Opponent's Card value was changed with boost value";
     // get enemy card info and change boost value and card value
 }
 holmes_education_never_ends::holmes_education_never_ends()
@@ -508,27 +531,31 @@ void holmes_education_never_ends::card_effect(Controller& controler,USER user_tu
 {
     if (user_turn==USER::USER1)
     {
-        //if(win)
-            //{
+        if(user_turn==controler.return_who_won_the_combat())
+            {
             controler.draw(USER::USER2);
-            //}
-        //if(lose)
-            //{
+            card_effect_log="Sherlock won. Player drew 1 card.";
+            }
+        if(user_turn!=controler.return_who_won_the_combat())
+            {
             controler.draw(USER::USER1);
             controler.draw(USER::USER1);
-            //}
+            card_effect_log="Sherlock lost. Enemy drew 2 cards.";
+            }
     }
     else if (user_turn==USER::USER2)
     {
-        //if(win)
-            //{
+        if(user_turn==controler.return_who_won_the_combat())
+            {
             controler.draw(USER::USER1);
-            //}
-        //if(lose)
-            //{
+            card_effect_log="Sherlock won. Player drew 1 card.";
+            }
+        if(user_turn!=controler.return_who_won_the_combat())
+            {
             controler.draw(USER::USER2);
             controler.draw(USER::USER2);
-            //}
+            card_effect_log="Sherlock lost. Enemy drew 2 card.";
+            }
     }
 }
 holmes_elementary::holmes_elementary()
@@ -595,8 +622,11 @@ void holmes_fixed_point_in_a_changing_age::card_effect(Controller& controler,USE
         {
             controler.change_fighter_health(Fighters_Names::SHERLOCK , +1);
             controler.change_fighter_health(Fighters_Names::WATSON , +1);
+            card_effect_log="Sherlock and Watson gained 1 heal";
+            return;
         }
     }
+    card_effect_log="Sherlock and Watson didn't gain heal";
 }
 holmes_master_of_disguise::holmes_master_of_disguise()
 {
@@ -624,6 +654,7 @@ holmes_the_game_is_afoot::holmes_the_game_is_afoot()
     type=CARD_TYPE::ATTACK;
     card_number=2;
     card_effect_description="AFTER COMBAT: Move Holmes\nup to 3 spaces.";
+    card_effect_log=" ";
 }
 void holmes_the_game_is_afoot::card_effect(Controller& controler,USER user_turn)
 {
@@ -655,7 +686,15 @@ holmes_study_methods::holmes_study_methods()
 }
 void holmes_study_methods::card_effect(Controller& controler,USER user_turn)
 {
-
+    if (user_turn==controler.return_who_won_the_combat())
+    {
+        card_effect_log="Sherlock won you can you look at the opponent's hand.";
+    }
+    if (user_turn!=controler.return_who_won_the_combat())
+    {
+        card_effect_log="Sherlock lost you can't you look at the opponent's hand.";
+    }
+    
 }
 
 feint::feint()

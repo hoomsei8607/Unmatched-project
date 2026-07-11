@@ -31,6 +31,12 @@ void Fighter_Base_Class::Set_Current_Fighter_Space_Number(int new_space)
 }
 void Fighter_Base_Class::change_health(int amount)
 {
+    if (Current_Hp+amount>Initial_Hp)
+    {
+        Current_Hp=Initial_Hp;
+        return;
+    }
+    
     Current_Hp+=amount;
 }
 bool Fighter_Base_Class::return_is_fighter_alive()  

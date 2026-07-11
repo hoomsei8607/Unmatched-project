@@ -55,6 +55,7 @@ class Controller
         USER Return_User_Turn() const;
         USER Return_Younger_User() const;
         USER Return_Older_User() const;
+        USER return_who_won_the_combat() const;
         
         std::string Return_Card_Name(USER user_turn, int index);
         std::string Conver_Fighter_Name_Enum_To_String(Fighters_Names fighter_name);
