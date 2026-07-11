@@ -263,7 +263,7 @@ void User_Choice_Manager::Choose_Action_Screen(USER user_turn, Controller& contr
 
 void User_Choice_Manager::Select_Card_Screen(USER user_turn, Controller& control, const ftxui::Element& map_and_use_info)
 {
-    Fighters_Names Attacker_Fighter_Name;
+    Fighters_Names Attacker_Fighter_Name = selected_fighter;
 
     std::string user_trun_name_string;
     Graph* map_graph = Graph::Get_Map_Graph_Pointer();
@@ -316,10 +316,14 @@ void User_Choice_Manager::Select_Card_Screen(USER user_turn, Controller& control
         screen.ExitLoopClosure()();
     });
 
+    Component Card_Select_RadioBox = Toggle(&Card_Options, &selected);
+
+    Component card_select_container = Container::Vertical({Card_Select_RadioBox, Confirm_Button, Undo_Button});
+
 
     Confirm_Button = Confirm_Button | Maybe([&]{
 
-        if(control.Return_Card_Owner_Name(user_turn, selected) != Fighters_Names::ANY && control.Return_Card_Owner_Name(user_turn, selected) != Attacker_Fighter_Name )
+        if(control.Return_Card_Owner_Name(control.Return_User_Turn(), selected) != Fighters_Names::ANY && control.Return_Card_Owner_Name(control.Return_User_Turn(), selected) != Attacker_Fighter_Name )
         {
             return false;
         }
@@ -337,14 +341,12 @@ void User_Choice_Manager::Select_Card_Screen(USER user_turn, Controller& control
             }
             
         }
-        
+
         
         return true;
     });
 
-    Component Card_Select_RadioBox = Toggle(&Card_Options, &selected);
 
-    Component card_select_container = Container::Vertical({Card_Select_RadioBox, Confirm_Button, Undo_Button});
 
     
 
