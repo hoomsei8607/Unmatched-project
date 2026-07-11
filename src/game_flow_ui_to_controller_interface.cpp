@@ -54,6 +54,10 @@ bool User_Choice_Manager::Screen_Manager(USER user_turn, Controller& control, co
             Choose_Card_To_Boost_Maneuver_With(control.Return_User_Turn(), control);
             return true;
 
+        case GAME_FLOW_SCREENS::CHOOSE_YOUR_ENEMY_SCREEN:
+            Choose_Enemy_Screen(control);
+            return true;
+
         case GAME_FLOW_SCREENS::GO_BACK_TO_MAIN_LOOP:
             return false;
         
@@ -150,6 +154,7 @@ void User_Choice_Manager::Choose_Fighter_Screen(USER user_turn, Controller& cont
     HERO_NAME user_hero;
     Component Confirm_Button = Button({"Confirm", [&]{
         User_Choice_Manager::selected_fighter = Selectable_Fighters_Enum_Vector[selected_fighter];
+        attack_type = control.Return_Fighter_Attacking_Range(User_Choice_Manager::selected_fighter);
         game_current_screen = GAME_FLOW_SCREENS::CHOOSE_ACTION;
         screen.ExitLoopClosure()();
     }});
@@ -280,7 +285,7 @@ void User_Choice_Manager::Select_Card_Screen(USER user_turn, Controller& control
     Component Confirm_Button = Button("CONFIRM", [&]{
         if(copy_of_user_hand[selected]->get_type() == CARD_TYPE::ATTACK || copy_of_user_hand[selected]->get_type() == CARD_TYPE::VERSATILE )
         {
-            game_current_screen = GAME_FLOW_SCREENS::FIGHTING_SCREEN;
+            game_current_screen = GAME_FLOW_SCREENS::CHOOSE_YOUR_ENEMY_SCREEN;
             selected_Attacker_card_index = selected;
             attacker_card_value = control.Return_card_Value(control.Return_User_Turn(), selected);
         }
@@ -398,8 +403,8 @@ void User_Choice_Manager::Choose_Maneuver_Type(Controller& control)
     screen.Loop(Renderer(container, [&]{
         return vbox({
             hbox({text("USER TURN: "), text(user_turn_name_string)}),
-            container->Render()
-        });
+            container->Render() | size(WIDTH, EQUAL, 90)
+        }) | hcenter | vcenter;
     }));
 
 }
@@ -453,4 +458,74 @@ void User_Choice_Manager::Choose_Card_To_Boost_Maneuver_With(USER user_turn, Con
         });
     }));
 
+}
+
+void User_Choice_Manager::Choose_Enemy_Screen(Controller& control)
+{
+    auto screen = ScreenInteractive::Fullscreen();
+    Graph* game_graph = Graph::Get_Map_Graph_Pointer();
+    std::set<int> space_number_occupied_by_enemies;
+    std::vector<Fighters_Names> Available_Enemies;
+    std::vector<std::string> Available_Enemies_Strings;
+    int selected_enemy;
+    if(attack_type == ATTACKING_RANGE::MELEE)
+    {
+        space_number_occupied_by_enemies = game_graph->return_adjacent_enemies_space_numbers_for_melee_attack(control.Return_User_Turn(), control.Return_Hero_Space_Number(selected_fighter));
+    }
+    else if(attack_type == ATTACKING_RANGE::RANGED)
+    {
+        space_number_occupied_by_enemies = game_graph->return_adjacent_enemies_space_numbers_for_melee_attack(control.Return_User_Turn(), control.Return_Hero_Space_Number(selected_fighter));
+    }
+
+    for(int mews : space_number_occupied_by_enemies)
+    {
+        std::cout << mews << "  ";
+    }
+    std::cout << "\n spaces numbers of enemies \n";
+    std::this_thread::sleep_for(std::chrono::seconds(4));
+
+    for(int element : space_number_occupied_by_enemies)
+    {
+        Fighters_Names potential_enemy;
+        potential_enemy = control.Return_Fighter_Base_On_Space_Number(element);
+        if(potential_enemy != Fighters_Names::NONE)
+        {
+            Available_Enemies.push_back(potential_enemy);
+        }
+    }
+    for(auto fighter : Available_Enemies)
+    {
+        Available_Enemies_Strings.push_back(control.Conver_Fighter_Name_Enum_To_String(fighter));
+    }
+
+    auto undo_button = Button("UNDO", [&]{
+        game_current_screen = GAME_FLOW_SCREENS::Card_Selection_Screen;
+        screen.ExitLoopClosure()();
+    });
+
+    auto confirm_button = Button("CONFIRM", [&]{
+        control.Set_Selected_Enemy(Available_Enemies[selected_enemy]);
+        game_current_screen = GAME_FLOW_SCREENS::FIGHTING_SCREEN;
+        screen.ExitLoopClosure()();
+    });
+
+    auto enemy_options_toggle_box = Toggle(&Available_Enemies_Strings, &selected_enemy);
+
+    auto container = Container::Vertical({
+        enemy_options_toggle_box,
+        confirm_button,
+        undo_button
+    });
+
+    screen.Loop(Renderer(container, [&]{
+        return vbox({
+            text(" "),
+            text("CHOOSE AN ENEMY TO ATTACK") | bold | underlined |  color(Color::NavajoWhite3) | size(WIDTH, EQUAL, 90) | hcenter,
+            text(" "),
+            text("AVAILABLE ENEMIES: ") | bold,
+            container -> Render() | size(WIDTH, EQUAL, 90)
+        }) | hcenter | vcenter;
+    }));
+
+    
 }

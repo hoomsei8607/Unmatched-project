@@ -16,6 +16,7 @@ class Fighter_Base_Class
         bool return_is_fighter_alive();
         void Boost_Move_Value(int boost_value);
         void Reset_Move_Value();
+        Fighters_Names Get_Fighter_Name() const;
 
     protected:
         int Initial_Hp;
@@ -25,6 +26,7 @@ class Fighter_Base_Class
         int Current_Move_Value; //in case the player wants to boost the movement
         int Current_Hero_Space; //which space is hero standing on in the map
         bool Is_Fighter_Alive;
+        Fighters_Names Fighter_Name;
         ATTACKING_RANGE Range_Type;
         FIGHTER_TYPE fighter_type;
 

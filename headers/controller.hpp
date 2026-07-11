@@ -15,6 +15,7 @@ class Controller
 {
     public:
         Controller();
+
         void Set_User1_And_User2_Info(const User1_And_User2_Info& info_struct);
         void Fill_Users_Info_Struct(User1_And_User2_Info& info_struct) const; 
         void Fill_Fighter_Info_Struct(Fighters_Names fighter_name, Fighter_Info& info_struct) const;
@@ -37,6 +38,8 @@ class Controller
         void change_boost_with_value(USER user_turn , int card_index);
         void Set_Who_Has_Won_The_Combat_Variable(USER user);
         void Disable_Card_Effect(USER user, int index);
+        void Set_Selected_Enemy(Fighters_Names selected_enemy);
+        
         
         int Return_Fighter_Move_Value(Fighters_Names fighter_name) const;
         int Return_Hero_Space_Number(Fighters_Names fighter_Name) const;
@@ -84,22 +87,31 @@ class Controller
 
         ATTACKING_RANGE Return_Fighter_Attacking_Range(Fighters_Names selected_fighter);
 
+        
+        Fighters_Names Return_Fighter_Base_On_Space_Number(int space_number);
+        Fighters_Names Get_Selected_Enemy();
         ~Controller();
     private:
         User user1;
         User user2;
-        Fighter_Base_Class* Dracula_And_Sisters[4];
-        Fighter_Base_Class* sherlock_And_Watson[2];
-        std::vector <Card_Base_Class*>  User1_Hand;
-        std::vector <Card_Base_Class*>  User2_Hand;
-        std::map <int, Space_Row_And_Column_In_Array> Space_To_Array_Index_Map;
+        USER Who_Won_The_Combat;
         USER Younger_User;
         USER User_Turn;
         USER_ACTION current_user_action;
+
+        Fighter_Base_Class* Dracula_And_Sisters[4];
+        Fighter_Base_Class* sherlock_And_Watson[2];
+
+        std::vector <Card_Base_Class*>  User1_Hand;
+        std::vector <Card_Base_Class*>  User2_Hand;
         std::vector <cards> sherlock_deck;
         std::vector <cards> dracula_deck;
+
+        std::map <int, Space_Row_And_Column_In_Array> Space_To_Array_Index_Map;
+
         int attacker_selected_card_index;
         int defender_selected_card_index;
-        USER Who_Won_The_Combat;
+
+        Fighters_Names Selected_Enemy_Hero;
     };
 #endif

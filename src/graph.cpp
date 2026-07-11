@@ -640,7 +640,6 @@ std::set <int> Graph::return_available_enemies_space_for_range_attack(USER user_
     Space* space = nullptr;
     
     color_for_comparison = return_zone(current_user_fighter_space_number)[0];
-    Space* space = nullptr;
     for(int a = 0 ; a < 3 ; a++)
     {
         color_for_comparison = current_space_color_array[a];
