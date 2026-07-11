@@ -504,8 +504,15 @@ void holmes_deduce_strategy::card_effect(Controller& controler,USER user_turn,in
     {
         return;
     }
-        controler.change_boost_with_value(user_turn,selected_card);
-        card_effect_log="Card value increased by "+std::to_string(controler.return_card_boost_value(selected_card,user_turn));
+    if(user_turn==USER::USER1)
+    {
+        controler.change_boost_with_value(USER::USER2,selected_card);
+    }
+    else if(user_turn==USER::USER2)
+    {
+        controler.change_boost_with_value(USER::USER1,selected_card);
+    }
+        card_effect_log="Opponent's Card value was changed with boost value";
     // get enemy card info and change boost value and card value
 }
 holmes_education_never_ends::holmes_education_never_ends()
@@ -526,13 +533,13 @@ void holmes_education_never_ends::card_effect(Controller& controler,USER user_tu
     {
         if(user_turn==controler.return_who_won_the_combat())
             {
-            controler.draw(USER::USER1);
+            controler.draw(USER::USER2);
             card_effect_log="Sherlock won. Player drew 1 card.";
             }
         if(user_turn!=controler.return_who_won_the_combat())
             {
-            controler.draw(USER::USER2);
-            controler.draw(USER::USER2);
+            controler.draw(USER::USER1);
+            controler.draw(USER::USER1);
             card_effect_log="Sherlock lost. Enemy drew 2 cards.";
             }
     }
@@ -540,13 +547,13 @@ void holmes_education_never_ends::card_effect(Controller& controler,USER user_tu
     {
         if(user_turn==controler.return_who_won_the_combat())
             {
-            controler.draw(USER::USER2);
+            controler.draw(USER::USER1);
             card_effect_log="Sherlock won. Player drew 1 card.";
             }
         if(user_turn!=controler.return_who_won_the_combat())
             {
-            controler.draw(USER::USER1);
-            controler.draw(USER::USER1);
+            controler.draw(USER::USER2);
+            controler.draw(USER::USER2);
             card_effect_log="Sherlock lost. Enemy drew 2 card.";
             }
     }
