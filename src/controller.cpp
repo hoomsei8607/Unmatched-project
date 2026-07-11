@@ -1390,7 +1390,7 @@ void Controller::Call_Card_Effect_Function(USER user_turn, cards card_name, int 
         {
             throw std::logic_error("Couldn't down cast for dracula thirst for sustenance card"); 
         }
-        ptr->card_effect();
+        ptr->card_effect((*this),user_turn);
         break;
     }   
     }
@@ -1433,4 +1433,9 @@ int Controller::get_attacker_selected_card_index()
 int Controller::get_defender_selected_card_index()
 {
     return defender_selected_card_index;
+}
+
+USER Controller::return_who_won_the_combat() const
+{
+    return Who_Won_The_Combat;
 }
