@@ -1,5 +1,6 @@
 #ifndef CARD_ABSTRACT_HPP
 #define CARD_ABSTRACT_HPP
+
 #include "enums.hpp"
 #include <string>
 #include "fighter_abstract.hpp"
@@ -15,7 +16,7 @@ class Card_Base_Class
 
     CARD_TYPE get_type();
 
-    CARD_OWNER get_owner();
+    Fighters_Names get_owner();
 
     bool get_is_discarded();
     bool Is_Card_Effect_Available();
@@ -42,7 +43,7 @@ class Card_Base_Class
     int card_number;        
     CARD_EFFECT_TYPE effect;
     CARD_TYPE type;
-    CARD_OWNER owner;
+    Fighters_Names owner;
     cards card_name_enum;
     bool is_discarded;   
     bool Should_Card_Effect_Be_Applied;

@@ -1439,6 +1439,18 @@ void Controller::Boost_Selected_Card_Value(USER user_turn, int index, int boost_
     }
 }
 
+Fighters_Names Controller::Return_Card_Owner_Name(USER user_turn, int index)
+{
+    if(user_turn == USER::USER1)
+    {
+        User1_Hand[index]->get_owner();
+    }
+    else
+    {
+        User2_Hand[index]->get_owner();
+    }
+}
+
 void Controller::change_boost_with_value(USER user_turn , int card_index)
 {
     if (user_turn==USER::USER1)

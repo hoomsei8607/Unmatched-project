@@ -9,7 +9,7 @@ dracula_feedingfrenzy::dracula_feedingfrenzy()
     card_name="Feeding Frenzy";
     Card_Value=2;
     Card_Boost_Value=3;
-    owner=CARD_OWNER::DRACULA;
+    owner=Fighters_Names::DRACULA;
     effect=CARD_EFFECT_TYPE::DURING_COMBAT;
     type=CARD_TYPE::ATTACK;
     card_name_enum = cards::FEEDING_FRENZY;
@@ -151,7 +151,7 @@ dracula_mistform::dracula_mistform()
     card_name="Mistform";
     Card_Value=0;
     Card_Boost_Value=2;
-    owner=CARD_OWNER::DRACULA;
+    owner=Fighters_Names::DRACULA;
     card_name_enum=cards::MISTFORM;
     type=CARD_TYPE::SCHEME;
     card_number=2;
@@ -167,7 +167,7 @@ dracula_ambush::dracula_ambush()
     card_name="Ambush";
     Card_Value=2;
     Card_Boost_Value=3;
-    owner=CARD_OWNER::ANY;
+    owner=Fighters_Names::ANY;
     card_name_enum=cards::AMBUSH;
     effect=CARD_EFFECT_TYPE::DURING_COMBAT;
     type=CARD_TYPE::ATTACK;
@@ -198,7 +198,7 @@ dracula_baptism_of_blood::dracula_baptism_of_blood()
     Card_Value=0;
     Card_Boost_Value=2;
     card_name_enum=cards::BAPTISM_OF_BLOOD;
-    owner=CARD_OWNER::DRACULA;
+    owner=Fighters_Names::DRACULA;
     type=CARD_TYPE::SCHEME;
     card_number=2;
     card_effect_description="Recover 2 health. Return a defeated\n sister (if any) to any space in\n dracula's zone. ";
@@ -228,7 +228,7 @@ dracula_beastform::dracula_beastform()
     card_name="Beastform";
     Card_Value=6;
     Card_Boost_Value=4;
-    owner=CARD_OWNER::DRACULA;
+    owner=Fighters_Names::DRACULA;
     card_name_enum=cards::BEASTFORM;
     effect=CARD_EFFECT_TYPE::DURING_COMBAT;
     type=CARD_TYPE::ATTACK;
@@ -257,7 +257,7 @@ dracula_dash::dracula_dash()
     card_name="Dash";
     Card_Value=3;
     Card_Boost_Value=1;
-    owner=CARD_OWNER::ANY;
+    owner=Fighters_Names::ANY;
     card_name_enum=cards::DASH;
     effect=CARD_EFFECT_TYPE::AFTER_COMBAT;
     type=CARD_TYPE::VERSATILE;
@@ -274,7 +274,7 @@ dracula_exploit::dracula_exploit()
     card_name="Exploit";
     Card_Value=4;
     Card_Boost_Value=1;
-    owner=CARD_OWNER::ANY;
+    owner=Fighters_Names::ANY;
     card_name_enum=cards::EXPLOIT;
     effect=CARD_EFFECT_TYPE::AFTER_COMBAT;
     type=CARD_TYPE::VERSATILE;
@@ -291,7 +291,7 @@ dracula_look_into_my_eyes::dracula_look_into_my_eyes()
     card_name="Look Into My Eyes";
     Card_Value=1;
     Card_Boost_Value=2;
-    owner=CARD_OWNER::DRACULA;
+    owner=Fighters_Names::DRACULA;
     card_name_enum=cards::LOOK_INTO_MY_EYES;
     effect=CARD_EFFECT_TYPE::DURING_COMBAT;
     type=CARD_TYPE::DEFENCE;
@@ -309,7 +309,7 @@ dracula_prey_upon::dracula_prey_upon()
     card_name="Prey Upon";
     Card_Value=0;
     Card_Boost_Value=4;
-    owner=CARD_OWNER::DRACULA;
+    owner=Fighters_Names::DRACULA;
     card_name_enum=cards::PREY_UPON;
     type=CARD_TYPE::SCHEME;
     card_number=2;
@@ -358,7 +358,7 @@ dracula_ravening_seduction::dracula_ravening_seduction()
     card_name="Ravening Seduction";
     Card_Value=0;
     Card_Boost_Value=2;
-    owner=CARD_OWNER::SISITERS;
+    owner=Fighters_Names::SISTERS;
     card_name_enum=cards::RAVENING_SEDUCTION;
     type=CARD_TYPE::SCHEME;
     card_number=3;
@@ -373,7 +373,7 @@ dracula_thirst_For_sustenance::dracula_thirst_For_sustenance()
     card_name="Thirst For Sustenance";
     Card_Value=3;
     Card_Boost_Value=3;
-    owner=CARD_OWNER::SISITERS;
+    owner=Fighters_Names::SISTERS;
     effect=CARD_EFFECT_TYPE::AFTER_COMBAT;
     card_name_enum=cards::THIRST_FOR_SUSTENANCE;
     type=CARD_TYPE::ATTACK;
@@ -399,7 +399,7 @@ void dracula_thirst_For_sustenance::card_effect(Controller& controler,USER user_
 //     card_name="Feint";
 //     Card_Value=2;
 //     Card_Boost_Value=2;
-//     owner=CARD_OWNER::ANY;
+//     owner=Fighters_Names::ANY;
 //     effect=CARD_EFFECT_TYPE::IMMEDIATE;
 //     type=CARD_TYPE::VERSATILE;
 //     card_number=3;
@@ -414,7 +414,7 @@ holmes_administer_aid::holmes_administer_aid()
     card_name="Administer Aid";
     Card_Value=0;
     Card_Boost_Value=2;
-    owner=CARD_OWNER::WATSON;
+    owner=Fighters_Names::WATSON;
     card_name_enum=cards::AMINISTER_AID;
     type=CARD_TYPE::SCHEME;
     card_number=2;
@@ -432,7 +432,7 @@ holmes_confirm_suspicion::holmes_confirm_suspicion()
     card_name="Confirm Suspicion";
     Card_Value=0;
     Card_Boost_Value=1;
-    owner=CARD_OWNER::SHERLOCK;
+    owner=Fighters_Names::SHERLOCK;
     card_name_enum=cards::CONFIRM_SUSPICION;
     type=CARD_TYPE::SCHEME;
     card_number=3;
@@ -447,7 +447,7 @@ holmes_counterpunch::holmes_counterpunch()
     card_name="Counterpunch";
     Card_Value=3;
     Card_Boost_Value=1;
-    owner=CARD_OWNER::SHERLOCK;
+    owner=Fighters_Names::SHERLOCK;
     card_name_enum=cards::COUNTERPUNCH;
     effect=CARD_EFFECT_TYPE::AFTER_COMBAT;
     type=CARD_TYPE::VERSATILE;
@@ -491,7 +491,7 @@ holmes_deduce_strategy::holmes_deduce_strategy()
     card_name="Deduce Strategy";
     Card_Value=3;
     Card_Boost_Value=1;
-    owner=CARD_OWNER::SHERLOCK;
+    owner=Fighters_Names::SHERLOCK;
     card_name_enum=cards::DEDUCE_STRATEGY;
     effect=CARD_EFFECT_TYPE::DURING_COMBAT;
     type=CARD_TYPE::VERSATILE;
@@ -520,7 +520,7 @@ holmes_education_never_ends::holmes_education_never_ends()
     card_name="Education Never Ends";
     Card_Value=3;
     Card_Boost_Value=1;
-    owner=CARD_OWNER::ANY;
+    owner=Fighters_Names::ANY;
     card_name_enum=cards::EDUCATION_NEVER_ENDS;
     effect=CARD_EFFECT_TYPE::AFTER_COMBAT;
     type=CARD_TYPE::VERSATILE;
@@ -563,7 +563,7 @@ holmes_elementary::holmes_elementary()
     card_name="Elementary";
     Card_Value=3;
     Card_Boost_Value=3;
-    owner=CARD_OWNER::SHERLOCK;
+    owner=Fighters_Names::SHERLOCK;
     card_name_enum=cards::ELEMENTARY;
     effect=CARD_EFFECT_TYPE::DURING_COMBAT;
     type=CARD_TYPE::DEFENCE;
@@ -579,7 +579,7 @@ holmes_eliminate_the_impossible::holmes_eliminate_the_impossible()
     card_name="Eliminate The Impossible";
     Card_Value=0;
     Card_Boost_Value=2;
-    owner=CARD_OWNER::SHERLOCK;
+    owner=Fighters_Names::SHERLOCK;
     card_name_enum=cards::ELIMINATE_THE_IMPOSSIBLE;
     type=CARD_TYPE::SCHEME;
     card_number=2;
@@ -601,7 +601,7 @@ holmes_fixed_point_in_a_changing_age::holmes_fixed_point_in_a_changing_age()
     card_name="Fixed Point In A Changing Age";
     Card_Value=3;
     Card_Boost_Value=1;
-    owner=CARD_OWNER::WATSON;
+    owner=Fighters_Names::WATSON;
     effect=CARD_EFFECT_TYPE::AFTER_COMBAT;
     card_name_enum=cards::FIXED_POINT_IN_A_CHANGING_AGE;
     type=CARD_TYPE::VERSATILE;
@@ -633,7 +633,7 @@ holmes_master_of_disguise::holmes_master_of_disguise()
     card_name="Master Of Disguise";
     Card_Value=0;
     Card_Boost_Value=2;
-    owner=CARD_OWNER::SHERLOCK;
+    owner=Fighters_Names::SHERLOCK;
     card_name_enum=cards::MASTER_OF_DISGUISE;
     type=CARD_TYPE::SCHEME;
     card_number=2;
@@ -648,7 +648,7 @@ holmes_the_game_is_afoot::holmes_the_game_is_afoot()
     card_name="The Game Is Afoot";
     Card_Value=5;
     Card_Boost_Value=2;
-    owner=CARD_OWNER::SHERLOCK;
+    owner=Fighters_Names::SHERLOCK;
     card_name_enum=cards::THE_GAME_IS_AFOOT;
     effect=CARD_EFFECT_TYPE::AFTER_COMBAT;
     type=CARD_TYPE::ATTACK;
@@ -665,7 +665,7 @@ holmes_service_revolver::holmes_service_revolver()
     card_name="Service Revolver";
     Card_Value=5;
     Card_Boost_Value=3;
-    owner=CARD_OWNER::WATSON;
+    owner=Fighters_Names::WATSON;
     card_name_enum=cards::SERVICE_REVOLVER;
     //effect=CARD_EFFECT_TYPE::AFTER_COMBAT;
     type=CARD_TYPE::ATTACK;
@@ -677,7 +677,7 @@ holmes_study_methods::holmes_study_methods()
     card_name="Study Methods";
     Card_Value=3;
     Card_Boost_Value=2;
-    owner=CARD_OWNER::ANY;
+    owner=Fighters_Names::ANY;
     effect=CARD_EFFECT_TYPE::AFTER_COMBAT;
     card_name_enum=cards::STUDY_METHODS;
     type=CARD_TYPE::VERSATILE;
@@ -702,7 +702,7 @@ feint::feint()
     card_name="Feint";
     Card_Value=2;
     Card_Boost_Value=1;
-    owner=CARD_OWNER::ANY;
+    owner=Fighters_Names::ANY;
     card_name_enum=cards::FEINT;
     effect=CARD_EFFECT_TYPE::IMMEDIATE;
     type=CARD_TYPE::VERSATILE;

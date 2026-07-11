@@ -90,6 +90,7 @@ class Controller
         
         Fighters_Names Return_Fighter_Base_On_Space_Number(int space_number);
         Fighters_Names Get_Selected_Enemy();
+        Fighters_Names Return_Card_Owner_Name(USER user_turn, int index);
         ~Controller();
     private:
         User user1;

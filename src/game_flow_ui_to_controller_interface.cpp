@@ -109,7 +109,7 @@ void User_Choice_Manager::Maneuver_Screen(USER user_turn, Controller& control, c
         }
         else
         {
-            game_current_screen = GAME_FLOW_SCREENS::CHOOSE_ACTION;
+            game_current_screen = GAME_FLOW_SCREENS::CHOOSE_FIGHTER;
         }
         control.Reset_Fighter_Move_Value(selected_fighter);
         screen.ExitLoopClosure()();
@@ -263,6 +263,8 @@ void User_Choice_Manager::Choose_Action_Screen(USER user_turn, Controller& contr
 
 void User_Choice_Manager::Select_Card_Screen(USER user_turn, Controller& control, const ftxui::Element& map_and_use_info)
 {
+    Fighters_Names Attacker_Fighter_Name;
+
     std::string user_trun_name_string;
     Graph* map_graph = Graph::Get_Map_Graph_Pointer();
     std::vector<Card_Base_Class*>copy_of_user_hand;
@@ -281,6 +283,14 @@ void User_Choice_Manager::Select_Card_Screen(USER user_turn, Controller& control
         user_trun_name_string = control.Return_User2_Username();
         copy_of_user_hand = control.Return_A_Copy_Of_User_Hand(USER::USER2);
     }
+
+    if(selected_fighter == Fighters_Names::SIS1 || selected_fighter == Fighters_Names::SIS2 || selected_fighter == Fighters_Names::SIS3)
+    {
+        Attacker_Fighter_Name = Fighters_Names::SISTERS;
+    }
+
+
+
 
     Component Confirm_Button = Button("CONFIRM", [&]{
         if(copy_of_user_hand[selected]->get_type() == CARD_TYPE::ATTACK || copy_of_user_hand[selected]->get_type() == CARD_TYPE::VERSATILE )
@@ -308,6 +318,12 @@ void User_Choice_Manager::Select_Card_Screen(USER user_turn, Controller& control
 
 
     Confirm_Button = Confirm_Button | Maybe([&]{
+
+        if(control.Return_Card_Owner_Name(user_turn, selected) != Fighters_Names::ANY && control.Return_Card_Owner_Name(user_turn, selected) != Attacker_Fighter_Name )
+        {
+            return false;
+        }
+
         if(control.Return_Selected_Card_Type(user_turn, selected) == CARD_TYPE::DEFENCE)
         {
             return false;
@@ -321,6 +337,7 @@ void User_Choice_Manager::Select_Card_Screen(USER user_turn, Controller& control
             }
             
         }
+        
         
         return true;
     });
@@ -481,8 +498,6 @@ void User_Choice_Manager::Choose_Enemy_Screen(Controller& control)
     {
         std::cout << mews << "  ";
     }
-    std::cout << "\n spaces numbers of enemies \n";
-    std::this_thread::sleep_for(std::chrono::seconds(4));
 
     for(int element : space_number_occupied_by_enemies)
     {

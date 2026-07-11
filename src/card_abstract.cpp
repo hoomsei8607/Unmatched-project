@@ -31,7 +31,7 @@ CARD_TYPE Card_Base_Class::get_type()
 {
     return type;
 }
-CARD_OWNER Card_Base_Class::get_owner()
+Fighters_Names Card_Base_Class::get_owner()
 {
     return owner;
 }
@@ -71,17 +71,17 @@ std::string Card_Base_Class::Get_Card_Owner_Name_As_String()
 {
     switch (owner)
     {
-        case  CARD_OWNER::ANY:
+        case  Fighters_Names::ANY:
             return "ANY";
             
-        case  CARD_OWNER::DRACULA:
+        case  Fighters_Names::DRACULA:
             return "DRACULA";
 
-        case  CARD_OWNER::SHERLOCK:
+        case  Fighters_Names::SHERLOCK:
             return "SHERLOCK";
-        case  CARD_OWNER::WATSON:
+        case  Fighters_Names::WATSON:
             return "WATSON";
-        case  CARD_OWNER::SISITERS:
+        case  Fighters_Names::SISTERS:
             return "SISTERS";
         }
 }
