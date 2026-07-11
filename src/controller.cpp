@@ -1038,6 +1038,37 @@ CARD_TYPE Controller::Return_Selected_Card_Type(USER user_turn, int index)
     }
 }
 
+void Controller::Set_Selected_Enemy(Fighters_Names selected_enemy)
+{
+    Selected_Enemy_Hero = selected_enemy;
+}
+
+Fighters_Names Controller::Get_Selected_Enemy()
+{
+    return Selected_Enemy_Hero;
+}
+
+Fighters_Names Controller::Return_Fighter_Base_On_Space_Number(int space_number)
+{
+    Fighters_Names return_if_not_found = Fighters_Names::NONE;
+    for(auto fighter : Dracula_And_Sisters)
+    {
+        if(fighter->Return_Fighter_Current_Space() == space_number)
+        {
+            return fighter->Get_Fighter_Name();
+             
+        }
+    }
+    for(auto fighter : sherlock_And_Watson)
+    {
+        if(fighter->Return_Fighter_Current_Space() == space_number)
+        {
+            return fighter->Get_Fighter_Name();
+        }
+    }
+    return return_if_not_found;
+    
+}
 
 ATTACKING_RANGE Controller::Return_Fighter_Attacking_Range(Fighters_Names selected_fighter)
 {

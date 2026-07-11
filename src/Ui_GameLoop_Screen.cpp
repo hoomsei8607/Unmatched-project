@@ -89,7 +89,7 @@ void User_Interface::Game_Loop_Screen(Controller& control)
                 gauge((float)Dracula_Info.Current_Hp/ Dracula_Info.Initial_Hp),
                 hbox({text("Move Value: "), text(std::to_string(Dracula_Info.Move_Value))}),
                 hbox({text("Range: "), text(std::to_string(Dracula_Info.Range))}),
-                text(user_info_struct.User1_Name)
+                hbox({text("USER: "), text(user_info_struct.User1_Name)})
             }) | border;
         }
         else if(user_info_struct.User1_Hero_Type == HERO_NAME::SHERLOCK)
@@ -100,7 +100,7 @@ void User_Interface::Game_Loop_Screen(Controller& control)
                 gauge((float)Sherlock_Info.Current_Hp/ Sherlock_Info.Initial_Hp),
                 hbox({text("Move Value: "), text(std::to_string(Sherlock_Info.Move_Value))}),
                 hbox({text("Range: "), text(std::to_string(Sherlock_Info.Range))}),
-                text(user_info_struct.User1_Name)
+                hbox({text("USER: "), text(user_info_struct.User1_Name)})
                 
             }) | border;
         }
@@ -114,7 +114,7 @@ void User_Interface::Game_Loop_Screen(Controller& control)
                 gauge((float)Sherlock_Info.Current_Hp/ Sherlock_Info.Initial_Hp),
                 hbox({text("Move Value: "), text(std::to_string(Sherlock_Info.Move_Value))}),
                 hbox({text("Range: "), text(std::to_string(Sherlock_Info.Range))}),
-                text(user_info_struct.User2_Name)
+                hbox({text("USER: "), text(user_info_struct.User2_Name)})
             }) | border;
         }
         else if(user_info_struct.User2_Hero_Type == HERO_NAME::DRACULA)
@@ -125,7 +125,7 @@ void User_Interface::Game_Loop_Screen(Controller& control)
                 gauge((float)Dracula_Info.Current_Hp/ Dracula_Info.Initial_Hp),
                 hbox({text("Move Value: "), text(std::to_string(Dracula_Info.Move_Value))}),
                 hbox({text("Range: "), text(std::to_string(Dracula_Info.Range))}),
-                text(user_info_struct.User2_Name)
+                hbox({text("USER:"), text(user_info_struct.User2_Name)})
             }) | border;
     
         }
@@ -201,7 +201,7 @@ void User_Interface::Game_Loop_Screen(Controller& control)
                 gauge((float)Dracula_Info.Current_Hp/ Dracula_Info.Initial_Hp),
                 hbox({text("Move Value: "), text(std::to_string(Dracula_Info.Move_Value))}),
                 hbox({text("Range: "), text(std::to_string(Dracula_Info.Range))}),
-                text(user_info_struct.User1_Name)
+                hbox({text("USER: "),text(user_info_struct.User1_Name)})
             }) | border;
         }
         else if(user_info_struct.User1_Hero_Type == HERO_NAME::SHERLOCK)
@@ -212,7 +212,7 @@ void User_Interface::Game_Loop_Screen(Controller& control)
                 gauge((float)Sherlock_Info.Current_Hp/ Sherlock_Info.Initial_Hp),
                 hbox({text("Move Value: "), text(std::to_string(Sherlock_Info.Move_Value))}),
                 hbox({text("Range: "), text(std::to_string(Sherlock_Info.Range))}),
-                text(user_info_struct.User1_Name)
+                hbox({text("USER: "),text(user_info_struct.User1_Name)})
                 
             }) | border;
         }
@@ -226,7 +226,7 @@ void User_Interface::Game_Loop_Screen(Controller& control)
                 gauge((float)Sherlock_Info.Current_Hp/ Sherlock_Info.Initial_Hp),
                 hbox({text("Move Value: "), text(std::to_string(Sherlock_Info.Move_Value))}),
                 hbox({text("Range: "), text(std::to_string(Sherlock_Info.Range))}),
-                text(user_info_struct.User2_Name)
+                hbox({text("USER: "), text(user_info_struct.User2_Name)})
             }) | border;
         }
         else if(user_info_struct.User2_Hero_Type == HERO_NAME::DRACULA)
@@ -237,7 +237,7 @@ void User_Interface::Game_Loop_Screen(Controller& control)
                 gauge((float)Dracula_Info.Current_Hp/ Dracula_Info.Initial_Hp),
                 hbox({text("Move Value: "), text(std::to_string(Dracula_Info.Move_Value))}),
                 hbox({text("Range: "), text(std::to_string(Dracula_Info.Range))}),
-                text(user_info_struct.User2_Name)
+                hbox({text("USER: "), text(user_info_struct.User2_Name)})
             }) | border;
     
         }

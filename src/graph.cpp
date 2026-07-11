@@ -610,3 +610,63 @@ std::vector<int> Graph::return_adjacent_allies(USER user_turn, int sapce_number)
     }
     return temp_vec;
 }
+
+std::set <int> Graph::return_adjacent_enemies_space_numbers_for_melee_attack(USER user_turn, int current_user_fighter_space_number)
+{
+    std::set<int> to_be_returned;
+    for(auto space : Game_Map_Graph[current_user_fighter_space_number])
+    {
+        if(space->Get_Which_User_Is_Occupying_The_Space() != user_turn && space->Get_Which_User_Is_Occupying_The_Space() != USER::NONE )
+        {
+            to_be_returned.insert(space->Get_Space_Number());
+        }
+    }
+    return to_be_returned;
+}
+
+bool Graph::Is_Space_Multi_Zone(int space_number)
+{
+   Space* space = nullptr;
+   Set_The_Passed_Pointer_To_The_Corresponding_Space_Object(space, space_number);
+   return space->Get_Multi_Zone_status(); 
+}
+
+std::set <int> Graph::return_available_enemies_space_for_range_attack(USER user_turn, int current_user_fighter_space_number)
+{
+    std::set<int> to_be_returned;
+    ZONE_COLORS color_for_comparison;
+    std::array<ZONE_COLORS,3> space_color_array_to_be_compaired_with;
+    std::array<ZONE_COLORS,3> current_space_color_array = return_zone(current_user_fighter_space_number);
+    Space* space = nullptr;
+    
+    color_for_comparison = return_zone(current_user_fighter_space_number)[0];
+    for(int a = 0 ; a < 3 ; a++)
+    {
+        color_for_comparison = current_space_color_array[a];
+        if(color_for_comparison == ZONE_COLORS::NON)
+        {
+            break;
+        }
+
+
+        for(int i = 1 ; i < 33 ; i++)
+        {
+            if(i == current_user_fighter_space_number)
+            {
+                continue;
+            }
+            
+            Set_The_Passed_Pointer_To_The_Corresponding_Space_Object(space, i);
+            space_color_array_to_be_compaired_with = return_zone(i);
+            for(int j = 0 ; j < 3 ; j++)
+            {
+                if(space_color_array_to_be_compaired_with[j] == color_for_comparison)
+                {
+                    to_be_returned.insert(i);
+                    break;
+                }
+            }
+        }
+    }
+    return to_be_returned;
+}

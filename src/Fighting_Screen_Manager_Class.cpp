@@ -101,10 +101,14 @@ void Fighting_Screen_Manager::Taking_Defender_Input_Screen(Controller& control)
     Confirm_Button = Confirm_Button | Maybe([&]{
         if(control.Return_Selected_Card_Type(defender, selected_card) == CARD_TYPE::VERSATILE || control.Return_Selected_Card_Type(defender, selected_card) == CARD_TYPE::DEFENCE)
         {
+            std::cout << "this is inside the confirm maybe button of taking defender card and this returns true\n";
+            std::this_thread::sleep_for(std::chrono::seconds(4));
             return true;
         }
         else
         {
+            std::cout << "this is inside the confirm maybe button of taking defender card and this returns false\n";
+            std::this_thread::sleep_for(std::chrono::seconds(4));
             return false;
         }
     });

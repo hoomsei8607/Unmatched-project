@@ -58,3 +58,8 @@ void Fighter_Base_Class::Boost_Move_Value(int boost_value)
 {
     Current_Move_Value += boost_value;
 }
+
+Fighters_Names Fighter_Base_Class::Get_Fighter_Name() const
+{
+    return Fighter_Name;
+}
