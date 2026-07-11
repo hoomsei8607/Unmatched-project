@@ -647,6 +647,7 @@ holmes_the_game_is_afoot::holmes_the_game_is_afoot()
     type=CARD_TYPE::ATTACK;
     card_number=2;
     card_effect_description="AFTER COMBAT: Move Holmes\nup to 3 spaces.";
+    card_effect_log=" ";
 }
 void holmes_the_game_is_afoot::card_effect(Controller& controler,USER user_turn)
 {
