@@ -149,8 +149,8 @@ void Fighting_Screen_Manager::Show_Immediate_Combat_Results(Controller& control)
     {
         Defender = USER::USER1;
     }
-    Element defender_selected_card_element = control.Return_A_Single_Card_Graphical_Representation(Defender, Defender_Selected_Card_Index);
-    Element attacker_selected_card_element = control.Return_A_Single_Card_Graphical_Representation(Attacker, Attacker_Selected_Card_Index);
+    Element defender_selected_card_element = control.Return_A_Single_Card_Graphical_Representation(Defender, Defender_Selected_Card_Index) | size(WIDTH, EQUAL, 30) | size(HEIGHT, EQUAL, 15);
+    Element attacker_selected_card_element = control.Return_A_Single_Card_Graphical_Representation(Attacker, Attacker_Selected_Card_Index) | size(WIDTH, EQUAL, 30) | size(HEIGHT, EQUAL, 15);
     
 
 
@@ -214,22 +214,28 @@ void Fighting_Screen_Manager::Show_Immediate_Combat_Results(Controller& control)
 
     screen.Loop(Renderer(Continue_Button,[&]{
         return vbox({
-            text("IMMEDIATE EFFECTS"),
+            text(" "),
+            text("IMMEDIATE EFFECTS") | bold | color(Color::NavajoWhite3),
+            text(" "),
             hbox({
                 vbox({
                     text("ATTACKER CARD"),
                     attacker_selected_card_element
                 }),
-                vbox({text("                         ")}),
+                vbox({}) | size(WIDTH, EQUAL, 30),
                 vbox({
                     text("DEFENDER CARD"),
                     defender_selected_card_element
                 })
             }),
-            text("IMMIDIATE EFFECTS RESULT LOG") | ftxui::underlined,
-            text(immediate_effects_results_log),
-            Continue_Button->Render()
-        });
+            text(" "),
+            vbox({
+                text("IMMIDIATE EFFECTS RESULT LOG") | ftxui::underlined | bold | color(Color::NavajoWhite3),
+                text(" "),
+                text(immediate_effects_results_log)
+            }) | size(WIDTH, EQUAL, 90),
+            Continue_Button->Render() |size(WIDTH, EQUAL, 90)
+        }) | hcenter | vcenter | border;
     }));
 }
 
@@ -262,8 +268,8 @@ void Fighting_Screen_Manager::During_Combat_Screen(Controller& control)
     {
         Defender = USER::USER1;
     }
-    Element defender_selected_card_element = control.Return_A_Single_Card_Graphical_Representation(Defender, Defender_Selected_Card_Index);
-    Element attacker_selected_card_element = control.Return_A_Single_Card_Graphical_Representation(Attacker, Attacker_Selected_Card_Index);
+    Element defender_selected_card_element = control.Return_A_Single_Card_Graphical_Representation(Defender, Defender_Selected_Card_Index) | size(WIDTH, EQUAL, 30) | size(HEIGHT, EQUAL, 15);
+    Element attacker_selected_card_element = control.Return_A_Single_Card_Graphical_Representation(Attacker, Attacker_Selected_Card_Index) | size(WIDTH, EQUAL, 30) | size(HEIGHT, EQUAL, 15);
     
     if(Has_Defender_Skipped_Card_Selection)
     {
@@ -307,22 +313,28 @@ void Fighting_Screen_Manager::During_Combat_Screen(Controller& control)
 
     screen.Loop(Renderer(Continue_Button,[&]{
         return vbox({
-            text("DURING FIGHT EFFECTS"),
+            text(" "),
+            text("DURING FIGHT EFFECTS") | bold | color(Color::NavajoWhite3),
+            text(" "),
             hbox({
                 vbox({
                     text("ATTACKER CARD"),
                     attacker_selected_card_element
                 }),
-                vbox({text("                         ")}),
+                vbox({}) | size(WIDTH, EQUAL, 30),
                 vbox({
                     text("DEFENDER CARD"),
                     defender_selected_card_element
                 })
             }),
-            text("DURING FIGHT EFFECTS RESULT LOG") | ftxui::underlined,
-            text(during_combat_result_log),
-            Continue_Button->Render()
-        });
+            vbox({
+                text(" "),
+                text("DURING FIGHT EFFECTS RESULT LOG") | ftxui::underlined | bold | color(Color::NavajoWhite3),
+                text(" "),
+                text(during_combat_result_log)
+            }) | size(WIDTH, EQUAL, 90),
+            Continue_Button->Render() | size(WIDTH, EQUAL, 90)
+        })| hcenter | vcenter | border;
     }));
 
 
@@ -381,6 +393,6 @@ void Fighting_Screen_Manager::Show_Fight_Results_Screen(Controller& control)
             text(Fight_Results) | center,
             hbox({text("DAMAGE DEALT: "), text(Damage_Dealt)}) | center,
             continue_button->Render() | center
-        }) | border;
+        });
     }));
 }

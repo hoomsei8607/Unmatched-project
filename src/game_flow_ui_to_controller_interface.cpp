@@ -126,8 +126,8 @@ void User_Choice_Manager::Maneuver_Screen(USER user_turn, Controller& control, c
 
     screen.Loop(Renderer(Moving_Fighter_Interactive_Ui, [&]{
         return vbox({
-            hbox({text("SELECTED FIGHTER: "), text(selected_hero_name)}),
-            map_and_user_info,
+            hbox({text("SELECTED FIGHTER: "), text(selected_hero_name)}) | hcenter,
+            map_and_user_info | hcenter,
             text("Choose space: "),
             Moving_Fighter_Interactive_Ui->Render()
         });        
@@ -199,8 +199,8 @@ void User_Choice_Manager::Choose_Fighter_Screen(USER user_turn, Controller& cont
     Component Fighter_Selection_Container = Container::Vertical({Fighters_RadioBox, Confirm_Button});
     screen.Loop(Renderer(Fighter_Selection_Container, [&]{
         return vbox({
-            User_Turn_Text,
-            map_and_user_info,
+            User_Turn_Text | hcenter,
+            map_and_user_info | hcenter,
             Text_Explanation,
             Fighter_Selection_Container->Render()
         });
@@ -248,8 +248,8 @@ void User_Choice_Manager::Choose_Action_Screen(USER user_turn, Controller& contr
 
     screen.Loop(Renderer(Action_Select_Container, [&]{
         return vbox({
-            text(user_turn_name),
-            map_and_user_info,
+            text(user_turn_name) | hcenter,
+            map_and_user_info | hcenter,
             text("Choose Your Action: "),
             Action_Select_Container->Render()
         });
@@ -329,8 +329,8 @@ void User_Choice_Manager::Select_Card_Screen(USER user_turn, Controller& control
     auto main_renderer = Renderer(card_select_container, [&]{
 
         return vbox({
-            hbox({text("USER TURN: "), text(user_trun_name_string)}),
-            map_and_use_info,
+            hbox({text("USER TURN: "), text(user_trun_name_string)}) | hcenter,
+            map_and_use_info | hcenter,
             control.Return_Hand_Elements_For_Render(user_turn),
             card_select_container->Render()
         });

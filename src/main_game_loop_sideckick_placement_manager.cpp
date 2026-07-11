@@ -95,8 +95,8 @@ void SideKick_Placement_Screen_Manager::Dispaly_Watson_Screen(Fighters_Print_Inf
             if(Is_Younger_User_Turn)
             {
                 To_Be_Rendered = vbox({
-                hbox({text("User Turn: "), text(control.Return_Younger_User_Name())}),
-                map_and_user_info,
+                hbox({text("User Turn: "), text(control.Return_Younger_User_Name())}) | hcenter,
+                map_and_user_info | hcenter,
                 text("Where do you want to place Dr.Watson? "),
                 Placement_Select_Handler->Render()
                 });
@@ -104,8 +104,8 @@ void SideKick_Placement_Screen_Manager::Dispaly_Watson_Screen(Fighters_Print_Inf
             else
             {
                 To_Be_Rendered = vbox({
-                hbox({text("User Turn: "), text(control.Return_Older_User_Name())}),
-                map_and_user_info,
+                hbox({text("User Turn: "), text(control.Return_Older_User_Name())}) | hcenter,
+                map_and_user_info | hcenter,
                 text("Where do you want to place Dr.Watson? "),
                 Placement_Select_Handler->Render()
                 });
@@ -173,8 +173,8 @@ void SideKick_Placement_Screen_Manager::Display_Sis1_Screen(Fighters_Print_Info&
         if(Is_Younger_User_Turn)
         {
             To_Be_Rendered = vbox({
-            hbox({text("User Turn: "), text(control.Return_Younger_User_Name())}),
-            map_and_user_info,
+            hbox({text("User Turn: "), text(control.Return_Younger_User_Name())}) | hcenter,
+            map_and_user_info | hcenter,
             text("Where do you want to place sister1? "),
             Placement_Select_Handler->Render()
             });
@@ -182,8 +182,8 @@ void SideKick_Placement_Screen_Manager::Display_Sis1_Screen(Fighters_Print_Info&
         else
         {
             To_Be_Rendered = vbox({
-            hbox({text("User Turn: "), text(control.Return_Older_User_Name())}),
-            map_and_user_info,
+            hbox({text("User Turn: "), text(control.Return_Older_User_Name())}) | hcenter,
+            map_and_user_info | hcenter,
             text("Where do you want to place sister1? "),
             Placement_Select_Handler->Render()
             });
@@ -252,8 +252,8 @@ void SideKick_Placement_Screen_Manager::Display_Sis2_Screen(Fighters_Print_Info&
         if(Is_Younger_User_Turn)
         {
             To_Be_Rendered = vbox({
-            hbox({text("User Turn: "), text(control.Return_Younger_User_Name())}),
-            map_and_user_info,
+            hbox({text("User Turn: "), text(control.Return_Younger_User_Name())}) | hcenter,
+            map_and_user_info | hcenter,
             text("Where do you want to place sister2? "),
             Placement_Select_Handler->Render()
             });
@@ -261,8 +261,8 @@ void SideKick_Placement_Screen_Manager::Display_Sis2_Screen(Fighters_Print_Info&
         else
         {
             To_Be_Rendered = vbox({
-            hbox({text("User Turn: "), text(control.Return_Older_User_Name())}),
-            map_and_user_info,
+            hbox({text("User Turn: "), text(control.Return_Older_User_Name())}) | hcenter,
+            map_and_user_info | hcenter,
             text("Where do you want to place sister2? "),
             Placement_Select_Handler->Render()
             });
@@ -330,8 +330,8 @@ void SideKick_Placement_Screen_Manager::Display_Sis3_Screen(Fighters_Print_Info&
         if(Is_Younger_User_Turn)
         {
             To_Be_Rendered = vbox({
-            hbox({text("User Turn: "), text(control.Return_Younger_User_Name())}),
-            map_and_user_info,
+            hbox({text("User Turn: "), text(control.Return_Younger_User_Name())}) | hcenter,
+            map_and_user_info | hcenter,
             text("Where do you want to place sister3? "),
             Placement_Select_Handler->Render()
             });
@@ -339,8 +339,8 @@ void SideKick_Placement_Screen_Manager::Display_Sis3_Screen(Fighters_Print_Info&
         else
         {
             To_Be_Rendered = vbox({
-            hbox({text("User Turn: "), text(control.Return_Older_User_Name())}),
-            map_and_user_info,
+            hbox({text("User Turn: "), text(control.Return_Older_User_Name())}) | hcenter,
+            map_and_user_info | hcenter,
             text("Where do you want to place sister3? "),
             Placement_Select_Handler->Render()
             });
