@@ -179,6 +179,10 @@ void dracula_ambush::card_effect(Controller& controler,USER user_turn)
     int enemy_card;
     if(user_turn==USER::USER1)
     {
+        if(controler.Return_A_Copy_Of_User_Hand(USER::USER2).size()==0)
+        {
+            return;
+        }
         enemy_card=rand()%controler.Return_A_Copy_Of_User_Hand(USER::USER2).size();
         Card_Value+=controler.return_card_boost_value(enemy_card,USER::USER2);
         card_effect_log="Card value increased by"+std::to_string(controler.return_card_boost_value(enemy_card,USER::USER2));
@@ -186,6 +190,10 @@ void dracula_ambush::card_effect(Controller& controler,USER user_turn)
     }
     if(user_turn==USER::USER2)
     {
+        if(controler.Return_A_Copy_Of_User_Hand(USER::USER1).size()==0)
+        {
+            return;
+        }
         enemy_card=rand()%controler.Return_A_Copy_Of_User_Hand(USER::USER1).size();
         Card_Value+=controler.return_card_boost_value(enemy_card,USER::USER1);
         card_effect_log="Card value increased by"+std::to_string(controler.return_card_boost_value(enemy_card,USER::USER1));
@@ -237,7 +245,7 @@ dracula_beastform::dracula_beastform()
 }
 void dracula_beastform::card_effect(Controller& controler)
 {
-    int discarded_number;
+    int discarded_number=0;
     //input to choose to discard cards or not
     //if discard:
     //need discard index for calling discard
@@ -301,7 +309,16 @@ dracula_look_into_my_eyes::dracula_look_into_my_eyes()
 void dracula_look_into_my_eyes::card_effect(Controller& controler,USER user_turn,int selected_card)
 {
     //add enemy's attacking card's boost value to this
-    Card_Value+=controler.return_card_boost_value(selected_card,user_turn);
+    if (user_turn==USER::USER1)
+    {
+        Card_Value+=controler.return_card_boost_value(selected_card,USER::USER2);
+    }
+    if (user_turn==USER::USER2)
+    {
+        Card_Value+=controler.return_card_boost_value(selected_card,USER::USER1);
+    }
+    
+    
     card_effect_log="Card value increased by "+std::to_string(controler.return_card_boost_value(selected_card,user_turn));
 }
 dracula_prey_upon::dracula_prey_upon()
@@ -506,11 +523,11 @@ void holmes_deduce_strategy::card_effect(Controller& controler,USER user_turn,in
     }
     if(user_turn==USER::USER1)
     {
-        controler.change_boost_with_value(USER::USER2,selected_card);
+        controler.change_value_with_boost(USER::USER2,selected_card);
     }
     else if(user_turn==USER::USER2)
     {
-        controler.change_boost_with_value(USER::USER1,selected_card);
+        controler.change_value_with_boost(USER::USER1,selected_card);
     }
         card_effect_log="Opponent's Card value was changed with boost value";
     // get enemy card info and change boost value and card value
@@ -534,13 +551,13 @@ void holmes_education_never_ends::card_effect(Controller& controler,USER user_tu
         if(user_turn==controler.return_who_won_the_combat())
             {
             controler.draw(USER::USER2);
-            card_effect_log="Sherlock won. Player drew 1 card.";
+            card_effect_log="Sherlock won. Enemy drew 1 card.";
             }
         if(user_turn!=controler.return_who_won_the_combat())
             {
             controler.draw(USER::USER1);
             controler.draw(USER::USER1);
-            card_effect_log="Sherlock lost. Enemy drew 2 cards.";
+            card_effect_log="Sherlock lost. Player drew 2 cards.";
             }
     }
     else if (user_turn==USER::USER2)
@@ -548,13 +565,13 @@ void holmes_education_never_ends::card_effect(Controller& controler,USER user_tu
         if(user_turn==controler.return_who_won_the_combat())
             {
             controler.draw(USER::USER1);
-            card_effect_log="Sherlock won. Player drew 1 card.";
+            card_effect_log="Sherlock won. Enemy drew 1 card.";
             }
         if(user_turn!=controler.return_who_won_the_combat())
             {
             controler.draw(USER::USER2);
             controler.draw(USER::USER2);
-            card_effect_log="Sherlock lost. Enemy drew 2 card.";
+            card_effect_log="Sherlock lost. Player drew 2 card.";
             }
     }
 }
@@ -587,12 +604,22 @@ holmes_eliminate_the_impossible::holmes_eliminate_the_impossible()
 }
 void holmes_eliminate_the_impossible::card_effect(Controller& controler,USER user_turn,int choice)
 {
+    
+    
     if(user_turn==USER::USER1)
     {
+        if (choice<0||choice>=static_cast<int>(controler.Return_A_Copy_Of_User_Hand(USER::USER2).size()))
+        {
+            return;
+        }
     controler.discard(choice,USER::USER2);
     }
     else if( user_turn==USER::USER2)
     {
+        if (choice<0||choice>=static_cast<int>(controler.Return_A_Copy_Of_User_Hand(USER::USER1).size()))
+        {
+            return;
+        }
     controler.discard(choice,USER::USER1);
     }
 }
@@ -670,7 +697,8 @@ holmes_service_revolver::holmes_service_revolver()
     //effect=CARD_EFFECT_TYPE::AFTER_COMBAT;
     type=CARD_TYPE::ATTACK;
     card_number=2;
-    card_effect_description=" ";
+    effect = CARD_EFFECT_TYPE::NONE;
+    card_effect_description = "No effect.";
 }
 holmes_study_methods::holmes_study_methods()
 {
