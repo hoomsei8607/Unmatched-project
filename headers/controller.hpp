@@ -34,7 +34,7 @@ class Controller
         void Boost_Selected_Card_Value(USER user_turn, int index, int boost_value);
         void Draw_Card_For_User(USER user_turn, cards card);
         void Set_Current_User_Action(USER_ACTION user_action);
-        void change_boost_with_value(USER user_turn , int card_index);
+        void change_value_with_boost(USER user_turn , int card_index);
         void Set_Who_Has_Won_The_Combat_Variable(USER user);
         void Disable_Card_Effect(USER user, int index);
         

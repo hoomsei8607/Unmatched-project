@@ -409,7 +409,33 @@ void Controller::Boost_Fighter_Move_Value(Fighters_Names fighter_name, int boost
 
 void Controller::Reset_Fighter_Move_Value(Fighters_Names fighter_name)
 {
-
+        switch (fighter_name)
+    {
+    case Fighters_Names::DRACULA:
+        Dracula_And_Sisters[static_cast<int>(Dracula_And_Sisters_Array_Index::DRACULA)]->Reset_Move_Value();
+        break;
+    
+    case Fighters_Names::SIS1:
+        Dracula_And_Sisters[static_cast<int>(Dracula_And_Sisters_Array_Index::SIS1)]->Reset_Move_Value();
+        break;
+    
+    case Fighters_Names::SIS2:
+        Dracula_And_Sisters[static_cast<int>(Dracula_And_Sisters_Array_Index::SIS2)]->Reset_Move_Value();
+        break;
+    
+    case Fighters_Names::SIS3:
+        Dracula_And_Sisters[static_cast<int>(Dracula_And_Sisters_Array_Index::SIS3)]->Reset_Move_Value();
+        break;
+    
+    case Fighters_Names::SHERLOCK:
+        sherlock_And_Watson[static_cast<int>(Sherlock_And_Watson_Array_Index::SHERLOCK)]->Reset_Move_Value();
+        break;
+    
+    case Fighters_Names::WATSON:
+        sherlock_And_Watson[static_cast<int>(Sherlock_And_Watson_Array_Index::WATSON)]->Reset_Move_Value();
+        break;
+    
+    }
 }
 
 void Controller::Set_Younger_User_Variable_Value()
@@ -635,6 +661,14 @@ void Controller::Initialize_Users_hands()
 
 void Controller::Instantiate_Card_Object(USER user, cards card_name)
 {
+    if(dracula_deck.empty())
+    {
+        return;
+    }
+    if(sherlock_deck.empty())
+    {
+        return;
+    }
     Card_Base_Class* temp_card_ptr = nullptr;
     HERO_NAME user_hero;
     if(user == USER::USER1)
@@ -849,12 +883,20 @@ void Controller::discard(int card,USER user_turn)
 {
     if (user_turn==USER::USER1)
     {
+        if(card < 0 || card >= static_cast<int>(User1_Hand.size()))
+        {
+            return;
+        }
         delete User1_Hand[card];
         User1_Hand.erase(User1_Hand.begin()+card);
         user1.user_discard(card);
     }
     else if (user_turn==USER::USER2)
     {
+        if(card < 0 || card >= static_cast<int>(User2_Hand.size()))
+        {
+            return;
+        }
         delete User2_Hand[card];
         User2_Hand.erase(User2_Hand.begin()+card);
         user2.user_discard(card);
@@ -1408,21 +1450,15 @@ void Controller::Boost_Selected_Card_Value(USER user_turn, int index, int boost_
     }
 }
 
-void Controller::change_boost_with_value(USER user_turn , int card_index)
+void Controller::change_value_with_boost(USER user_turn , int card_index)
 {
     if (user_turn==USER::USER1)
     {
-        int temp=User1_Hand[card_index]->get_card_value();
-
         User1_Hand[card_index]->set_card_value(User1_Hand[card_index]->get_Card_Boost_Value());
-        User1_Hand[card_index]->set_card_boost(temp);
     }
     if (user_turn==USER::USER2)
     {
-        int temp=User2_Hand[card_index]->get_card_value();
-
         User2_Hand[card_index]->set_card_value(User2_Hand[card_index]->get_Card_Boost_Value());
-        User2_Hand[card_index]->set_card_boost(temp);
     }
     
 }
