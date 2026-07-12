@@ -66,3 +66,7 @@ USER Space::Get_Which_User_Is_Occupying_The_Space()
 {
     return occupied_by_whom;
 }
+bool Space::get_has_secret_path()
+{
+    return Has_Secret_Path;
+}
