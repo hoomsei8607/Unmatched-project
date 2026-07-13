@@ -462,10 +462,10 @@ void Fighting_Screen_Manager::After_Combat_Screen(Controller& control)
                 }
 
                 Describtion_For_User = vbox({
-                    text(" "),
                     text("AFTER COMBAT RESULTS") | underlined | color(Color::NavajoWhite3) | bold | size(WIDTH, EQUAL, 90),
                     text(" "),
-                    text("MOVE DRACULA ADJACENT TO THE OPPOSING FIGHTER")
+                    text("CHOOSE A SPACE TO MOVE DRACULA ADJACENT TO THE OPPISNG FIGHTER"),
+                    text(" ")
                 });
                 break;
             
@@ -570,10 +570,10 @@ void Fighting_Screen_Manager::After_Combat_Screen(Controller& control)
                 }
 
                 Describtion_For_User = vbox({
-                    text(" "),
                     text("AFTER COMBAT RESULTS") | underlined | color(Color::NavajoWhite3) | bold | size(WIDTH, EQUAL, 90),
                     text(" "),
-                    text("MOVE DRACULA ADJACENT TO THE OPPOSING FIGHTER")
+                    text("CHOOSE A SPACE TO MOVE DRACULA ADJACENT TO THE OPPISNG FIGHTER"),
+                    text(" ")
                 });
                 break;
             
@@ -586,7 +586,7 @@ void Fighting_Screen_Manager::After_Combat_Screen(Controller& control)
                     text("TAKE A LOOK AT YOUR OPPONENTS HAND"),
                     text(" "),
 
-                    control.Return_Hand_Elements_For_Render(Defender)
+                    control.Return_Hand_Elements_For_Render(Attacker)
                 });
                 break;
             
@@ -646,13 +646,13 @@ void Fighting_Screen_Manager::After_Combat_Screen(Controller& control)
                 {
                     break;
                 }
-
                 Describtion_For_User = vbox({
-                    text(" "),
                     text("AFTER COMBAT RESULTS") | underlined | color(Color::NavajoWhite3) | bold | size(WIDTH, EQUAL, 90),
                     text(" "),
-                    text("MOVE DRACULA ADJACENT TO THE OPPOSING FIGHTER")
+                    text("CHOOSE A SPACE TO MOVE DRACULA ADJACENT TO THE OPPISNG FIGHTER"),
+                    text(" ")
                 });
+
                 break;
             
             case cards::STUDY_METHODS:

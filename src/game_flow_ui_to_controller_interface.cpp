@@ -134,7 +134,7 @@ void User_Choice_Manager::Maneuver_Screen(USER user_turn, Controller& control, c
             map_and_user_info | hcenter,
             text("Choose space: "),
             Moving_Fighter_Interactive_Ui->Render()
-        });        
+        }) | size(WIDTH, EQUAL, 100) | center;        
     }));
 
 
@@ -209,7 +209,7 @@ void User_Choice_Manager::Choose_Fighter_Screen(USER user_turn, Controller& cont
             map_and_user_info | hcenter,
             Text_Explanation,
             Fighter_Selection_Container->Render()
-        });
+        }) | size(WIDTH, EQUAL, 100) | center;
     }));
 
 }
@@ -219,7 +219,7 @@ void User_Choice_Manager::Choose_Action_Screen(USER user_turn, Controller& contr
 {
     auto screen = ScreenInteractive::Fullscreen();
 
-
+    std::string selected_hero_name_as_string = control.Conver_Fighter_Name_Enum_To_String(selected_fighter);
     std::vector <std::string> options = {"MANEUVER", "USE CARDS"};
     int selected = 0;
     Component radio_box = Radiobox(&options, &selected);
@@ -254,18 +254,18 @@ void User_Choice_Manager::Choose_Action_Screen(USER user_turn, Controller& contr
 
     screen.Loop(Renderer(Action_Select_Container, [&]{
         return vbox({
-            text(user_turn_name) | hcenter,
+            hbox({text("SELECTED FIGHTER: "), text(selected_hero_name_as_string)}) | hcenter,
             map_and_user_info | hcenter,
             text("Choose Your Action: "),
             Action_Select_Container->Render()
-        });
+        }) | size(WIDTH, EQUAL, 100) | center;
     }));
 }
 
 void User_Choice_Manager::Select_Card_Screen(USER user_turn, Controller& control, const ftxui::Element& map_and_use_info)
 {
     Fighters_Names Attacker_Fighter_Name = selected_fighter;
-
+    std::string selected_fighter_name_as_string = control.Conver_Fighter_Name_Enum_To_String(selected_fighter);
     std::string user_trun_name_string;
     Graph* map_graph = Graph::Get_Map_Graph_Pointer();
     std::vector<Card_Base_Class*>copy_of_user_hand;
@@ -354,11 +354,11 @@ void User_Choice_Manager::Select_Card_Screen(USER user_turn, Controller& control
     auto main_renderer = Renderer(card_select_container, [&]{
 
         return vbox({
-            hbox({text("USER TURN: "), text(user_trun_name_string)}) | hcenter,
+            hbox({text("SELECTED FIGHTER: "), text(selected_fighter_name_as_string)}) | hcenter,
             map_and_use_info | hcenter,
             control.Return_Hand_Elements_For_Render(user_turn),
             card_select_container->Render()
-        });
+        }) | center;
     });
     screen.Loop(main_renderer);
 }
@@ -386,6 +386,7 @@ void User_Choice_Manager::Fighting_Screen(USER user_turn, Controller& control, c
 
 void User_Choice_Manager::Choose_Maneuver_Type(Controller& control)
 {
+    std::string selected_fighter_name_as_string = control.Conver_Fighter_Name_Enum_To_String(selected_fighter);
     auto screen = ScreenInteractive::Fullscreen();
     bool Is_User_Hand_Empty = control.Is_User_Hand_Empty(control.Return_User_Turn());
     std::string user_turn_name_string;
@@ -427,7 +428,7 @@ void User_Choice_Manager::Choose_Maneuver_Type(Controller& control)
 
     screen.Loop(Renderer(container, [&]{
         return vbox({
-            hbox({text("USER TURN: "), text(user_turn_name_string)}),
+            hbox({text("SELECTED FIGHTER: "), text(selected_fighter_name_as_string)}),
             container->Render() | size(WIDTH, EQUAL, 90)
         }) | hcenter | vcenter;
     }));
@@ -436,6 +437,7 @@ void User_Choice_Manager::Choose_Maneuver_Type(Controller& control)
 
 void User_Choice_Manager::Choose_Card_To_Boost_Maneuver_With(USER user_turn, Controller& control)
 {
+    std::string selected_fighter_name_as_string = control.Conver_Fighter_Name_Enum_To_String(selected_fighter);
     std::string user_turn_name_string;
     std::string selected_fighter_name = control.Conver_Fighter_Name_Enum_To_String(selected_fighter);
 
@@ -476,11 +478,11 @@ void User_Choice_Manager::Choose_Card_To_Boost_Maneuver_With(USER user_turn, Con
 
     screen.Loop(Renderer(container,  [&]{
         return vbox({
-            hbox({text("USER TURN: "), text(user_turn_name_string)}),
+            hbox({text("SELECTED FIGHTER: "), text(selected_fighter_name_as_string)}),
             hbox({text("SELECTED FIGHTER: "), text(selected_fighter_name)}),
             user_hand_for_render,
             container->Render()
-        });
+        }) | size(WIDTH, EQUAL, 100) | center;
     }));
 
 }

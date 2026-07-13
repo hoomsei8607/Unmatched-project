@@ -121,35 +121,35 @@ User1_And_User2_Info User_Interface::Get_User_Input(Controller& control)
             {
             case Screen_State::USER1_NAME_INPUT:
                 return vbox({
-                    User1_Name_Input->Render(),
-                    User1_Name_Confirm_Button->Render(),
-                });
+                    User1_Name_Input->Render() | size(WIDTH, EQUAL, 100),
+                    User1_Name_Confirm_Button->Render() | size(WIDTH, EQUAL, 100),
+                }) | center;
             
             case Screen_State::USER1_AGE_INPUT:
                     return vbox({
-                        User1_Age_Input->Render(),
-                        User1_Age_Confrim_Button->Render()
-                    });
+                        User1_Age_Input->Render() | size(WIDTH, EQUAL, 100),
+                        User1_Age_Confrim_Button->Render() | size(WIDTH, EQUAL, 100)
+                    }) | center;
 
             case Screen_State::USER2_AGE_INPUT:
                     return vbox({
-                        User2_Age_Input->Render(),
-                        User2_Age_Confrim_Button->Render()
-                    });
+                        User2_Age_Input->Render() | size(WIDTH, EQUAL, 100),
+                        User2_Age_Confrim_Button->Render() | size(WIDTH, EQUAL, 100)
+                    }) | center;
 
             case Screen_State::USER2_NAME_INPUT:
                     return vbox({
-                        User2_Name_Input->Render(),
-                        User2_Name_Confirm_Button->Render()
-                    });
+                        User2_Name_Input->Render() | size(WIDTH, EQUAL, 100),
+                        User2_Name_Confirm_Button->Render() | size(WIDTH, EQUAL, 100)
+                    }) | center;
 
             
             case Screen_State::HERO_NAME_INPUT:
                     return vbox({
                         hbox({text("You are User1 ( "), text(User1_Name), text(" ) Choose your hero: ")}),
                         separator(),
-                        Hero_Name_Event_Handler->Render(),
-                    });
+                        Hero_Name_Event_Handler->Render() | size(WIDTH, EQUAL, 100),
+                    }) | center;
             }
         }
         else
@@ -158,35 +158,35 @@ User1_And_User2_Info User_Interface::Get_User_Input(Controller& control)
             {
             case Screen_State::USER1_NAME_INPUT:
                 return vbox({
-                    User1_Name_Input->Render(),
-                    User1_Name_Confirm_Button->Render(),
-                });
+                    User1_Name_Input->Render() | size(WIDTH, EQUAL, 100),
+                    User1_Name_Confirm_Button->Render() | size(WIDTH, EQUAL, 100),
+                }) | center;
             
             case Screen_State::USER1_AGE_INPUT:
                     return vbox({
-                        User1_Age_Input->Render(),
-                        User1_Age_Confrim_Button->Render()
-                    });
+                        User1_Age_Input->Render() | size(WIDTH, EQUAL, 100),
+                        User1_Age_Confrim_Button->Render() | size(WIDTH, EQUAL, 100)
+                    }) | center;
 
             case Screen_State::USER2_AGE_INPUT:
                     return vbox({
-                        User2_Age_Input->Render(),
-                        User2_Age_Confrim_Button->Render()
-                    });
+                        User2_Age_Input->Render() | size(WIDTH, EQUAL, 100),
+                        User2_Age_Confrim_Button->Render() | size(WIDTH, EQUAL, 100)
+                    }) | center;
 
             case Screen_State::USER2_NAME_INPUT:
                     return vbox({
-                        User2_Name_Input->Render(),
-                        User2_Name_Confirm_Button->Render()
-                    });
+                        User2_Name_Input->Render() | size(WIDTH, EQUAL, 100),
+                        User2_Name_Confirm_Button->Render() | size(WIDTH, EQUAL, 100)
+                    }) | center;
 
             
             case Screen_State::HERO_NAME_INPUT:
                     return vbox({
                         hbox({text("You are User2 ( "), text(User2_Name), text(" ) Choose your hero: ")}),
-                        separator(),
-                        Hero_Name_Event_Handler->Render(),
-                    });
+                        separator() | size(WIDTH, EQUAL, 100) ,
+                        Hero_Name_Event_Handler->Render() | size(WIDTH, EQUAL, 100),
+                    }) | center;
             }
         }
     });

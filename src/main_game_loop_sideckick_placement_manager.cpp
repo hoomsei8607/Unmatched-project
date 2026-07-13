@@ -97,9 +97,9 @@ void SideKick_Placement_Screen_Manager::Dispaly_Watson_Screen(Fighters_Print_Inf
                 To_Be_Rendered = vbox({
                 hbox({text("User Turn: "), text(control.Return_Younger_User_Name())}) | hcenter,
                 map_and_user_info | hcenter,
-                text("Where do you want to place Dr.Watson? "),
-                Placement_Select_Handler->Render()
-                });
+                text("Where do you want to place Dr.Watson? ") ,
+                Placement_Select_Handler->Render() | size(WIDTH, EQUAL, 100)
+                }) | center;
             }
             else
             {
@@ -107,8 +107,8 @@ void SideKick_Placement_Screen_Manager::Dispaly_Watson_Screen(Fighters_Print_Inf
                 hbox({text("User Turn: "), text(control.Return_Older_User_Name())}) | hcenter,
                 map_and_user_info | hcenter,
                 text("Where do you want to place Dr.Watson? "),
-                Placement_Select_Handler->Render()
-                });
+                Placement_Select_Handler->Render()  | size(WIDTH, EQUAL, 100)
+                }) | center;
             }
             return To_Be_Rendered;
     }));
@@ -176,8 +176,8 @@ void SideKick_Placement_Screen_Manager::Display_Sis1_Screen(Fighters_Print_Info&
             hbox({text("User Turn: "), text(control.Return_Younger_User_Name())}) | hcenter,
             map_and_user_info | hcenter,
             text("Where do you want to place sister1? "),
-            Placement_Select_Handler->Render()
-            });
+            Placement_Select_Handler->Render() | size(WIDTH, EQUAL, 100)
+            }) | center;
         }
         else
         {
@@ -185,8 +185,8 @@ void SideKick_Placement_Screen_Manager::Display_Sis1_Screen(Fighters_Print_Info&
             hbox({text("User Turn: "), text(control.Return_Older_User_Name())}) | hcenter,
             map_and_user_info | hcenter,
             text("Where do you want to place sister1? "),
-            Placement_Select_Handler->Render()
-            });
+            Placement_Select_Handler->Render() | size(WIDTH, EQUAL, 100)
+            }) | center;
         }
         return To_Be_Rendered;
     }));
@@ -255,17 +255,17 @@ void SideKick_Placement_Screen_Manager::Display_Sis2_Screen(Fighters_Print_Info&
             hbox({text("User Turn: "), text(control.Return_Younger_User_Name())}) | hcenter,
             map_and_user_info | hcenter,
             text("Where do you want to place sister2? "),
-            Placement_Select_Handler->Render()
-            });
+            Placement_Select_Handler->Render() | size(WIDTH, EQUAL, 100)
+            }) | center;
         }
         else
         {
             To_Be_Rendered = vbox({
             hbox({text("User Turn: "), text(control.Return_Older_User_Name())}) | hcenter,
             map_and_user_info | hcenter,
-            text("Where do you want to place sister2? "),
-            Placement_Select_Handler->Render()
-            });
+            text("Where do you want to place sister2? ") ,
+            Placement_Select_Handler->Render()  | size(WIDTH, EQUAL, 100)
+            }) | center;
         }
         return To_Be_Rendered;
     }));
@@ -333,8 +333,8 @@ void SideKick_Placement_Screen_Manager::Display_Sis3_Screen(Fighters_Print_Info&
             hbox({text("User Turn: "), text(control.Return_Younger_User_Name())}) | hcenter,
             map_and_user_info | hcenter,
             text("Where do you want to place sister3? "),
-            Placement_Select_Handler->Render()
-            });
+            Placement_Select_Handler->Render() | size(WIDTH, EQUAL, 100)
+            }) | center;
         }
         else
         {
@@ -342,8 +342,8 @@ void SideKick_Placement_Screen_Manager::Display_Sis3_Screen(Fighters_Print_Info&
             hbox({text("User Turn: "), text(control.Return_Older_User_Name())}) | hcenter,
             map_and_user_info | hcenter,
             text("Where do you want to place sister3? "),
-            Placement_Select_Handler->Render()
-            });
+            Placement_Select_Handler->Render() | size(WIDTH, EQUAL, 100)
+            }) | center;
         }
 
         return To_Be_Rendered;
