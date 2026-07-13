@@ -19,7 +19,7 @@ class Fighting_Screen_Manager
         void During_Combat_Screen(Controller& control);
         void Taking_Defender_Input_Screen(Controller& control);
         void Show_Fight_Results_Screen(Controller& control);
-
+        void After_Combat_Screen(Controller& control);
     private:
         int Defender_Selected_Card_Index;
         int Attacker_Card_Value;

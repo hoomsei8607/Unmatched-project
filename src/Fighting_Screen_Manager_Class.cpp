@@ -1,5 +1,5 @@
 #include "../headers/Fighting_Screen_Manager_Class.hpp"
-
+#include "../headers/after_combat_sub_screen_manager.hpp"
 #include <chrono>
 #include <thread>
 #include <iostream>
@@ -36,7 +36,7 @@ bool Fighting_Screen_Manager::Screen_Manager(Controller& control)
 
 
     case FIGHTING_SCREEN_SUB_SCREENS::AFTER_COMBAT_SCREEN:
-        
+        After_Combat_Screen(control);
         return true;
 
     case FIGHTING_SCREEN_SUB_SCREENS::RETURN_TO_MAIN_LOOP:
@@ -392,9 +392,335 @@ void Fighting_Screen_Manager::Show_Fight_Results_Screen(Controller& control)
 
     screen.Loop(Renderer(continue_button, [&]{
         return vbox({
-            text(Fight_Results) | center,
+            text(Fight_Results) | center | underlined | color(Color::NavajoWhite3) |bold,
+            text(" "),
             hbox({text("DAMAGE DEALT: "), text(Damage_Dealt)}) | center,
             continue_button->Render() | center
-        });
+        }) | hcenter | vcenter;
     }));
+}
+
+void Fighting_Screen_Manager::After_Combat_Screen(Controller& control)
+{
+    AFTER_COMBAT_SUB_SCREENS after_effect_card_screen;
+    
+    Element Describtion_For_User;
+    USER Attacker = control.Return_User_Turn();
+    USER Defender;
+    if(Attacker == USER::USER1)
+    {
+        Defender = USER::USER2;
+    }
+    else 
+    {   
+        Defender = USER::USER1;
+    }
+
+    bool Has_Defender_Skipped_turn;
+    if(Defender_Selected_Card_Index == -1)
+    {
+        Has_Defender_Skipped_turn = true;
+    }
+    else
+    {
+        Has_Defender_Skipped_turn = false;
+    }
+
+    if(Has_Defender_Skipped_turn)
+    {
+        auto screen = ScreenInteractive::Fullscreen();
+        if(control.Return_Selected_Card_Effect_Type(Attacker, Attacker_Selected_Card_Index) == CARD_EFFECT_TYPE::AFTER_COMBAT && control.Should_Card_Effect_Be_Executed(Attacker, Attacker_Selected_Card_Index))
+        {
+
+            switch (control.Return_Selected_Card_Name_As_An_Enum(Attacker, Attacker_Selected_Card_Index))
+            {
+            case cards::DASH:
+                after_effect_card_screen = AFTER_COMBAT_SUB_SCREENS::DASH;
+                Describtion_For_User = vbox({
+                    text(" "),
+                    text("AFTER COMBAT RESULTS") | underlined | color(Color::NavajoWhite3) | bold | size(WIDTH, EQUAL, 90),
+                    text(" "),
+                    text("MOVE YOUR FIGHTER UPTO 3 SPACES")
+                });
+                break;
+            
+            case cards::THE_GAME_IS_AFOOT:
+                after_effect_card_screen = AFTER_COMBAT_SUB_SCREENS::GAME_IS_AFOOT;
+                Describtion_For_User = vbox({
+                    text(" "),
+                    text("AFTER COMBAT RESULTS") | underlined | color(Color::NavajoWhite3) | bold | size(WIDTH, EQUAL, 90),
+                    text(" "),
+                    text("MOVE SHERLOCK UPTO 3 SPACES")
+                });
+                break;
+            
+            case cards::THIRST_FOR_SUSTENANCE:
+                after_effect_card_screen = AFTER_COMBAT_SUB_SCREENS::THIRST_FOR_SUSTENANCE;
+                if(control.return_who_won_the_combat() != Attacker)
+                {
+                    break;
+                }
+
+                Describtion_For_User = vbox({
+                    text(" "),
+                    text("AFTER COMBAT RESULTS") | underlined | color(Color::NavajoWhite3) | bold | size(WIDTH, EQUAL, 90),
+                    text(" "),
+                    text("MOVE DRACULA ADJACENT TO THE OPPOSING FIGHTER")
+                });
+                break;
+            
+            case cards::STUDY_METHODS:
+                after_effect_card_screen = AFTER_COMBAT_SUB_SCREENS::STUDY_METHODS;
+                Describtion_For_User = vbox({
+                    text(" "),
+                    text("AFTER COMBAT RESULTS") | underlined | color(Color::NavajoWhite3) | bold | size(WIDTH, EQUAL, 90),
+                    text(" "),
+                    text("TAKE A LOOK AT YOUR OPPONENTS HAND"),
+                    text(" "),
+
+                    control.Return_Hand_Elements_For_Render(Defender)
+                });
+                break;
+            
+            default:
+                break;
+            }
+
+            auto continue_button = Button("CONTINUE", [&]{
+                screen.ExitLoopClosure()();
+            });
+
+            screen.Loop(Renderer(continue_button, [&]{
+                return vbox({
+                    Describtion_For_User | hcenter,
+                    continue_button -> Render() | size(WIDTH, EQUAL, 45) | hcenter
+                }) | center;
+            }));
+            After_Combat_Sub_Screen_Manager after_combet_sub_screens(control.Return_Selected_Card_Name_As_An_Enum(Attacker, Attacker_Selected_Card_Index), Attacker, after_effect_card_screen);
+            while(true)
+            {
+                if(!after_combet_sub_screens.Screen_Manager(control))
+                {
+                    break;
+                }
+            }
+
+        }
+        else
+        {
+            auto screen = ScreenInteractive::Fullscreen();
+
+
+            Describtion_For_User = vbox({
+                text(" "),
+                text("AFTER COMBAT RESULTS") | underlined | color(Color::NavajoWhite3) | bold | size(WIDTH, EQUAL, 90),
+                text(" "),
+                text("NO EFFECTS")
+            });
+
+            auto continue_button = Button("CONTINUE", [&]{
+                screen.ExitLoopClosure();
+            });
+
+            screen.Loop(Renderer(continue_button, [&]{
+                return vbox({
+                    Describtion_For_User | hcenter,
+                    continue_button -> Render() | size(WIDTH, EQUAL, 45) | hcenter 
+                }) | center;
+            }));
+        }
+    }
+    else
+    {
+        bool No_Effect_Should_occur;
+        if(!control.Should_Card_Effect_Be_Executed(Attacker, Attacker_Selected_Card_Index) && !control.Should_Card_Effect_Be_Executed(Defender, Defender_Selected_Card_Index))
+        {
+            No_Effect_Should_occur = true;
+        }
+        if(control.Return_Selected_Card_Effect_Type(Defender, Defender_Selected_Card_Index) == CARD_EFFECT_TYPE::AFTER_COMBAT && control.Should_Card_Effect_Be_Executed(Defender, Defender_Selected_Card_Index))
+        {
+            auto screen = ScreenInteractive::Fullscreen();
+            switch (control.Return_Selected_Card_Name_As_An_Enum(Defender, Defender_Selected_Card_Index))
+            {
+            case cards::DASH:
+                after_effect_card_screen = AFTER_COMBAT_SUB_SCREENS::DASH;
+                Describtion_For_User = vbox({
+                    text(" "),
+                    text("AFTER COMBAT RESULTS") | underlined | color(Color::NavajoWhite3) | bold | size(WIDTH, EQUAL, 90),
+                    text(" "),
+                    text("MOVE YOUR FIGHTER UPTO 3 SPACES")
+                });
+                break;
+            
+            case cards::THE_GAME_IS_AFOOT:
+                after_effect_card_screen = AFTER_COMBAT_SUB_SCREENS::GAME_IS_AFOOT;
+                Describtion_For_User = vbox({
+                    text(" "),
+                    text("AFTER COMBAT RESULTS") | underlined | color(Color::NavajoWhite3) | bold | size(WIDTH, EQUAL, 90),
+                    text(" "),
+                    text("MOVE SHERLOCK UPTO 3 SPACES")
+                });
+                break;
+            
+            case cards::THIRST_FOR_SUSTENANCE:
+                after_effect_card_screen = AFTER_COMBAT_SUB_SCREENS::THIRST_FOR_SUSTENANCE;
+                if(control.return_who_won_the_combat() != Attacker)
+                {
+                    break;
+                }
+
+                Describtion_For_User = vbox({
+                    text(" "),
+                    text("AFTER COMBAT RESULTS") | underlined | color(Color::NavajoWhite3) | bold | size(WIDTH, EQUAL, 90),
+                    text(" "),
+                    text("MOVE DRACULA ADJACENT TO THE OPPOSING FIGHTER")
+                });
+                break;
+            
+            case cards::STUDY_METHODS:
+                after_effect_card_screen = AFTER_COMBAT_SUB_SCREENS::STUDY_METHODS;
+                Describtion_For_User = vbox({
+                    text(" "),
+                    text("AFTER COMBAT RESULTS") | underlined | color(Color::NavajoWhite3) | bold | size(WIDTH, EQUAL, 90),
+                    text(" "),
+                    text("TAKE A LOOK AT YOUR OPPONENTS HAND"),
+                    text(" "),
+
+                    control.Return_Hand_Elements_For_Render(Defender)
+                });
+                break;
+            
+            default:
+                break;
+            }
+
+            auto continue_button = Button("CONTINUE", [&]{
+                screen.ExitLoopClosure()();
+            });
+
+            screen.Loop(Renderer(continue_button, [&]{
+                return vbox({
+                    Describtion_For_User | hcenter,
+                    continue_button -> Render() | size(WIDTH, EQUAL, 45) | hcenter
+                });
+            }));
+            After_Combat_Sub_Screen_Manager after_combet_sub_screens(control.Return_Selected_Card_Name_As_An_Enum(Defender, Defender_Selected_Card_Index), Defender, after_effect_card_screen);
+            while(true)
+            {
+                if(!after_combet_sub_screens.Screen_Manager(control))
+                {
+                    break;
+                }
+            }
+
+        }
+
+        if(control.Return_Selected_Card_Effect_Type(Attacker, Attacker_Selected_Card_Index) == CARD_EFFECT_TYPE::AFTER_COMBAT && control.Should_Card_Effect_Be_Executed(Attacker, Attacker_Selected_Card_Index))
+        {
+            auto screen = ScreenInteractive::Fullscreen();
+            switch (control.Return_Selected_Card_Name_As_An_Enum(Attacker, Attacker_Selected_Card_Index))
+            {
+            case cards::DASH:
+                after_effect_card_screen = AFTER_COMBAT_SUB_SCREENS::DASH;
+                Describtion_For_User = vbox({
+                    text(" "),
+                    text("AFTER COMBAT RESULTS") | underlined | color(Color::NavajoWhite3) | bold | size(WIDTH, EQUAL, 90),
+                    text(" "),
+                    text("MOVE YOUR FIGHTER UPTO 3 SPACES")
+                });
+                break;
+            
+            case cards::THE_GAME_IS_AFOOT:
+                after_effect_card_screen = AFTER_COMBAT_SUB_SCREENS::GAME_IS_AFOOT;
+                Describtion_For_User = vbox({
+                    text(" "),
+                    text("AFTER COMBAT RESULTS") | underlined | color(Color::NavajoWhite3) | bold | size(WIDTH, EQUAL, 90),
+                    text(" "),
+                    text("MOVE SHERLOCK UPTO 3 SPACES")
+                });
+                break;
+            
+            case cards::THIRST_FOR_SUSTENANCE:
+                after_effect_card_screen = AFTER_COMBAT_SUB_SCREENS::THIRST_FOR_SUSTENANCE;
+                if(control.return_who_won_the_combat() != Attacker)
+                {
+                    break;
+                }
+
+                Describtion_For_User = vbox({
+                    text(" "),
+                    text("AFTER COMBAT RESULTS") | underlined | color(Color::NavajoWhite3) | bold | size(WIDTH, EQUAL, 90),
+                    text(" "),
+                    text("MOVE DRACULA ADJACENT TO THE OPPOSING FIGHTER")
+                });
+                break;
+            
+            case cards::STUDY_METHODS:
+                after_effect_card_screen = AFTER_COMBAT_SUB_SCREENS::STUDY_METHODS;
+                Describtion_For_User = vbox({
+                    text(" "),
+                    text("AFTER COMBAT RESULTS") | underlined | color(Color::NavajoWhite3) | bold | size(WIDTH, EQUAL, 90),
+                    text(" "),
+                    text("TAKE A LOOK AT YOUR OPPONENTS HAND"),
+                    text(" "),
+
+                    control.Return_Hand_Elements_For_Render(Defender)
+                });
+                break;
+            
+            default:
+                break;
+            }
+
+            auto continue_button = Button("CONTINUE", [&]{
+                screen.ExitLoopClosure()();
+            });
+
+            screen.Loop(Renderer(continue_button, [&]{
+                return vbox({
+                    Describtion_For_User | hcenter,
+                    continue_button -> Render() | size(WIDTH, EQUAL, 45) | hcenter
+                }) | center;
+            }));
+            After_Combat_Sub_Screen_Manager after_combet_sub_screens(control.Return_Selected_Card_Name_As_An_Enum(Attacker, Attacker_Selected_Card_Index), Attacker, after_effect_card_screen);
+            while(true)
+            {
+                if(!after_combet_sub_screens.Screen_Manager(control))
+                {
+                    break;
+                }
+            }
+
+        }
+
+        if(control.Return_Selected_Card_Effect_Type(Defender, Defender_Selected_Card_Index) != CARD_EFFECT_TYPE::AFTER_COMBAT && control.Return_Selected_Card_Effect_Type(Attacker, Attacker_Selected_Card_Index) != CARD_EFFECT_TYPE::AFTER_COMBAT && No_Effect_Should_occur)
+        {
+            auto screen = ScreenInteractive::Fullscreen();
+
+
+            Describtion_For_User = vbox({
+                text(" "),
+                text("AFTER COMBAT RESULTS") | underlined | color(Color::NavajoWhite3) | bold | size(WIDTH, EQUAL, 90),
+                text(" "),
+                text("NO EFFECTS")
+            });
+
+            auto continue_button = Button("CONTINUE", [&]{
+                screen.ExitLoopClosure();
+            });
+
+            screen.Loop(Renderer(continue_button, [&]{
+                return vbox({
+                    Describtion_For_User | hcenter,
+                    continue_button -> Render() | size(WIDTH, EQUAL, 45) | hcenter 
+                })| center;
+            }));
+        }
+
+
+    }
+
+    current_screen = FIGHTING_SCREEN_SUB_SCREENS::RETURN_TO_MAIN_LOOP;
+
+    
 }
