@@ -1,5 +1,26 @@
 #include "../headers/fighter_abstract.hpp"
 
+Fighter_Base_Class::Fighter_Base_Class()
+{
+    Is_Fighter_Currently_Selected = false;
+}
+
+void Fighter_Base_Class::Select_Fighter()
+{
+    Is_Fighter_Currently_Selected = true;
+}
+
+void Fighter_Base_Class::Deselect_Fighter()
+{
+    Is_Fighter_Currently_Selected = false;
+}
+
+bool Fighter_Base_Class::Is_Fighter_Selected()
+{
+    return Is_Fighter_Currently_Selected;
+}
+
+
 int Fighter_Base_Class::Return_Fighter_Initial_Hp() const
 {
     return Initial_Hp;

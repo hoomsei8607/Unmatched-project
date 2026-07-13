@@ -5,6 +5,7 @@
 class Fighter_Base_Class
 {
     public:
+        Fighter_Base_Class();
         int Return_Fighter_Initial_Hp() const;
         int Return_Fighter_Current_Hp() const;
         int Return_Fighter_Current_Move_Value() const;
@@ -13,9 +14,12 @@ class Fighter_Base_Class
         ATTACKING_RANGE Return_Fighter_Attacking_Range_Enum_Type() const;
         void Set_Current_Fighter_Space_Number(int new_space);
         void change_health(int);
-        bool return_is_fighter_alive();
+        void Select_Fighter();
+        void Deselect_Fighter();
         void Boost_Move_Value(int boost_value);
         void Reset_Move_Value();
+        bool return_is_fighter_alive();
+        bool Is_Fighter_Selected();
         Fighters_Names Get_Fighter_Name() const;
 
     protected:
@@ -26,6 +30,7 @@ class Fighter_Base_Class
         int Current_Move_Value; //in case the player wants to boost the movement
         int Current_Hero_Space; //which space is hero standing on in the map
         bool Is_Fighter_Alive;
+        bool Is_Fighter_Currently_Selected;
         Fighters_Names Fighter_Name;
         ATTACKING_RANGE Range_Type;
         FIGHTER_TYPE fighter_type;
