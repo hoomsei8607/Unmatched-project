@@ -57,7 +57,7 @@ void User_Interface::Starting_Menu_Screen()
         return
         vbox
         ({    
-            paragraphAlignCenter(Game_Titile) | center | color(Color::Blue),
+            paragraphAlignCenter(Game_Titile) | hcenter | color(Color::NavajoWhite3),
             separator(),
             vbox
             ({
