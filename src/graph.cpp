@@ -8,8 +8,14 @@ bool Graph::Is_Graph_Initiated = false;
 
 void Graph::Recursive_Path_Finder(std::set<int>& paths, int current_space, int times_to_call_recursive_function, USER user_turn, int current_step)
 {
+    Space *current_space_ptr;
+    Set_The_Passed_Pointer_To_The_Corresponding_Space_Object(current_space_ptr,current_space);
     for(auto space : Game_Map_Graph[current_space])
     {
+        if (current_step!=0 && current_space_ptr->get_has_secret_path() && space->get_has_secret_path())
+        {
+            continue;
+        }        
         if((space->Get_Occupied_Status()))
         {
             continue;

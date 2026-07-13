@@ -271,7 +271,7 @@ dracula_dash::dracula_dash()
     type=CARD_TYPE::VERSATILE;
     card_number=3;
     card_effect_description="AFTER COMBAT: Move your fighter up\n to 3 spaces.";
-    card_effect_log=" ";
+    card_effect_log="Aplying after combat effect of DASH card";
 }
 void dracula_dash::card_effect(Controller& controler)
 {
@@ -396,17 +396,16 @@ dracula_thirst_For_sustenance::dracula_thirst_For_sustenance()
     type=CARD_TYPE::ATTACK;
     card_number=3;
     card_effect_description="AFTER COMBAT: If you won the\n combat, place Dracula in any space\n adjacent to the opposing fighter.";
+    card_effect_log="Aplying after combat effect of THIRST FOR SUSTENANCE card";
 }
 void dracula_thirst_For_sustenance::card_effect(Controller& controler,USER user_turn)
 {
     //if win move dracula adjacent to the enemy fighter
     if (user_turn==controler.return_who_won_the_combat())
     {
-        card_effect_log="Dracula is set adjacent to opposing fighter.";
     }
     else if (user_turn!=controler.return_who_won_the_combat())
     {
-        card_effect_log="Dracula didn't move.";
     }
     
     
@@ -681,7 +680,7 @@ holmes_the_game_is_afoot::holmes_the_game_is_afoot()
     type=CARD_TYPE::ATTACK;
     card_number=2;
     card_effect_description="AFTER COMBAT: Move Holmes\nup to 3 spaces.";
-    card_effect_log=" ";
+    card_effect_log="Aplying after combat effect of THE GAME IS AFOOT card";
 }
 void holmes_the_game_is_afoot::card_effect(Controller& controler,USER user_turn)
 {
@@ -694,7 +693,6 @@ holmes_service_revolver::holmes_service_revolver()
     Card_Boost_Value=3;
     owner=Fighters_Names::WATSON;
     card_name_enum=cards::SERVICE_REVOLVER;
-    //effect=CARD_EFFECT_TYPE::AFTER_COMBAT;
     type=CARD_TYPE::ATTACK;
     card_number=2;
     effect = CARD_EFFECT_TYPE::NONE;
@@ -711,16 +709,16 @@ holmes_study_methods::holmes_study_methods()
     type=CARD_TYPE::VERSATILE;
     card_number=2;
     card_effect_description="AFTER COMBAT: if you won the\ncombat,look at your opponent's hand. ";
+    card_effect_log="Aplying after combat effect of STUDY METHODS card";
 }
 void holmes_study_methods::card_effect(Controller& controler,USER user_turn)
 {
     if (user_turn==controler.return_who_won_the_combat())
     {
-        card_effect_log="Sherlock won you can you look at the opponent's hand.";
     }
     if (user_turn!=controler.return_who_won_the_combat())
     {
-        card_effect_log="Sherlock lost you can't you look at the opponent's hand.";
+        
     }
     
 }
