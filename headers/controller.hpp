@@ -3,6 +3,7 @@
 #include "user.hpp"
 #include "structs.hpp"
 #include <string>
+#include <vector>
 #include <map>
 #include "fighter_abstract.hpp"
 
@@ -39,8 +40,8 @@ class Controller
         void Set_Who_Has_Won_The_Combat_Variable(USER user);
         void Disable_Card_Effect(USER user, int index);
         void Set_Selected_Enemy(Fighters_Names selected_enemy);
-        
-        
+        void Select_Fighter(Fighters_Names fighter_name);
+
         int Return_Fighter_Move_Value(Fighters_Names fighter_name) const;
         int Return_Hero_Space_Number(Fighters_Names fighter_Name) const;
         int return_card_boost_value(int card,USER user_turn);
@@ -53,8 +54,7 @@ class Controller
         bool Return_Is_Fighter_Alive(Fighters_Names name) const;
         bool Is_Selected_Card_A_Scheme_Card(USER user_turn, int index);
         bool Should_Card_Effect_Be_Executed(USER user, int index);
-        
-        
+
         USER Return_User_Turn() const;
         USER Return_Younger_User() const;
         USER Return_Older_User() const;
@@ -75,23 +75,29 @@ class Controller
         ftxui::Element Return_Hand_Elements_For_Render(USER user_turn);
         ftxui::Element Return_Hand_Elements_For_Boost_Screen_Render(int selected_card_to_be_boosted);
         ftxui::Element Return_A_Single_Card_Graphical_Representation(USER user_turn, int selected_Card);
-
+        
         std::vector<Card_Base_Class*> Return_A_Copy_Of_User_Hand(USER user_turn);
         std::vector<std::string> Return_Hand_As_String(USER user_turn);
-
-        CARD_TYPE Return_Selected_Card_Type(USER user_turn, int index);
-
-        CARD_EFFECT_TYPE Return_Selected_Card_Effect_Type(USER user_turn, int index);
-
-        cards Return_Selected_Card_Name_As_An_Enum(USER user_tunr, int index);
-
-        ATTACKING_RANGE Return_Fighter_Attacking_Range(Fighters_Names selected_fighter);
-
         
+        CARD_TYPE Return_Selected_Card_Type(USER user_turn, int index);
+        
+        CARD_EFFECT_TYPE Return_Selected_Card_Effect_Type(USER user_turn, int index);
+        
+        cards Return_Selected_Card_Name_As_An_Enum(USER user_turn, int index);
+        
+        ATTACKING_RANGE Return_Fighter_Attacking_Range(Fighters_Names selected_fighter);
+        
+        
+        Fighters_Names Which_Fighter_Is_Currently_Selected(HERO_NAME hero_of_team);
         Fighters_Names Return_Fighter_Base_On_Space_Number(int space_number);
         Fighters_Names Get_Selected_Enemy();
         Fighters_Names Return_Card_Owner_Name(USER user_turn, int index);
+
         ~Controller();
+        Fighters_Print_Info* fighters_printing_info_array;
+        int fighters_printing_info_count;
+        ftxui::Element map_and_user_info;
+
     private:
         User user1;
         User user2;

@@ -1518,3 +1518,60 @@ USER Controller::return_who_won_the_combat() const
 {
     return Who_Won_The_Combat;
 }
+
+Fighters_Names Controller::Which_Fighter_Is_Currently_Selected(HERO_NAME hero_of_the_team)
+{
+    Fighters_Names to_be_returned;
+
+    if(hero_of_the_team == HERO_NAME::DRACULA)
+    {
+        if(Dracula_And_Sisters[static_cast<int>(Dracula_And_Sisters_Array_Index::DRACULA)]->Is_Fighter_Selected())
+        {
+            to_be_returned = Fighters_Names::DRACULA;
+        }
+        if(Dracula_And_Sisters[static_cast<int>(Dracula_And_Sisters_Array_Index::SIS1)]->Is_Fighter_Selected())
+        {
+            to_be_returned = Fighters_Names::SIS1;
+        }
+        if(Dracula_And_Sisters[static_cast<int>(Dracula_And_Sisters_Array_Index::SIS2)]->Is_Fighter_Selected())
+        {
+            to_be_returned = Fighters_Names::SIS2;
+        }
+        if(Dracula_And_Sisters[static_cast<int>(Dracula_And_Sisters_Array_Index::SIS3)]->Is_Fighter_Selected())
+        {
+            to_be_returned = Fighters_Names::SIS3;
+        }
+    }
+    if(hero_of_the_team == HERO_NAME::SHERLOCK)
+    {
+        if(sherlock_And_Watson[static_cast<int>(Sherlock_And_Watson_Array_Index::WATSON)]->Is_Fighter_Selected())
+        {
+            to_be_returned = Fighters_Names::WATSON;
+        }
+        if(sherlock_And_Watson[static_cast<int>(Sherlock_And_Watson_Array_Index::SHERLOCK)]->Is_Fighter_Selected())
+        {
+            to_be_returned = Fighters_Names::SHERLOCK;
+        }
+    }
+    return to_be_returned;
+}
+
+void Controller::Select_Fighter(Fighters_Names fighter_name)
+{
+    for(auto fighter : Dracula_And_Sisters)
+    {
+        if(fighter->Get_Fighter_Name() == fighter_name)
+        {
+            fighter->Select_Fighter();
+            return;
+        }
+    }
+    for(auto fighter : sherlock_And_Watson)
+    {
+        if(fighter->Get_Fighter_Name() == fighter_name)
+        {
+            fighter->Select_Fighter();
+            return;
+        }
+    }
+}
