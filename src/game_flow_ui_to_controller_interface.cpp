@@ -155,6 +155,7 @@ void User_Choice_Manager::Choose_Fighter_Screen(USER user_turn, Controller& cont
     Component Confirm_Button = Button({"Confirm", [&]{
         User_Choice_Manager::selected_fighter = Selectable_Fighters_Enum_Vector[selected_fighter];
         attack_type = control.Return_Fighter_Attacking_Range(User_Choice_Manager::selected_fighter);
+        control.Select_Fighter(User_Choice_Manager::selected_fighter);
         game_current_screen = GAME_FLOW_SCREENS::CHOOSE_ACTION;
         screen.ExitLoopClosure()();
     }});
@@ -373,7 +374,12 @@ void User_Choice_Manager::Fighting_Screen(USER user_turn, Controller& control, c
             break;
         }
     }
-    
+    //change them turns
+    //discard them cards
+    //deselect fighters
+    //check to see if hero is alive if not end the game and announce the winner
+    //otherwise go back to choosing fighter
+    game_current_screen = GAME_FLOW_SCREENS::CHOOSE_FIGHTER;
 
 
 }
