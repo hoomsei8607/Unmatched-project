@@ -9,8 +9,6 @@ using namespace ftxui;
 
 After_Combat_Sub_Screen_Manager::After_Combat_Sub_Screen_Manager(cards selected_card_name, USER user_turn, AFTER_COMBAT_SUB_SCREENS screen)
 {
-    std::cout << "entered the screen manager constructor \n";
-    std::this_thread::sleep_for(std::chrono::seconds(4));
 
     switch (selected_card_name)
     {
@@ -44,8 +42,6 @@ After_Combat_Sub_Screen_Manager::After_Combat_Sub_Screen_Manager(cards selected_
 
 bool After_Combat_Sub_Screen_Manager::Screen_Manager(Controller& control)
 {
-    std::cout << "entered the screen manager brancher \n";
-    std::this_thread::sleep_for(std::chrono::seconds(4));
 
     switch (current_screen)
     {
@@ -54,11 +50,11 @@ bool After_Combat_Sub_Screen_Manager::Screen_Manager(Controller& control)
         return true;
 
     case AFTER_COMBAT_SUB_SCREENS::THIRST_FOR_SUSTENANCE:
-        // Thirst_For_Sustenance_Screen(control);
+        Thirst_For_Sustenance_Screen(control);
         return true;
 
     case AFTER_COMBAT_SUB_SCREENS::GAME_IS_AFOOT:
-        // Game_Is_Afoot(control);
+        Game_Is_Afoot(control);
         return true;
 
     case AFTER_COMBAT_SUB_SCREENS::STUDY_METHODS:
@@ -225,4 +221,66 @@ void After_Combat_Sub_Screen_Manager::Game_Is_Afoot(Controller& control)
         }) | center;
     }));
 
+}
+
+
+void After_Combat_Sub_Screen_Manager::Thirst_For_Sustenance_Screen(Controller& control)
+{
+    auto screen = ScreenInteractive::Fullscreen();
+    Graph* game_graph = Graph::Get_Map_Graph_Pointer();
+    std::set<int> Spaces_That_Fighter_Can_Move_To;
+    USER user_who_owns_the_enemy_fighter;
+    
+    if(HERO_NAME::DRACULA == control.Return_User1_Hero_Name())
+    {
+        user_who_owns_the_enemy_fighter = USER::USER2;
+    }
+    else 
+    {
+        user_who_owns_the_enemy_fighter = USER::USER1;
+    }
+
+
+    game_graph->Recursive_Path_Finder(Spaces_That_Fighter_Can_Move_To,control.Return_Hero_Space_Number(control.Which_Fighter_Is_Currently_Selected(HERO_NAME::SHERLOCK)), 1, user_who_owns_the_enemy_fighter);
+    std::vector<std::string> available_spaces_for_render;
+    for(int space_number : Spaces_That_Fighter_Can_Move_To)
+    {
+        available_spaces_for_render.push_back(std::to_string(space_number));
+    }
+    int selected = 0;
+    auto toggle_box_for_render = Toggle(&available_spaces_for_render, &selected);
+    auto confirm_button = Button("CONFIRM", [&]{
+        int former_occupied_space = control.Return_Hero_Space_Number(Fighters_Names::DRACULA);
+        USER current_user_occupying_the_space = game_graph->Get_User_Occupying_Space(former_occupied_space);
+        game_graph->Set_User_Occupying_Space(USER::NONE, former_occupied_space);
+        game_graph->Change_Space_Occiupied_Status(former_occupied_space);
+        control.Set_Fighter_Space_Number(Fighters_Names::DRACULA, std::stoi(available_spaces_for_render[selected]));
+        game_graph->Set_User_Occupying_Space(current_user_occupying_the_space, std::stoi(available_spaces_for_render[selected]));
+        game_graph->Change_Space_Occiupied_Status(std::stoi(available_spaces_for_render[selected]));
+        Space_Row_And_Column_In_Array temp_struct_to_update_fighter_position_on_screen;
+        control.Convert_Space_Number_To_Row_And_Column_Index(control.Return_Hero_Space_Number(Fighters_Names::DRACULA), temp_struct_to_update_fighter_position_on_screen);
+        control.fighters_printing_info_array[static_cast<int>(Fighters_Names::DRACULA)].Row_Index = temp_struct_to_update_fighter_position_on_screen.row_index;
+        control.fighters_printing_info_array[static_cast<int>(Fighters_Names::DRACULA)].Column_Index = temp_struct_to_update_fighter_position_on_screen.column_index;        
+        current_screen =  AFTER_COMBAT_SUB_SCREENS::RETURN_TO_FIGHTING_SCREEN_MANAGER;
+        screen.ExitLoopClosure()();
+    });
+    auto container = Container::Vertical({
+        toggle_box_for_render,
+        confirm_button,
+    });
+    
+    
+    screen.Loop(Renderer(container, [&]{
+        return vbox({
+            text(" "),
+            hbox({text("SELECTED FIGHTER: "), text("DRACULA")}) | hcenter | bold | underlined | color(Color::NavajoWhite3) | size(WIDTH, EQUAL, 100),
+            text(" "),
+            control.map_and_user_info | hcenter,
+            text(" "),
+            text("CHOOSE A SPACE") ,
+            text(" "),
+            container -> Render() | size(WIDTH, EQUAL, 100),
+        }) | center;
+    }));
+    
 }
