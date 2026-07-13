@@ -29,6 +29,9 @@ void User_Interface::Game_Loop_Screen(Controller& control)
     Fighter_Info Dracula_Sis2_Info;
     Fighter_Info Dracula_Sis3_Info;
 
+    control.fighters_printing_info_array = Map_Printing_Info;
+    control.fighters_printing_info_count = 6;
+
     //placing the heros on the map after we figured out
     //who is younger
     if(control.Return_Younger_Hero_Name() == HERO_NAME::DRACULA)
@@ -255,6 +258,8 @@ void User_Interface::Game_Loop_Screen(Controller& control)
                 Player2_HeroInfo_Box,
             }),
         });
+
+        control.map_and_user_info = Users_Info_And_Map;
 
         if(!user_choice_manager.Screen_Manager(control.Return_User_Turn(), control, Users_Info_And_Map, Map_Printing_Info, 6))
         {
