@@ -298,11 +298,6 @@ Graph::~Graph()
 }
 
 
-std::set<int> Graph::Available_Spaces_For_Moving(int move_value, int current_space, USER user_turn)
-{
-    std::set<int> To_Be_Returned_Set;
-
-}
 
 void Graph::Change_Space_Occiupied_Status(int space_number)
 {
