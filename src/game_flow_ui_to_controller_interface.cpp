@@ -134,7 +134,7 @@ void User_Choice_Manager::Maneuver_Screen(USER user_turn, Controller& control, c
             map_and_user_info | hcenter,
             text("Choose space: "),
             Moving_Fighter_Interactive_Ui->Render()
-        }) | size(WIDTH, EQUAL, 100) | center;        
+        }) | size(WIDTH, EQUAL, 120) | center;        
     }));
 
 
@@ -209,7 +209,7 @@ void User_Choice_Manager::Choose_Fighter_Screen(USER user_turn, Controller& cont
             map_and_user_info | hcenter,
             Text_Explanation,
             Fighter_Selection_Container->Render()
-        }) | size(WIDTH, EQUAL, 100) | center;
+        }) | size(WIDTH, EQUAL, 120) | center;
     }));
 
 }
@@ -258,7 +258,7 @@ void User_Choice_Manager::Choose_Action_Screen(USER user_turn, Controller& contr
             map_and_user_info | hcenter,
             text("Choose Your Action: "),
             Action_Select_Container->Render()
-        }) | size(WIDTH, EQUAL, 100) | center;
+        }) | size(WIDTH, EQUAL, 120) | center;
     }));
 }
 
@@ -482,7 +482,7 @@ void User_Choice_Manager::Choose_Card_To_Boost_Maneuver_With(USER user_turn, Con
             hbox({text("SELECTED FIGHTER: "), text(selected_fighter_name)}),
             user_hand_for_render,
             container->Render()
-        }) | size(WIDTH, EQUAL, 100) | center;
+        }) | size(WIDTH, EQUAL, 120) | center;
     }));
 
 }
