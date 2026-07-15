@@ -28,6 +28,7 @@ class Graph // a singleton object
         std::vector<int> return_adjacent_allies(USER user_turn, int sapce_number);
         std::set <int> return_adjacent_enemies_space_numbers_for_melee_attack(USER user_turn, int current_user_fighter_space_number);
         std::set <int> return_available_enemies_space_for_range_attack(USER user_turn, int current_user_fighter_space_number);
+        std::set <int> return_all_unoccupied_spaces();
         bool Is_Space_Multi_Zone(int space_number);
         ~Graph();
 
