@@ -7,7 +7,6 @@ include(FetchContent)
 FetchContent_Declare(ftxui GIT_REPOSITORY https://github.com/ArthurSonzogni/FTXUI.git GIT_TAG v6.1.9)
 FetchContent_MakeAvailable(ftxui)
 add_executable(app src/main.cpp)
-set(CMAKE_BUILD_TYPE Debug)
 add_library(My_Written_Code 
                 src/Ui_Menu_Screen.cpp
                 src/Ui_GameLoop_Screen.cpp
