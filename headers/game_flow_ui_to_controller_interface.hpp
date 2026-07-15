@@ -8,7 +8,7 @@
 #include <ftxui/dom/elements.hpp>
 #include <ftxui/screen/screen.hpp>
 
-enum class GAME_FLOW_SCREENS {CHOOSE_FIGHTER, CHOOSE_ACTION, CHOOSE_MANEUVER_TYPE, MANEUVER_BOOST_SCREEN,  MANEUVER, FIGHTING_SCREEN, Card_Selection_Screen, CHOOSE_YOUR_ENEMY_SCREEN, GO_BACK_TO_MAIN_LOOP};
+enum class GAME_FLOW_SCREENS {CHOOSE_FIGHTER, CHOOSE_ACTION, CHOOSE_MANEUVER_TYPE, MANEUVER_BOOST_SCREEN,  MANEUVER, FIGHTING_SCREEN, Card_Selection_Screen, CHOOSE_YOUR_ENEMY_SCREEN, GO_BACK_TO_MAIN_LOOP, SCHEME_CARD_MANAGER};
 
 class User_Choice_Manager
 {
@@ -23,6 +23,7 @@ class User_Choice_Manager
         void Choose_Card_To_Boost_Maneuver_With(USER user_turn, Controller& control);
         void Choose_Enemy_Screen(Controller& control);
         void Fighting_Screen(USER user_turn, Controller& control, const ftxui::Element& map_and_user_info);
+        void Scheme_Card_Manager_Screen(Controller& control);
     private:
         GAME_FLOW_SCREENS game_current_screen;
         Fighters_Names selected_fighter;

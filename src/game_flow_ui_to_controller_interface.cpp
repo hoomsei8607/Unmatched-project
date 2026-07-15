@@ -3,6 +3,7 @@
 #include "../headers/cards.hpp"
 #include "../headers/controller.hpp"
 #include "../headers/Fighting_Screen_Manager_Class.hpp"
+#include "../headers/scheme_card_manager_class.hpp"
 #include <vector>
 #include <string>
 #include <set>
@@ -56,6 +57,10 @@ bool User_Choice_Manager::Screen_Manager(USER user_turn, Controller& control, co
 
         case GAME_FLOW_SCREENS::CHOOSE_YOUR_ENEMY_SCREEN:
             Choose_Enemy_Screen(control);
+            return true;
+        
+        case GAME_FLOW_SCREENS::SCHEME_CARD_MANAGER:
+            Scheme_Card_Manager_Screen(control);
             return true;
 
         case GAME_FLOW_SCREENS::GO_BACK_TO_MAIN_LOOP:
@@ -302,10 +307,9 @@ void User_Choice_Manager::Select_Card_Screen(USER user_turn, Controller& control
         }
         else if(copy_of_user_hand[selected]->get_type() == CARD_TYPE::SCHEME)
         {
-            if(control.Return_Card_Name(user_turn, selected) == "Prey Upon")
-            {
-                
-            }
+            game_current_screen = GAME_FLOW_SCREENS::SCHEME_CARD_MANAGER;
+            selected_Attacker_card_index = selected;
+            attacker_card_value = 0;
         }
         screen.ExitLoopClosure()();
 
@@ -552,5 +556,60 @@ void User_Choice_Manager::Choose_Enemy_Screen(Controller& control)
         }) | hcenter | vcenter;
     }));
 
+    
+}
+
+void User_Choice_Manager::Scheme_Card_Manager_Screen(Controller& control)
+{
+    cards selected_scheme_card_name = control.Return_Selected_Card_Name_As_An_Enum(control.Set_User_Turn(), selected_Attacker_card_index);
+    SCHEME_CARDS_SCREEN selected_card_screen;
+    switch (selected_scheme_card_name)
+    {
+    case cards::AMINISTER_AID:
+        selected_card_screen = SCHEME_CARDS_SCREEN::ADMINISTER_AID_SCREEN;
+        break;
+    
+    case cards::CONFIRM_SUSPICION:
+        selected_card_screen = SCHEME_CARDS_SCREEN::CONFIRM_SUSPICION_SCREEN;
+        break;
+
+    case cards::ELIMINATE_THE_IMPOSSIBLE:
+        selected_card_screen = SCHEME_CARDS_SCREEN::ELIMINATE_THE_IMPOSSIBLE_SCREEN;
+        break;
+        
+    case cards::MASTER_OF_DISGUISE:
+        selected_card_screen = SCHEME_CARDS_SCREEN::MASTER_OF_DISGUISE_SCREEN;
+        break;
+        
+    case cards::MISTFORM:
+        selected_card_screen = SCHEME_CARDS_SCREEN::MISTFORM_SCREEN;
+        break;
+        
+    case cards::BAPTISM_OF_BLOOD:
+        selected_card_screen = SCHEME_CARDS_SCREEN::BAPTISM_OF_BLOOD_SCREEN;
+        break;
+        
+    case cards::PREY_UPON:
+        selected_card_screen = SCHEME_CARDS_SCREEN::PREY_UPON_SCREEN;
+        break;
+        
+    case cards::RAVENING_SEDUCTION:
+        selected_card_screen = SCHEME_CARDS_SCREEN::RAVENING_SEDUCTION_SCREEN;
+        break;
+    }
+
+    Scheme_Manager exec_scehem_card_effects(selected_card_screen);
+    while(true)
+    {
+        if(!exec_scehem_card_effects.Screen_Manager(control))
+        {
+            break;
+        }
+    }
+    //check to see if both heros are alive or not
+    //if both alive
+    game_current_screen = GAME_FLOW_SCREENS::CHOOSE_FIGHTER;
+
+    //if one has died then finish the game
     
 }
