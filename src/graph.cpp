@@ -671,3 +671,18 @@ std::set <int> Graph::return_available_enemies_space_for_range_attack(USER user_
     }
     return to_be_returned;
 }
+
+std::set <int> Graph::return_all_unoccupied_spaces()
+{
+    Space* space_ptr = nullptr;
+    std::set <int> to_be_returned;
+    for(int i = 1 ; i < 33 ; i++)
+    {
+        Set_The_Passed_Pointer_To_The_Corresponding_Space_Object(space_ptr, i);
+        if(!space_ptr->Get_Occupied_Status())
+        {
+            to_be_returned.insert(i);
+        }
+    }
+    return to_be_returned;
+}
