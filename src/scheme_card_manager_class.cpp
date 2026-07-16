@@ -21,7 +21,7 @@ bool Scheme_Manager::Screen_Manager(Controller& control)
         return true;
 
     case SCHEME_CARDS_SCREEN::MASTER_OF_DISGUISE_SCREEN:
-        // Master_Of_Disguise_Screen(control);
+        Master_Of_Disguise_Screen(control);
         return true;
 
     case SCHEME_CARDS_SCREEN::CONFIRM_SUSPICION_SCREEN:
@@ -361,6 +361,7 @@ void Scheme_Manager::Ravening_Seduction_Screen(Controller& control)
                                 control.map_and_user_info | hcenter,
                                 text(" "),
                                 hbox({text(options_for_toggle_box[selected_fighter_index]), text(": -"), text(std::to_string(adjacent_sisters)), text("HP DUE TO ADJACENT SISTERS")}),
+                                text(" "),
                                 continue_button ->Render() | size(WIDTH, EQUAL, 100) | hcenter
                             }) | center
                         })|center;
@@ -429,7 +430,7 @@ void Scheme_Manager::Eliminate_The_Impossible_Screen(Controller& control)
         {
             control.Change_User_Turn();
         }
-        screen.ExitLoopClosure()()
+        screen.ExitLoopClosure()();
     });
     auto toggle_box = Toggle(&enemy_hand_for_radio_box, &selected_card);
     auto container = Container::Vertical({toggle_box, confirm_button});
@@ -447,4 +448,59 @@ void Scheme_Manager::Eliminate_The_Impossible_Screen(Controller& control)
         }) | border;
     }));
 
+}
+
+
+void Scheme_Manager::Master_Of_Disguise_Screen(Controller& control)
+{
+    auto screen = ScreenInteractive::Fullscreen();
+    Graph* game_map_ptr = Graph::Get_Map_Graph_Pointer();
+    USER enemy_user;
+    if(control.Return_User_Turn() == USER::USER1)
+    {
+        enemy_user = USER::USER2;
+    }
+    else
+    {
+        enemy_user = USER::USER1;
+
+    }
+    auto confirm_button = Button("CONTINUE", [&]{
+        current_screen = SCHEME_CARDS_SCREEN::EXIT_TO_MAIN_LOOP;
+        control.change_fighter_health(Fighters_Names::SHERLOCK, -1);
+        // move them heros
+        int dracula_former_space_number = control.Return_Hero_Space_Number(Fighters_Names::DRACULA);
+        control.Set_Fighter_Space_Number(Fighters_Names::DRACULA, control.Return_Hero_Space_Number(Fighters_Names::SHERLOCK));
+        control.Set_Fighter_Space_Number(Fighters_Names::SHERLOCK, dracula_former_space_number);
+        game_map_ptr->Set_User_Occupying_Space(control.Return_User_Turn(), dracula_former_space_number);
+        game_map_ptr->Set_User_Occupying_Space(enemy_user, control.Return_Hero_Space_Number(Fighters_Names::DRACULA));
+        //updating print info for screen
+        Space_Row_And_Column_In_Array temp_struct_to_update_fighter_position_on_screen;
+        control.Convert_Space_Number_To_Row_And_Column_Index(control.Return_Hero_Space_Number(Fighters_Names::DRACULA), temp_struct_to_update_fighter_position_on_screen);
+        control.fighters_printing_info_array[static_cast<int>(Fighters_Names::DRACULA)].Row_Index = temp_struct_to_update_fighter_position_on_screen.row_index;
+        control.fighters_printing_info_array[static_cast<int>(Fighters_Names::DRACULA)].Column_Index = temp_struct_to_update_fighter_position_on_screen.column_index;
+        control.Convert_Space_Number_To_Row_And_Column_Index(control.Return_Hero_Space_Number(Fighters_Names::SHERLOCK), temp_struct_to_update_fighter_position_on_screen);
+        control.fighters_printing_info_array[static_cast<int>(Fighters_Names::SHERLOCK)].Row_Index = temp_struct_to_update_fighter_position_on_screen.row_index;
+        control.fighters_printing_info_array[static_cast<int>(Fighters_Names::SHERLOCK)].Column_Index = temp_struct_to_update_fighter_position_on_screen.column_index;
+
+        screen.ExitLoopClosure()();
+    });
+
+
+    screen.Loop(Renderer(confirm_button, [&]{
+        return vbox({
+            vbox({
+                text(" "),
+                text("CHOOSEN CARD: ELIMINATE THE IMPOSSIBLE") | hcenter | bold | underlined | size(WIDTH, EQUAL, 100) | color(Color::NavajoWhite3),
+                text(" "),
+                control.map_and_user_info | hcenter,
+                text(" "),
+                text("SHERLOCK SWITCHES SPACE WITH THE OPPOSING HERO"),
+                text(" "),
+                text("OPPOSING HERO: -1HP"),
+                text(" "),
+                confirm_button ->Render() | size(WIDTH, EQUAL, 100) | hcenter
+            }) | center
+        }) | center;
+    }));
 }
