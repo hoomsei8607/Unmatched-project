@@ -11,13 +11,16 @@ class Fighter_Base_Class
         int Return_Fighter_Current_Move_Value() const;
         int Return_Fighter_Current_Space() const;
         int Return_Fighter_Attacking_Range() const;
+
         ATTACKING_RANGE Return_Fighter_Attacking_Range_Enum_Type() const;
+
         void Set_Current_Fighter_Space_Number(int new_space);
         void change_health(int);
         void Select_Fighter();
         void Deselect_Fighter();
         void Boost_Move_Value(int boost_value);
         void Reset_Move_Value();
+        void Reset_All_Info_For_Revive(int fighter_space);
         bool return_is_fighter_alive();
         bool Is_Fighter_Selected();
         Fighters_Names Get_Fighter_Name() const;
