@@ -39,6 +39,11 @@ bool Fighting_Screen_Manager::Screen_Manager(Controller& control)
         After_Combat_Screen(control);
         return true;
 
+    case FIGHTING_SCREEN_SUB_SCREENS::ELEMENTARY_DEFENCE_CARD:
+        Elementary_Defence_Card_Screen(control);
+        return true;
+
+
     case FIGHTING_SCREEN_SUB_SCREENS::RETURN_TO_MAIN_LOOP:
         return false;
     
@@ -82,7 +87,15 @@ void Fighting_Screen_Manager::Taking_Defender_Input_Screen(Controller& control)
     auto Confirm_Button = Button("CONFIRM", [&]{
         Defender_Card_Value = control.Return_card_Value(defender, selected_card);
         Defender_Selected_Card_Index = selected_card;
-        current_screen = FIGHTING_SCREEN_SUB_SCREENS::IMMIDATE_RESULTS_SCREEN;
+
+        if(control.Return_Selected_Card_Name_As_An_Enum(defender, selected_card) == cards::ELEMENTARY)
+        {
+            current_screen = FIGHTING_SCREEN_SUB_SCREENS::ELEMENTARY_DEFENCE_CARD;
+        }
+        else
+        {
+            current_screen = FIGHTING_SCREEN_SUB_SCREENS::IMMIDATE_RESULTS_SCREEN;
+        }
         screen.ExitLoopClosure()();
     });
 
@@ -291,6 +304,8 @@ void Fighting_Screen_Manager::During_Combat_Screen(Controller& control)
         if(control.Return_Selected_Card_Effect_Type(Attacker, Attacker_Selected_Card_Index) != CARD_EFFECT_TYPE::DURING_COMBAT && control.Return_Selected_Card_Effect_Type(Defender, Defender_Selected_Card_Index) != CARD_EFFECT_TYPE::DURING_COMBAT)
         {
             during_combat_result_log = "NO EFFECTS OCCURED";
+            
+            
         }
         else
         {
@@ -515,7 +530,7 @@ void Fighting_Screen_Manager::After_Combat_Screen(Controller& control)
                 text(" "),
                 text("AFTER COMBAT RESULTS") | underlined | color(Color::NavajoWhite3) | bold | size(WIDTH, EQUAL, 90),
                 text(" "),
-                text("NO EFFECTS")
+                text("NO EFFECTS") | center 
             });
 
             auto continue_button = Button("CONTINUE", [&]{
@@ -702,7 +717,7 @@ void Fighting_Screen_Manager::After_Combat_Screen(Controller& control)
                 text(" "),
                 text("AFTER COMBAT RESULTS") | underlined | color(Color::NavajoWhite3) | bold | size(WIDTH, EQUAL, 90),
                 text(" "),
-                text("NO EFFECTS")
+                text("NO EFFECTS") | center
             });
 
             auto continue_button = Button("CONTINUE", [&]{
@@ -723,4 +738,109 @@ void Fighting_Screen_Manager::After_Combat_Screen(Controller& control)
     current_screen = FIGHTING_SCREEN_SUB_SCREENS::RETURN_TO_MAIN_LOOP;
 
     
+}
+
+void Fighting_Screen_Manager::Elementary_Defence_Card_Screen(Controller& control)
+{
+    auto screen = ScreenInteractive::Fullscreen();
+    std::vector<std::string> enemy_card_value_guess = {"1", "2", "3", "4", "5", "6"};
+    int current_sub_screen = 0;
+    int guessed_value = 0;
+    bool elementary_card_effect_applied_exit_the_loop = false;
+    int selected = 0;
+    
+
+    while(!elementary_card_effect_applied_exit_the_loop)
+    {
+        switch (current_sub_screen)
+        {
+        case 0:
+            {
+                //take the guess   
+                auto confirm_button = Button("CONFIRM", [&]{
+                    guessed_value = std::stoi(enemy_card_value_guess[selected]);
+                    current_sub_screen++;
+                    screen.ExitLoopClosure()();
+                });
+                auto radio_box = Radiobox(&enemy_card_value_guess, &selected);
+                auto container = Container::Vertical({radio_box, confirm_button});
+                screen.Loop(Renderer(container, [&]{
+                    
+                    return vbox({
+                        vbox({
+                            text(" "),
+                            text("SELECTED CARD: ELEMENTARY") | bold | underlined | size(WIDTH, EQUAL, 100) | color(Color::NavajoWhite3) | hcenter,
+                            text(" "),
+                            text("GUESS YOUR OPPONENT'S CARD VALUE: ") | bold ,
+                            text(" "),
+                            container->Render() | size(WIDTH, EQUAL, 100) | hcenter
+                        }) | center
+                    }) | border;
+                }));
+                break;
+            }        
+        case 1:
+            {
+                //report
+                bool has_defender_guessed_correctly = false;
+                if(control.Return_card_Value(control.Return_User_Turn(), Attacker_Selected_Card_Index) == guessed_value)
+                {
+                    has_defender_guessed_correctly = true;
+                }
+
+                auto continue_button = Button("CONTINUE", [&]{
+                    if(has_defender_guessed_correctly)
+                    {
+                        control.Disable_Card_Effect(control.Return_User_Turn(), Attacker_Selected_Card_Index);
+                        control.Set_Card_Value(control.Return_User_Turn(), Attacker_Selected_Card_Index, 0);
+
+                    }
+                    current_sub_screen++;
+                    screen.ExitLoopClosure()();
+                });
+
+                Element Results;
+                if(has_defender_guessed_correctly)
+                {
+                    Results = vbox({
+                        vbox({
+                            text(" "),
+                            text("GUESS RESULT") | hcenter | bold | underlined | size(WIDTH, EQUAL, 100) | color(Color::NavajoWhite3),
+                            text(" "),
+                            text("CONGRATULATIONS: YOUR GUESS WAS CORRECT") | bold,
+                            text(" "),
+                            text("ENEMY'S CARD EFFECT HAS BEEN DISABLED ") | bold,
+                            text(" "),
+                            text("ENEMY'S CARD VALUE HAS BEEN SET TO 0") | bold,
+                            continue_button -> Render() | hcenter | size(WIDTH, EQUAL, 100)
+                        }) | center
+                    }) | border;
+                }
+                else
+                {
+                    Results = vbox({
+                        vbox({
+                            text(" "),
+                            text("GUESS RESULT") | hcenter | bold | underlined | size(WIDTH, EQUAL, 100) | color(Color::NavajoWhite3),
+                            text(" "),
+                            text("WHOOPS YOUR GUESS WAS WRONG WE CONTINUE AS NORMAL") | bold,
+                            text(" "),
+                            continue_button -> Render() | hcenter | size(WIDTH, EQUAL, 100)
+                        }) | center
+                    }) | border;
+                }
+                break;
+                screen.Loop(Renderer(continue_button, [&]{
+                    return Results;
+                }));
+            }
+        case 2:
+            //exit
+            elementary_card_effect_applied_exit_the_loop = true;
+            current_screen = FIGHTING_SCREEN_SUB_SCREENS::IMMIDATE_RESULTS_SCREEN;
+
+            break;
+        
+        }
+    }
 }
