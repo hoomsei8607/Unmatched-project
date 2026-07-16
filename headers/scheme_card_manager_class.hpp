@@ -11,7 +11,7 @@
 class Scheme_Manager
 {
     public:
-        Scheme_Manager(SCHEME_CARDS_SCREEN screen, Controller& control);
+        Scheme_Manager(SCHEME_CARDS_SCREEN screen);
 
         bool Screen_Manager(Controller& control);
 
