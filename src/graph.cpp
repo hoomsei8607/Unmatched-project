@@ -686,3 +686,48 @@ std::set <int> Graph::return_all_unoccupied_spaces()
     }
     return to_be_returned;
 }
+
+std::set<int> Graph::return_all_spaces_with_the_corresponding_zones(std::array<ZONE_COLORS, 3> zone_colors)
+{
+    std::set<int> to_be_returned;
+    Graph* game_graph_ptr = Graph::Get_Map_Graph_Pointer(); 
+    Space* space_ptr = nullptr;
+    std::array<ZONE_COLORS, 3> temp_space_colors;
+    bool zone_found_exit_loop;
+    for(int i = 1 ; i < 33 ; i++)
+    {
+        zone_found_exit_loop = false;
+
+        game_graph_ptr->Set_The_Passed_Pointer_To_The_Corresponding_Space_Object(space_ptr, i);
+        space_ptr->Get_Zone_Color(temp_space_colors);
+
+        if(space_ptr->Get_Occupied_Status())
+        {
+            continue;
+        }
+
+        for(int j = 0 ; j < 3 ; j++)
+        {
+            if((!space_ptr->Get_Multi_Zone_status()) && j > 0)
+            {
+                break;
+            }
+
+            if(zone_found_exit_loop)
+            {
+                break;
+            }
+
+            for(int k = 0 ; k < 3 ; k++)
+            {
+                if(temp_space_colors[j] == zone_colors[k])
+                {
+                    to_be_returned.insert(i);
+                    zone_found_exit_loop = true;
+                    break;
+                }
+            }
+        }
+    }
+    return to_be_returned;
+}
