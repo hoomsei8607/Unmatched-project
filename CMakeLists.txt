@@ -24,6 +24,7 @@ add_library(My_Written_Code
                 src/card_abstract.cpp
                 src/Fighting_Screen_Manager_Class.cpp
                 src/after_combat_sub_screen_manager.cpp
+                src/scheme_card_manager_class.cpp
                 )
 target_link_directories(My_Written_Code PUBLIC headers)
 
