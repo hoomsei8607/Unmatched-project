@@ -41,6 +41,7 @@ class Controller
         void Disable_Card_Effect(USER user, int index);
         void Set_Selected_Enemy(Fighters_Names selected_enemy);
         void Select_Fighter(Fighters_Names fighter_name);
+        void Revive_The_Selected_Fighter(Fighters_Names figher_name, int space_to_place_the_fighter_at);
 
         int Return_Fighter_Move_Value(Fighters_Names fighter_name) const;
         int Return_Hero_Space_Number(Fighters_Names fighter_Name) const;
@@ -54,6 +55,7 @@ class Controller
         bool Return_Is_Fighter_Alive(Fighters_Names name) const;
         bool Is_Selected_Card_A_Scheme_Card(USER user_turn, int index);
         bool Should_Card_Effect_Be_Executed(USER user, int index);
+        bool Is_Any_Of_Dracula_Sisters_Dead();
 
         USER Return_User_Turn() const;
         USER Return_Younger_User() const;
@@ -92,6 +94,7 @@ class Controller
         Fighters_Names Return_Fighter_Base_On_Space_Number(int space_number);
         Fighters_Names Get_Selected_Enemy();
         Fighters_Names Return_Card_Owner_Name(USER user_turn, int index);
+        Fighters_Names Return_Dead_Sister_Number();
 
         ~Controller();
         Fighters_Print_Info* fighters_printing_info_array;

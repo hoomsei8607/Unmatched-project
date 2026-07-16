@@ -1575,3 +1575,75 @@ void Controller::Select_Fighter(Fighters_Names fighter_name)
         }
     }
 }
+
+bool Controller::Is_Any_Of_Dracula_Sisters_Dead()
+{
+    for(int i = 0 ; i < 4 ; i++)
+    {
+        if(i == static_cast<int>(Dracula_And_Sisters_Array_Index::DRACULA))
+        {
+            continue;
+        }
+
+        if(!Dracula_And_Sisters[i]->return_is_fighter_alive())
+        {
+            return true;
+        }
+    }
+    return false;
+}
+
+
+void Controller::Revive_The_Selected_Fighter(Fighters_Names fighter_name, int space_to_place_the_fighter_at)
+{
+    Fighter_Base_Class* pointer_to_the_fighter_object;
+    switch (fighter_name)
+    {
+    case Fighters_Names::DRACULA:
+        pointer_to_the_fighter_object = Dracula_And_Sisters[static_cast<int>(Dracula_And_Sisters_Array_Index::DRACULA)];
+        break;
+    
+    case Fighters_Names::SIS1:
+        pointer_to_the_fighter_object = Dracula_And_Sisters[static_cast<int>(Dracula_And_Sisters_Array_Index::SIS1)];
+        break;
+    
+    case Fighters_Names::SIS2:
+        pointer_to_the_fighter_object = Dracula_And_Sisters[static_cast<int>(Dracula_And_Sisters_Array_Index::SIS2)];
+        break;
+    
+    case Fighters_Names::SIS3:
+        pointer_to_the_fighter_object = Dracula_And_Sisters[static_cast<int>(Dracula_And_Sisters_Array_Index::SIS3)];
+        break;
+    
+    case Fighters_Names::SHERLOCK:
+        pointer_to_the_fighter_object = sherlock_And_Watson[static_cast<int>(Sherlock_And_Watson_Array_Index::SHERLOCK)];
+        break;
+    
+    case Fighters_Names::WATSON:
+        pointer_to_the_fighter_object = sherlock_And_Watson[static_cast<int>(Sherlock_And_Watson_Array_Index::WATSON)];
+        break;
+    
+    default:
+        pointer_to_the_fighter_object = nullptr;
+        break;
+    }
+    pointer_to_the_fighter_object->Reset_All_Info_For_Revive(space_to_place_the_fighter_at);
+}
+
+Fighters_Names Controller::Return_Dead_Sister_Number()
+{
+    Fighters_Names to_be_returned;
+    for(int i = 0 ; i < 4 ; i++)
+    {
+        if(i == static_cast<int>(Dracula_And_Sisters_Array_Index::DRACULA))
+        {
+            continue;
+        }
+        if(!Dracula_And_Sisters[i]->return_is_fighter_alive())
+        {
+            to_be_returned = Dracula_And_Sisters[i]->Get_Fighter_Name();
+            break;
+        }
+    }
+    return to_be_returned;
+}
