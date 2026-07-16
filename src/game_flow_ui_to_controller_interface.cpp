@@ -345,6 +345,15 @@ void User_Choice_Manager::Select_Card_Screen(USER user_turn, Controller& control
             }
             
         }
+        if(control.Return_Selected_Card_Name_As_An_Enum(user_turn, selected) == cards::AMINISTER_AID)
+        {
+            std::set<int> spaces_adjacent_to_sherlock;
+            map_graph->Recursive_Path_Finder(spaces_adjacent_to_sherlock, control.Return_Hero_Space_Number(Fighters_Names::SHERLOCK), 1, user_turn);
+            if(spaces_adjacent_to_sherlock.empty() || !control.Return_Is_Fighter_Alive(Fighters_Names::WATSON))
+            {
+                return false;
+            }
+        }
         
         
         return true;
@@ -508,10 +517,6 @@ void User_Choice_Manager::Choose_Enemy_Screen(Controller& control)
         space_number_occupied_by_enemies = game_graph->return_adjacent_enemies_space_numbers_for_melee_attack(control.Return_User_Turn(), control.Return_Hero_Space_Number(selected_fighter));
     }
 
-    for(int mews : space_number_occupied_by_enemies)
-    {
-        std::cout << mews << "  ";
-    }
 
     for(int element : space_number_occupied_by_enemies)
     {
@@ -561,8 +566,9 @@ void User_Choice_Manager::Choose_Enemy_Screen(Controller& control)
 
 void User_Choice_Manager::Scheme_Card_Manager_Screen(Controller& control)
 {
-    cards selected_scheme_card_name = control.Return_Selected_Card_Name_As_An_Enum(control.Set_User_Turn(), selected_Attacker_card_index);
+    cards selected_scheme_card_name = control.Return_Selected_Card_Name_As_An_Enum(control.Return_User_Turn(), selected_Attacker_card_index);
     SCHEME_CARDS_SCREEN selected_card_screen;
+    USER attacker = control.Return_User_Turn();
     switch (selected_scheme_card_name)
     {
     case cards::AMINISTER_AID:
@@ -606,6 +612,7 @@ void User_Choice_Manager::Scheme_Card_Manager_Screen(Controller& control)
             break;
         }
     }
+    control.discard(selected_Attacker_card_index, attacker);
     //check to see if both heros are alive or not
     //if both alive
     game_current_screen = GAME_FLOW_SCREENS::CHOOSE_FIGHTER;
