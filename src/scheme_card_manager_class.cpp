@@ -13,7 +13,7 @@ bool Scheme_Manager::Screen_Manager(Controller& control)
     switch (current_screen)
     {
     case SCHEME_CARDS_SCREEN::ADMINISTER_AID_SCREEN:
-        // Administer_Aid_Screen(control);
+        Administer_Aid_Screen(control);
         return true;
 
     case SCHEME_CARDS_SCREEN::ELIMINATE_THE_IMPOSSIBLE_SCREEN:
@@ -503,4 +503,60 @@ void Scheme_Manager::Master_Of_Disguise_Screen(Controller& control)
             }) | center
         }) | center;
     }));
+}
+
+void Scheme_Manager::Administer_Aid_Screen(Controller& control)
+{
+    auto screen = ScreenInteractive::Fullscreen();
+    Graph* game_map_ptr = Graph::Get_Map_Graph_Pointer();
+    std::set<int> unoccupied_spaces_adjacent_to_sherlock;
+    game_map_ptr->Recursive_Path_Finder(unoccupied_spaces_adjacent_to_sherlock, control.Return_Hero_Space_Number(Fighters_Names::SHERLOCK), 1, control.Return_User_Turn());
+    std::vector<std::string> options_for_radio_box;
+    for(int space : unoccupied_spaces_adjacent_to_sherlock)
+    {
+        options_for_radio_box.push_back(std::to_string(space));
+    }
+    int selected_space = 0;
+    auto radio_box = Radiobox(&options_for_radio_box, & selected_space);
+    auto confirm_button = Button("CONFIRM", [&]{
+        //draw one card for sherlock
+        control.draw(control.Return_User_Turn());
+        //add 1 hp to sherlcok
+        control.change_fighter_health(Fighters_Names::SHERLOCK, 1);
+        // move watson close to sherlock
+        int former_watson_space_number = control.Return_Hero_Space_Number(Fighters_Names::WATSON);
+        game_map_ptr->Change_Space_Occiupied_Status(former_watson_space_number);
+        game_map_ptr->Change_Space_Occiupied_Status(std::stoi(options_for_radio_box[selected_space]));
+        game_map_ptr->Set_User_Occupying_Space(USER::NONE, former_watson_space_number);
+        game_map_ptr->Set_User_Occupying_Space(control.Return_User_Turn(), std::stoi(options_for_radio_box[selected_space]));
+        control.Set_Fighter_Space_Number(Fighters_Names::WATSON, std::stoi(options_for_radio_box[selected_space]));
+
+        Space_Row_And_Column_In_Array temp_struct_to_update_fighter_position_on_screen;
+        control.Convert_Space_Number_To_Row_And_Column_Index(control.Return_Hero_Space_Number(Fighters_Names::WATSON), temp_struct_to_update_fighter_position_on_screen);
+        control.fighters_printing_info_array[static_cast<int>(Fighters_Names::WATSON)].Row_Index = temp_struct_to_update_fighter_position_on_screen.row_index;
+        control.fighters_printing_info_array[static_cast<int>(Fighters_Names::WATSON)].Column_Index = temp_struct_to_update_fighter_position_on_screen.column_index;
+        current_screen = SCHEME_CARDS_SCREEN::EXIT_TO_MAIN_LOOP;
+        screen.ExitLoopClosure()();
+    });
+    auto container = Container::Vertical({radio_box, confirm_button});
+    screen.Loop(Renderer(container, [&]{
+        return vbox({
+            vbox({
+                text(" "),
+                text("CHOOSEN CARD: ADMINISTER AID") | hcenter | bold | underlined | size(WIDTH, EQUAL, 100) | color(Color::NavajoWhite3),
+                text(" "),
+                text("SHERLOCK: +1HP"),
+                text(" "),
+                text("DREW 1 CARD FOR SHERLOCK"),
+                text(" "),
+                control.map_and_user_info | hcenter,
+                text(" "),
+                text("CHOOSE A SPACE TO MOVE WATSON TO"),
+                text(" "),
+                container ->Render() | size(WIDTH, EQUAL, 100) | hcenter
+            }) | center     
+        }) | border;
+    }));
+
+    
 }
