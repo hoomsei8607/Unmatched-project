@@ -1695,3 +1695,15 @@ std::vector<int> Controller::Return_Sisters_Space_Numbers()
     }
     return to_be_returned;
 }
+
+void Controller::Set_Card_Value(USER user_turn, int card_index, int card_value)
+{
+    if(user_turn == USER::USER1)
+    {
+        User1_Hand[card_index]->set_card_value(card_value);
+    }
+    else
+    {
+        User2_Hand[card_index]->set_card_value(card_value);
+    }
+}
