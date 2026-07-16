@@ -17,7 +17,7 @@ bool Scheme_Manager::Screen_Manager(Controller& control)
         return true;
 
     case SCHEME_CARDS_SCREEN::ELIMINATE_THE_IMPOSSIBLE_SCREEN:
-        // Eliminate_The_Impossible_Screen(control);
+        Eliminate_The_Impossible_Screen(control);
         return true;
 
     case SCHEME_CARDS_SCREEN::MASTER_OF_DISGUISE_SCREEN:
@@ -401,5 +401,50 @@ void Scheme_Manager::Ravening_Seduction_Screen(Controller& control)
         
         }
     }
+
+}
+
+void Scheme_Manager::Eliminate_The_Impossible_Screen(Controller& control)
+{
+    auto screen = ScreenInteractive::Fullscreen();
+    USER enemy_user;
+    if(control.Return_User_Turn() == USER::USER1)
+    {
+        enemy_user = USER::USER2;
+    }
+    else
+    {
+        enemy_user = USER::USER1;
+    }
+    Element enemy_hand = control.Return_Hand_Elements_For_Render(enemy_user);
+    std::vector<std::string> enemy_hand_for_radio_box = control.Return_Hand_As_String(enemy_user);
+    int selected_card = 0;
+
+
+
+    auto confirm_button = Button("CONFRIM", [&]{
+        current_screen = SCHEME_CARDS_SCREEN::EXIT_TO_MAIN_LOOP;
+        control.discard(selected_card, enemy_user);
+        if(control.Manage_UserAction_Numbers_And_Return_True_TO_Change_Turn())
+        {
+            control.Change_User_Turn();
+        }
+        screen.ExitLoopClosure()()
+    });
+    auto toggle_box = Toggle(&enemy_hand_for_radio_box, &selected_card);
+    auto container = Container::Vertical({toggle_box, confirm_button});
+    screen.Loop(Renderer(container, [&]{
+        return vbox({
+            vbox({
+                text(" "),
+                text("CHOOSEN CARD: ELIMINATE THE IMPOSSIBLE") | hcenter | bold | underlined | color(Color::NavajoWhite3),
+                text(" "),
+                enemy_hand | hcenter,
+                text(" "),
+                text("CHOOSE A CARD TO DISCARD FROM YOUR ENEMY"),
+                container ->Render() | hcenter
+            }) | center
+        }) | border;
+    }));
 
 }
