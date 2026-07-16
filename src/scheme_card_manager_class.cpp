@@ -25,7 +25,7 @@ bool Scheme_Manager::Screen_Manager(Controller& control)
         return true;
 
     case SCHEME_CARDS_SCREEN::CONFIRM_SUSPICION_SCREEN:
-        // Confirm_Suspicion_Screen(control);
+        Confirm_Suspicion_Screen(control);
         return true;
     
     case SCHEME_CARDS_SCREEN::MISTFORM_SCREEN:
