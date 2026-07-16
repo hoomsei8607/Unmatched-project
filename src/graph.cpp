@@ -615,10 +615,17 @@ std::vector<int> Graph::return_adjacent_allies(USER user_turn, int sapce_number)
 std::set <int> Graph::return_adjacent_enemies_space_numbers_for_melee_attack(USER user_turn, int current_user_fighter_space_number)
 {
     std::set<int> to_be_returned;
+    Space* user_space_ptr;
+    Graph::Set_The_Passed_Pointer_To_The_Corresponding_Space_Object(user_space_ptr, current_user_fighter_space_number);
     for(auto space : Game_Map_Graph[current_user_fighter_space_number])
     {
+
         if(space->Get_Which_User_Is_Occupying_The_Space() != user_turn && space->Get_Which_User_Is_Occupying_The_Space() != USER::NONE )
         {
+            if(space->get_has_secret_path() &&  user_space_ptr->get_has_secret_path())
+            {
+                continue;
+            }
             to_be_returned.insert(space->Get_Space_Number());
         }
     }
