@@ -80,6 +80,8 @@ class Controller
         
         std::vector<Card_Base_Class*> Return_A_Copy_Of_User_Hand(USER user_turn);
         std::vector<std::string> Return_Hand_As_String(USER user_turn);
+        std::vector<Fighters_Names> Return_Alive_Fighters(HERO_NAME which_crew);
+        std::vector<int> Return_Sisters_Space_Numbers();
         
         CARD_TYPE Return_Selected_Card_Type(USER user_turn, int index);
         

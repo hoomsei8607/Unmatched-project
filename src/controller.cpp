@@ -1647,3 +1647,51 @@ Fighters_Names Controller::Return_Dead_Sister_Number()
     }
     return to_be_returned;
 }
+
+std::vector<Fighters_Names> Controller::Return_Alive_Fighters(HERO_NAME which_crew)
+{
+    std::vector<Fighters_Names> to_be_returned;
+    switch (which_crew)
+    {
+    case HERO_NAME::DRACULA:
+        for(auto fighter : Dracula_And_Sisters)
+        {
+            if(fighter->return_is_fighter_alive())
+            {
+                to_be_returned.push_back(fighter->Get_Fighter_Name());
+            }
+        }
+        break;
+    
+    case HERO_NAME::SHERLOCK:
+        for(auto fighter : sherlock_And_Watson)
+        {
+            if(fighter->return_is_fighter_alive())
+            {
+                to_be_returned.push_back(fighter->Get_Fighter_Name());
+            }
+        }
+        break;
+    
+    default:
+        break;
+    }
+    return to_be_returned;
+}
+
+std::vector<int> Controller::Return_Sisters_Space_Numbers()
+{
+    std::vector<int> to_be_returned;
+    for(int i = 0 ; i < 4 ; i++)
+    {
+        if(i == static_cast<int>(Dracula_And_Sisters_Array_Index::DRACULA))
+        {
+            continue;
+        }
+        if(Dracula_And_Sisters[i]->return_is_fighter_alive())
+        {
+            to_be_returned.push_back(Dracula_And_Sisters[i]->Return_Fighter_Current_Space());
+        }
+    }
+    return to_be_returned;
+}
