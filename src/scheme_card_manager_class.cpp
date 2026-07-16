@@ -482,7 +482,10 @@ void Scheme_Manager::Master_Of_Disguise_Screen(Controller& control)
         control.Convert_Space_Number_To_Row_And_Column_Index(control.Return_Hero_Space_Number(Fighters_Names::SHERLOCK), temp_struct_to_update_fighter_position_on_screen);
         control.fighters_printing_info_array[static_cast<int>(Fighters_Names::SHERLOCK)].Row_Index = temp_struct_to_update_fighter_position_on_screen.row_index;
         control.fighters_printing_info_array[static_cast<int>(Fighters_Names::SHERLOCK)].Column_Index = temp_struct_to_update_fighter_position_on_screen.column_index;
-
+        if(control.Manage_UserAction_Numbers_And_Return_True_TO_Change_Turn())
+        {
+            control.Change_User_Turn();
+        }
         screen.ExitLoopClosure()();
     });
 
@@ -536,6 +539,10 @@ void Scheme_Manager::Administer_Aid_Screen(Controller& control)
         control.fighters_printing_info_array[static_cast<int>(Fighters_Names::WATSON)].Row_Index = temp_struct_to_update_fighter_position_on_screen.row_index;
         control.fighters_printing_info_array[static_cast<int>(Fighters_Names::WATSON)].Column_Index = temp_struct_to_update_fighter_position_on_screen.column_index;
         current_screen = SCHEME_CARDS_SCREEN::EXIT_TO_MAIN_LOOP;
+        if(control.Manage_UserAction_Numbers_And_Return_True_TO_Change_Turn())
+        {
+            control.Change_User_Turn();
+        }
         screen.ExitLoopClosure()();
     });
     auto container = Container::Vertical({radio_box, confirm_button});
