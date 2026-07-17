@@ -8,7 +8,7 @@
 #include <ftxui/dom/elements.hpp>
 #include <ftxui/screen/screen.hpp>
 
-enum class FIGHTING_SCREEN_SUB_SCREENS{TAKING_DEFENDER_INPUT, IMMIDATE_RESULTS_SCREEN, DURING_FIGHT_SCREEN, RESULTS_SCREEN, AFTER_COMBAT_SCREEN, RETURN_TO_MAIN_LOOP};
+enum class FIGHTING_SCREEN_SUB_SCREENS{TAKING_DEFENDER_INPUT, ELEMENTARY_DEFENCE_CARD, IMMIDATE_RESULTS_SCREEN, DURING_FIGHT_SCREEN, RESULTS_SCREEN, AFTER_COMBAT_SCREEN, RETURN_TO_MAIN_LOOP};
 
 class Fighting_Screen_Manager
 {
@@ -18,6 +18,7 @@ class Fighting_Screen_Manager
         void Show_Immediate_Combat_Results(Controller& control);
         void During_Combat_Screen(Controller& control);
         void Taking_Defender_Input_Screen(Controller& control);
+        void Elementary_Defence_Card_Screen(Controller& control);
         void Show_Fight_Results_Screen(Controller& control);
         void After_Combat_Screen(Controller& control);
     private:

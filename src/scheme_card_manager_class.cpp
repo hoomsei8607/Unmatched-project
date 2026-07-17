@@ -25,7 +25,7 @@ bool Scheme_Manager::Screen_Manager(Controller& control)
         return true;
 
     case SCHEME_CARDS_SCREEN::CONFIRM_SUSPICION_SCREEN:
-        // Confirm_Suspicion_Screen(control);
+        Confirm_Suspicion_Screen(control);
         return true;
     
     case SCHEME_CARDS_SCREEN::MISTFORM_SCREEN:
@@ -566,4 +566,158 @@ void Scheme_Manager::Administer_Aid_Screen(Controller& control)
     }));
 
     
+}
+
+
+void Scheme_Manager::Confirm_Suspicion_Screen(Controller& control)
+{
+    auto screen = ScreenInteractive::Fullscreen();
+    int user_input_value = 0;
+    USER attacker = control.Return_User_Turn();
+    USER defender;
+    if(attacker == USER::USER1)
+    {
+        defender = USER::USER2;
+    }
+    else
+    {
+        defender = USER::USER2;
+    }
+
+    std::vector<std::string> available_values = {"1", "2", "3", "4", "5", "6"};
+    int selected_option = 0;
+    int sub_screen_index = 0;
+    bool effect_has_been_executed_exit_loop = false;
+
+    
+
+
+    while(!effect_has_been_executed_exit_loop)
+    {
+        switch (sub_screen_index)
+        {
+        case 0:
+            {
+                //get the guess 
+                //if card exists go to screen1 and ask the defender to choose a card to discard
+                //else go to screen 2 and see the defenders hand
+                auto radio_box = Radiobox(&available_values, &selected_option);
+                auto confirm_button = Button("CONFIRM", [&]{
+                    //do the logic
+                    user_input_value = std::stoi(available_values[selected_option]);
+                    if(control.Does_Card_Exist_In_Hand_With_The_Corresponding_Value(defender, user_input_value))
+                    {
+                        sub_screen_index = 1;
+                    }
+                    else
+                    {
+                        sub_screen_index = 2;
+                    }
+                    screen.ExitLoopClosure()();
+                });
+                auto container = Container::Vertical({radio_box, confirm_button});
+
+                screen.Loop(Renderer(container, [&]{
+                    return vbox({
+                        vbox({
+                            text(" "),
+                            text("SELECTED CARD: CONFIRM SUSPICION") | bold | underlined | size(WIDTH, EQUAL, 100) | color(Color::NavajoWhite3) | hcenter,
+                            text(" "),
+                            text("SPECIFY A VALUE: ") | bold,
+                            text(" "),
+                            container->Render() | hcenter | size(WIDTH, EQUAL, 100)
+                        }) | center
+                    }) | border;
+                }));
+
+
+
+                break;
+            }
+        case 1:
+            {
+                //ask the defender to discard a card    
+                std::vector<int> qualified_cards_indices = control.Return_Card_Indexes_That_Match_The_Given_Value(defender, user_input_value);
+                std::vector<Element> graphical_representation_of_defender_hand;
+                std::vector<std::string> options_for_radio_box;
+                int selected_option = 0;
+                
+                for(int index : qualified_cards_indices)
+                {
+                    graphical_representation_of_defender_hand.push_back(control.Return_A_Single_Card_Graphical_Representation(defender, index));
+                    options_for_radio_box.push_back(control.Return_Card_Name(defender, index));
+                }
+
+                auto confirm_button = Button("CONFRIM", [&]{
+                    control.change_fighter_health(Fighters_Names::DRACULA, -user_input_value);
+                    control.discard(qualified_cards_indices[selected_option], defender);
+                    sub_screen_index = 3;
+                    screen.ExitLoopClosure()();
+                });
+
+                auto radio_box = Radiobox(&options_for_radio_box, &selected_option);
+                auto container = Container::Vertical({radio_box, confirm_button});
+                
+                screen.Loop(Renderer(container, [&]{
+                    return vbox({
+                        vbox({
+                            text(""),
+                            text("SELECTED CARD: CONFIRM SUSPICION") | hcenter | bold | underlined | color(Color::NavajoWhite3),
+                            text(""),
+                            text("YOU ARE DEFENDING") | bold,
+                            text(""),
+                            text("CHOOSE A CARD TO DISCARD:") | bold,
+                            text(""),
+                            hbox({graphical_representation_of_defender_hand}) | hcenter,
+                            text(""),
+                            container -> Render() | hcenter
+
+
+                        }) | center
+                    }) | border;
+                }));
+                break;
+            }
+        
+        case 2:
+            {
+                //show defenders hand    
+                auto continue_button = Button("CONTINUE", [&]{
+                    sub_screen_index = 3;
+                    screen.ExitLoopClosure()();
+                });
+                screen.Loop(Renderer(continue_button, [&]{
+                    return vbox({
+                        vbox({
+                            text(""),
+                            text("SELECTED CARD: CONFRIM SUSPICION") | hcenter | underlined | color(Color::NavajoWhite3),
+                            text(""),
+                            text("TAKE A LOOK AT YOUR OPPONENTS HAND"),
+                            text(""),
+                            control.Return_Hand_Elements_For_Render(defender) | hcenter,
+                            text(""),
+                            continue_button -> Render() | hcenter
+
+                        }) | center
+                    }) | border;
+                }));
+
+
+                break;
+            }
+        
+        case 3:
+            //exit and go back main loop    
+            effect_has_been_executed_exit_loop = true;
+            current_screen = SCHEME_CARDS_SCREEN::EXIT_TO_MAIN_LOOP;
+            if(control.Manage_UserAction_Numbers_And_Return_True_TO_Change_Turn())
+            {
+                control.Change_User_Turn();
+            }
+            break;
+        
+        default:
+            break;
+        }
+    }
 }

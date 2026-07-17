@@ -42,6 +42,7 @@ class Controller
         void Set_Selected_Enemy(Fighters_Names selected_enemy);
         void Select_Fighter(Fighters_Names fighter_name);
         void Revive_The_Selected_Fighter(Fighters_Names figher_name, int space_to_place_the_fighter_at);
+        void Set_Card_Value(USER user_turn, int card_index, int card_value);
 
         int Return_Fighter_Move_Value(Fighters_Names fighter_name) const;
         int Return_Hero_Space_Number(Fighters_Names fighter_Name) const;
@@ -56,6 +57,7 @@ class Controller
         bool Is_Selected_Card_A_Scheme_Card(USER user_turn, int index);
         bool Should_Card_Effect_Be_Executed(USER user, int index);
         bool Is_Any_Of_Dracula_Sisters_Dead();
+        bool Does_Card_Exist_In_Hand_With_The_Corresponding_Value(USER user_turn, int card_value); // this function only searches for attack or defence cards
 
         USER Return_User_Turn() const;
         USER Return_Younger_User() const;
@@ -82,6 +84,7 @@ class Controller
         std::vector<std::string> Return_Hand_As_String(USER user_turn);
         std::vector<Fighters_Names> Return_Alive_Fighters(HERO_NAME which_crew);
         std::vector<int> Return_Sisters_Space_Numbers();
+        std::vector<int> Return_Card_Indexes_That_Match_The_Given_Value(USER user_turn, int card_value); //this function works only for attack and defence cards only
         
         CARD_TYPE Return_Selected_Card_Type(USER user_turn, int index);
         

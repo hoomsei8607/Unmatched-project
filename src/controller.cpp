@@ -1695,3 +1695,83 @@ std::vector<int> Controller::Return_Sisters_Space_Numbers()
     }
     return to_be_returned;
 }
+
+void Controller::Set_Card_Value(USER user_turn, int card_index, int card_value)
+{
+    if(user_turn == USER::USER1)
+    {
+        User1_Hand[card_index]->set_card_value(card_value);
+    }
+    else
+    {
+        User2_Hand[card_index]->set_card_value(card_value);
+    }
+}
+
+bool Controller::Does_Card_Exist_In_Hand_With_The_Corresponding_Value(USER user_turn, int card_value)
+{
+    if(user_turn == USER::USER1)
+    {
+        for(auto card : User1_Hand)
+        {
+            if(card->get_type() != CARD_TYPE::ATTACK  && card->get_type() != CARD_TYPE::DEFENCE)
+            {
+                continue;
+            }
+            if(card->get_card_value() == card_value)
+            {
+                return true;
+            }
+        }
+    }
+    else
+    {
+        for(auto card : User2_Hand)
+        {
+            if(card->get_type() != CARD_TYPE::ATTACK  && card->get_type() != CARD_TYPE::DEFENCE)
+            {
+                continue;
+            }
+            if(card->get_card_value() == card_value)
+            {
+                return true;
+            }
+        }
+    }
+    return false;
+}
+
+std::vector<int> Controller::Return_Card_Indexes_That_Match_The_Given_Value(USER user_turn, int card_value)
+{
+    std::vector<int> to_be_returned;
+    if(user_turn == USER::USER1)
+    {
+        for(int i = 0 ; i < User1_Hand.size() ; i++)
+        {
+            if(User1_Hand[i]->get_type() != CARD_TYPE::ATTACK && User1_Hand[i]->get_type() != CARD_TYPE::DEFENCE)
+            {
+                continue;
+            }
+            if(User1_Hand[i]->get_card_value() == card_value)
+            {
+                to_be_returned.push_back(i);
+            }
+        }
+    }
+    else
+    {
+        for(int i = 0 ; i < User1_Hand.size() ; i++)
+        {
+            if(User2_Hand[i]->get_type() != CARD_TYPE::ATTACK && User2_Hand[i]->get_type() != CARD_TYPE::DEFENCE)
+            {
+                continue;
+            }
+            if(User2_Hand[i]->get_card_value() == card_value)
+            {
+                to_be_returned.push_back(i);
+            }
+        }
+
+    }
+    return to_be_returned;
+}
