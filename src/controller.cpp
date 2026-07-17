@@ -71,7 +71,7 @@ Controller::Controller()
     }
 
     Who_Won_The_Combat = USER::NONE;
- 
+    screen = ftxui::ScreenInteractive::Fullscreen();
 
 }
 
@@ -1774,4 +1774,59 @@ std::vector<int> Controller::Return_Card_Indexes_That_Match_The_Given_Value(USER
 
     }
     return to_be_returned;
+}
+
+void Controller::Deselect_All_Selected_Fighters()
+{
+    for(auto fighter : Dracula_And_Sisters)
+    {
+        if(fighter->Is_Fighter_Selected())
+        {
+            fighter->Deselect_Fighter();
+        }
+    }
+    for(auto fighter : sherlock_And_Watson)
+    {
+        if(fighter->Is_Fighter_Selected())
+        {
+            fighter->Deselect_Fighter();
+        }
+    }
+}
+
+bool Controller::Is_Game_Over()
+{
+    if(!Dracula_And_Sisters[static_cast<int>(Dracula_And_Sisters_Array_Index::DRACULA)]->return_is_fighter_alive())
+    {
+        return true;
+    }
+    if(!sherlock_And_Watson[static_cast<int>(Sherlock_And_Watson_Array_Index::SHERLOCK)]->return_is_fighter_alive())
+    {
+        return true;
+    }
+    return false;
+}
+
+
+USER Controller::Return_Who_won_The_Game() const
+{
+    HERO_NAME dead_hero_name;
+    USER who_won;
+    if(!Dracula_And_Sisters[static_cast<int>(Dracula_And_Sisters_Array_Index::DRACULA)]->return_is_fighter_alive())
+    {
+        dead_hero_name = HERO_NAME::DRACULA;
+    }
+    else
+    {
+        dead_hero_name = HERO_NAME::SHERLOCK;
+    }
+    if(user1.Return_Hero_Type() == dead_hero_name)
+    {
+        who_won = USER::USER2;
+    }
+    else
+    {
+        who_won = USER::USER1;
+    }
+    return who_won;
 }

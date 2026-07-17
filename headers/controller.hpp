@@ -43,6 +43,7 @@ class Controller
         void Select_Fighter(Fighters_Names fighter_name);
         void Revive_The_Selected_Fighter(Fighters_Names figher_name, int space_to_place_the_fighter_at);
         void Set_Card_Value(USER user_turn, int card_index, int card_value);
+        void Deselect_All_Selected_Fighters();
 
         int Return_Fighter_Move_Value(Fighters_Names fighter_name) const;
         int Return_Hero_Space_Number(Fighters_Names fighter_Name) const;
@@ -58,11 +59,13 @@ class Controller
         bool Should_Card_Effect_Be_Executed(USER user, int index);
         bool Is_Any_Of_Dracula_Sisters_Dead();
         bool Does_Card_Exist_In_Hand_With_The_Corresponding_Value(USER user_turn, int card_value); // this function only searches for attack or defence cards
+        bool Is_Game_Over();
 
         USER Return_User_Turn() const;
         USER Return_Younger_User() const;
         USER Return_Older_User() const;
         USER return_who_won_the_combat() const;
+        USER Return_Who_won_The_Game() const;
         
         std::string Return_Card_Name(USER user_turn, int index);
         std::string Conver_Fighter_Name_Enum_To_String(Fighters_Names fighter_name);
@@ -105,6 +108,7 @@ class Controller
         Fighters_Print_Info* fighters_printing_info_array;
         int fighters_printing_info_count;
         ftxui::Element map_and_user_info;
+        ftxui::ScreenInteractive screen;
 
     private:
         User user1;

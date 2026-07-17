@@ -63,6 +63,10 @@ bool User_Choice_Manager::Screen_Manager(USER user_turn, Controller& control, co
             Scheme_Card_Manager_Screen(control);
             return true;
 
+        case GAME_FLOW_SCREENS::GAME_OVER_SCREEN:
+            Game_Over_Screen(control);
+            return true;
+
         case GAME_FLOW_SCREENS::GO_BACK_TO_MAIN_LOOP:
             return false;
         
@@ -387,12 +391,22 @@ void User_Choice_Manager::Fighting_Screen(USER user_turn, Controller& control, c
             break;
         }
     }
-    //change them turns
-    //discard them cards
-    //deselect fighters
+    if(control.Manage_UserAction_Numbers_And_Return_True_TO_Change_Turn())
+    {
+        //discard cards more than 7
+        control.Change_User_Turn();
+    }
+    
     //check to see if hero is alive if not end the game and announce the winner
     //otherwise go back to choosing fighter
-    game_current_screen = GAME_FLOW_SCREENS::CHOOSE_FIGHTER;
+    if(control.Is_Game_Over())
+    {
+        game_current_screen = GAME_FLOW_SCREENS::GAME_OVER_SCREEN;
+    }
+    else
+    {
+        game_current_screen = GAME_FLOW_SCREENS::CHOOSE_FIGHTER;
+    }
 
 
 }
@@ -619,4 +633,38 @@ void User_Choice_Manager::Scheme_Card_Manager_Screen(Controller& control)
 
     //if one has died then finish the game
     
+}
+
+void User_Choice_Manager::Game_Over_Screen(Controller& control)
+{
+    auto screen = ScreenInteractive::Fullscreen();
+    USER who_won = control.Return_Who_won_The_Game();
+    std::string winner_user_name;
+    if(who_won == USER::USER1)
+    {
+        winner_user_name = control.Return_User1_Username();
+    }
+    else
+    {   
+        winner_user_name = control.Return_User2_Username();
+    }
+
+
+    auto exit_button = Button("EXIT", [&]{
+        game_current_screen = GAME_FLOW_SCREENS::GO_BACK_TO_MAIN_LOOP;
+        screen.ExitLoopClosure()();
+    });
+
+    screen.Loop(Renderer(exit_button, [&]{
+        return vbox({
+            vbox({
+                text(""),
+                text("GAME OVER") | hcenter | size(WIDTH, EQUAL, 100) | underlined | color(Color::NavajoWhite3) | bold,
+                text(""),
+                hbox({text(winner_user_name), text(" WON THE GAME")}) | bold,
+                text(""),
+                exit_button->Render() | hcenter | size(WIDTH, EQUAL, 100)
+            }) | center
+        }) | border;
+    }));
 }

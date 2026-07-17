@@ -269,5 +269,4 @@ void User_Interface::Game_Loop_Screen(Controller& control)
 
 
     Current_Screen_State = SCREEN_STATE::PROGRAM_SHOULD_TEMINATE;
-    std::cout << Return_Map_To_Be_Rendered(6, Map_Printing_Info);
 }

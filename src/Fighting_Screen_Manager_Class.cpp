@@ -45,6 +45,21 @@ bool Fighting_Screen_Manager::Screen_Manager(Controller& control)
 
 
     case FIGHTING_SCREEN_SUB_SCREENS::RETURN_TO_MAIN_LOOP:
+        USER Attacker = control.Return_User_Turn();
+        USER Defender;
+        if(Attacker == USER::USER1)
+        {
+            Defender = USER::USER2;
+        }
+        else
+        {
+            Defender = USER::USER1;
+
+        }
+        control.discard(Attacker_Selected_Card_Index, Attacker);
+        control.discard(Defender_Selected_Card_Index, Defender);
+        control.Deselect_All_Selected_Fighters();
+
         return false;
     
     default:
