@@ -561,7 +561,7 @@ void User_Choice_Manager::Choose_Enemy_Screen(Controller& control)
 
 void User_Choice_Manager::Scheme_Card_Manager_Screen(Controller& control)
 {
-    cards selected_scheme_card_name = control.Return_Selected_Card_Name_As_An_Enum(control.Set_User_Turn(), selected_Attacker_card_index);
+    cards selected_scheme_card_name = control.Return_Selected_Card_Name_As_An_Enum(control.Return_User_Turn(), selected_Attacker_card_index);
     SCHEME_CARDS_SCREEN selected_card_screen;
     switch (selected_scheme_card_name)
     {

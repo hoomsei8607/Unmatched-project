@@ -1,6 +1,6 @@
 #include "../headers/cards.hpp"
 #include "../headers/controller.hpp"
-#include "../headers/User.hpp"
+#include "../headers/user.hpp"
 #include "../headers/fighters_sub_classes.hpp"
 #include <ctime>
 
