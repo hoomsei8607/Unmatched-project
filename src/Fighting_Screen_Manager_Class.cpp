@@ -62,8 +62,6 @@ bool Fighting_Screen_Manager::Screen_Manager(Controller& control)
 
         return false;
     
-    default:
-        break;
     }
 }
 
@@ -71,7 +69,7 @@ void Fighting_Screen_Manager::Taking_Defender_Input_Screen(Controller& control)
 {
 
 
-    auto screen = ScreenInteractive::Fullscreen();
+    
     USER defender;
 
     if(control.Return_User_Turn() == USER::USER1)
@@ -111,14 +109,14 @@ void Fighting_Screen_Manager::Taking_Defender_Input_Screen(Controller& control)
         {
             current_screen = FIGHTING_SCREEN_SUB_SCREENS::IMMIDATE_RESULTS_SCREEN;
         }
-        screen.ExitLoopClosure()();
+        control.screen.ExitLoopClosure()();
     });
 
     auto Skip_Button = Button("SKIP", [&]{
         Defender_Card_Value = 0;
         Defender_Selected_Card_Index = -1;
         current_screen = FIGHTING_SCREEN_SUB_SCREENS::IMMIDATE_RESULTS_SCREEN;
-        screen.ExitLoopClosure()();
+        control.screen.ExitLoopClosure()();
     });
     
 
@@ -141,7 +139,7 @@ void Fighting_Screen_Manager::Taking_Defender_Input_Screen(Controller& control)
 
 
 
-    screen.Loop(Renderer(container, [&]{
+    control.screen.Loop(Renderer(container, [&]{
         return vbox({
             hbox({text(defender_name), text(": "), text("YOU ARE DEFEDING")}),
             text("CHOOSE A CARD OR SKIP"),
@@ -155,7 +153,7 @@ void Fighting_Screen_Manager::Show_Immediate_Combat_Results(Controller& control)
 {
 
 
-    auto screen = ScreenInteractive::Fullscreen();
+    
     USER Attacker = control.Return_User_Turn();
     USER Defender;
 
@@ -235,14 +233,14 @@ void Fighting_Screen_Manager::Show_Immediate_Combat_Results(Controller& control)
 
     auto Continue_Button = Button("CONTINUE", [&]{
         current_screen = FIGHTING_SCREEN_SUB_SCREENS::DURING_FIGHT_SCREEN;
-        screen.ExitLoopClosure()();
+        control.screen.ExitLoopClosure()();
     });
 
 
 
 
 
-    screen.Loop(Renderer(Continue_Button,[&]{
+    control.screen.Loop(Renderer(Continue_Button,[&]{
         return vbox({
             text(" "),
             text("IMMEDIATE EFFECTS") | bold | color(Color::NavajoWhite3),
@@ -274,7 +272,7 @@ void Fighting_Screen_Manager::Show_Immediate_Combat_Results(Controller& control)
 void Fighting_Screen_Manager::During_Combat_Screen(Controller& control)
 {
     
-    auto screen = ScreenInteractive::Fullscreen();
+    
     USER Attacker = control.Return_User_Turn();
     USER Defender;
 
@@ -340,10 +338,10 @@ void Fighting_Screen_Manager::During_Combat_Screen(Controller& control)
 
     auto Continue_Button = Button("CONTINUE", [&]{
         current_screen = FIGHTING_SCREEN_SUB_SCREENS::RESULTS_SCREEN;
-        screen.ExitLoopClosure()();
+        control.screen.ExitLoopClosure()();
     });
 
-    screen.Loop(Renderer(Continue_Button,[&]{
+    control.screen.Loop(Renderer(Continue_Button,[&]{
         return vbox({
             text(" "),
             text("DURING FIGHT EFFECTS") | bold | color(Color::NavajoWhite3),
@@ -386,7 +384,7 @@ void Fighting_Screen_Manager::During_Combat_Screen(Controller& control)
 
 void Fighting_Screen_Manager::Show_Fight_Results_Screen(Controller& control)
 {
-    auto screen = ScreenInteractive::Fullscreen();
+    
     USER Attacker = control.Return_User_Turn();
     USER Defender;
     std::string Fight_Results;
@@ -417,10 +415,10 @@ void Fighting_Screen_Manager::Show_Fight_Results_Screen(Controller& control)
 
     auto continue_button = Button("CONTINUE", [&]{
         current_screen = FIGHTING_SCREEN_SUB_SCREENS::AFTER_COMBAT_SCREEN;
-        screen.ExitLoopClosure()();
+        control.screen.ExitLoopClosure()();
     });
 
-    screen.Loop(Renderer(continue_button, [&]{
+    control.screen.Loop(Renderer(continue_button, [&]{
         return vbox({
             text(Fight_Results) | center | underlined | color(Color::NavajoWhite3) |bold,
             text(" "),
@@ -458,7 +456,7 @@ void Fighting_Screen_Manager::After_Combat_Screen(Controller& control)
 
     if(Has_Defender_Skipped_turn)
     {
-        auto screen = ScreenInteractive::Fullscreen();
+        
         if(control.Return_Selected_Card_Effect_Type(Attacker, Attacker_Selected_Card_Index) == CARD_EFFECT_TYPE::AFTER_COMBAT && control.Should_Card_Effect_Be_Executed(Attacker, Attacker_Selected_Card_Index))
         {
 
@@ -517,10 +515,10 @@ void Fighting_Screen_Manager::After_Combat_Screen(Controller& control)
             }
 
             auto continue_button = Button("CONTINUE", [&]{
-                screen.ExitLoopClosure()();
+                control.screen.ExitLoopClosure()();
             });
 
-            screen.Loop(Renderer(continue_button, [&]{
+            control.screen.Loop(Renderer(continue_button, [&]{
                 return vbox({
                     Describtion_For_User | hcenter,
                     continue_button -> Render() | size(WIDTH, EQUAL, 45) | hcenter
@@ -538,7 +536,7 @@ void Fighting_Screen_Manager::After_Combat_Screen(Controller& control)
         }
         else
         {
-            auto screen = ScreenInteractive::Fullscreen();
+            
 
 
             Describtion_For_User = vbox({
@@ -549,10 +547,10 @@ void Fighting_Screen_Manager::After_Combat_Screen(Controller& control)
             });
 
             auto continue_button = Button("CONTINUE", [&]{
-                screen.ExitLoopClosure();
+                control.screen.ExitLoopClosure();
             });
 
-            screen.Loop(Renderer(continue_button, [&]{
+            control.screen.Loop(Renderer(continue_button, [&]{
                 return vbox({
                     Describtion_For_User | hcenter,
                     continue_button -> Render() | size(WIDTH, EQUAL, 45) | hcenter 
@@ -569,7 +567,7 @@ void Fighting_Screen_Manager::After_Combat_Screen(Controller& control)
         }
         if(control.Return_Selected_Card_Effect_Type(Defender, Defender_Selected_Card_Index) == CARD_EFFECT_TYPE::AFTER_COMBAT && control.Should_Card_Effect_Be_Executed(Defender, Defender_Selected_Card_Index))
         {
-            auto screen = ScreenInteractive::Fullscreen();
+            
             switch (control.Return_Selected_Card_Name_As_An_Enum(Defender, Defender_Selected_Card_Index))
             {
             case cards::DASH:
@@ -625,10 +623,10 @@ void Fighting_Screen_Manager::After_Combat_Screen(Controller& control)
             }
 
             auto continue_button = Button("CONTINUE", [&]{
-                screen.ExitLoopClosure()();
+                control.screen.ExitLoopClosure()();
             });
 
-            screen.Loop(Renderer(continue_button, [&]{
+            control.screen.Loop(Renderer(continue_button, [&]{
                 return vbox({
                     Describtion_For_User | hcenter,
                     continue_button -> Render() | size(WIDTH, EQUAL, 45) | hcenter
@@ -647,7 +645,7 @@ void Fighting_Screen_Manager::After_Combat_Screen(Controller& control)
 
         if(control.Return_Selected_Card_Effect_Type(Attacker, Attacker_Selected_Card_Index) == CARD_EFFECT_TYPE::AFTER_COMBAT && control.Should_Card_Effect_Be_Executed(Attacker, Attacker_Selected_Card_Index))
         {
-            auto screen = ScreenInteractive::Fullscreen();
+            
             switch (control.Return_Selected_Card_Name_As_An_Enum(Attacker, Attacker_Selected_Card_Index))
             {
             case cards::DASH:
@@ -703,10 +701,10 @@ void Fighting_Screen_Manager::After_Combat_Screen(Controller& control)
             }
 
             auto continue_button = Button("CONTINUE", [&]{
-                screen.ExitLoopClosure()();
+                control.screen.ExitLoopClosure()();
             });
 
-            screen.Loop(Renderer(continue_button, [&]{
+            control.screen.Loop(Renderer(continue_button, [&]{
                 return vbox({
                     Describtion_For_User | hcenter,
                     continue_button -> Render() | size(WIDTH, EQUAL, 45) | hcenter
@@ -725,7 +723,7 @@ void Fighting_Screen_Manager::After_Combat_Screen(Controller& control)
 
         if(control.Return_Selected_Card_Effect_Type(Defender, Defender_Selected_Card_Index) != CARD_EFFECT_TYPE::AFTER_COMBAT && control.Return_Selected_Card_Effect_Type(Attacker, Attacker_Selected_Card_Index) != CARD_EFFECT_TYPE::AFTER_COMBAT && No_Effect_Should_occur)
         {
-            auto screen = ScreenInteractive::Fullscreen();
+            
 
 
             Describtion_For_User = vbox({
@@ -736,10 +734,10 @@ void Fighting_Screen_Manager::After_Combat_Screen(Controller& control)
             });
 
             auto continue_button = Button("CONTINUE", [&]{
-                screen.ExitLoopClosure();
+                control.screen.ExitLoopClosure();
             });
 
-            screen.Loop(Renderer(continue_button, [&]{
+            control.screen.Loop(Renderer(continue_button, [&]{
                 return vbox({
                     Describtion_For_User | hcenter,
                     continue_button -> Render() | size(WIDTH, EQUAL, 45) | hcenter 
@@ -757,7 +755,7 @@ void Fighting_Screen_Manager::After_Combat_Screen(Controller& control)
 
 void Fighting_Screen_Manager::Elementary_Defence_Card_Screen(Controller& control)
 {
-    auto screen = ScreenInteractive::Fullscreen();
+    
     std::vector<std::string> enemy_card_value_guess = {"1", "2", "3", "4", "5", "6"};
     int current_sub_screen = 0;
     int guessed_value = 0;
@@ -775,11 +773,11 @@ void Fighting_Screen_Manager::Elementary_Defence_Card_Screen(Controller& control
                 auto confirm_button = Button("CONFIRM", [&]{
                     guessed_value = std::stoi(enemy_card_value_guess[selected]);
                     current_sub_screen++;
-                    screen.ExitLoopClosure()();
+                    control.screen.ExitLoopClosure()();
                 });
                 auto radio_box = Radiobox(&enemy_card_value_guess, &selected);
                 auto container = Container::Vertical({radio_box, confirm_button});
-                screen.Loop(Renderer(container, [&]{
+                control.screen.Loop(Renderer(container, [&]{
                     
                     return vbox({
                         vbox({
@@ -811,7 +809,7 @@ void Fighting_Screen_Manager::Elementary_Defence_Card_Screen(Controller& control
 
                     }
                     current_sub_screen++;
-                    screen.ExitLoopClosure()();
+                    control.screen.ExitLoopClosure()();
                 });
 
                 Element Results;
@@ -845,7 +843,7 @@ void Fighting_Screen_Manager::Elementary_Defence_Card_Screen(Controller& control
                     }) | border;
                 }
                 break;
-                screen.Loop(Renderer(continue_button, [&]{
+                control.screen.Loop(Renderer(continue_button, [&]{
                     return Results;
                 }));
             }

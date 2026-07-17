@@ -8,7 +8,7 @@ enum Screen_State {USER1_NAME_INPUT, USER2_NAME_INPUT, USER1_AGE_INPUT, USER2_AG
 
 User1_And_User2_Info User_Interface::Get_User_Input(Controller& control)
 {
-    auto screen = ScreenInteractive::Fullscreen();
+    
     std::string User1_Name = "";
     std::string User2_Name = "";
     std::string User1_Age;
@@ -79,7 +79,7 @@ User1_And_User2_Info User_Interface::Get_User_Input(Controller& control)
             
         }
         Current_Screen_State = SCREEN_STATE::GAME_LOOP;
-        screen.ExitLoopClosure()();
+        control.screen.ExitLoopClosure()();
     });
     
     auto Hero_Name_Event_Handler = Container::Vertical({
@@ -192,7 +192,7 @@ User1_And_User2_Info User_Interface::Get_User_Input(Controller& control)
     });
     
 
-    screen.Loop(renderer);
+    control.screen.Loop(renderer);
 
     std::string User1_Hero_Name_String = ""; 
     std::string User2_Hero_Name_String = ""; 

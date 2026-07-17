@@ -51,7 +51,7 @@ bool SideKick_Placement_Screen_Manager::Screen_Manager(Controller& control, Elem
 void SideKick_Placement_Screen_Manager::Dispaly_Watson_Screen(Fighters_Print_Info& watson_info_struct, Controller& control, ftxui::Element map_and_user_info)
 {
     int selected_space = 0;
-    auto screen = ScreenInteractive::Fullscreen();
+    
 
     Component SideKick_Space_Confirm_Button;
     Component Placement_Select_Handler;
@@ -66,7 +66,7 @@ void SideKick_Placement_Screen_Manager::Dispaly_Watson_Screen(Fighters_Print_Inf
                 current_placement = SideKick_Placement_Screen::DRACULA_SIS1_SCREEN;
                 control.Set_Fighter_Space_Number(Fighters_Names::WATSON, std::stoi(Young_User_SideKick_Spaces_Available[selected_space]));
                 watson_info_struct.Is_Placed_On_Map = true;
-                screen.ExitLoopClosure()();
+                control.screen.ExitLoopClosure()();
             });
             Placement_Select_Handler = Container::Vertical({
                 Available_Spaces_RadioBox,
@@ -82,7 +82,7 @@ void SideKick_Placement_Screen_Manager::Dispaly_Watson_Screen(Fighters_Print_Inf
                 current_placement = SideKick_Placement_Screen::CONTINUE_TO_THE_MAIN_MANAGER;
                 control.Set_Fighter_Space_Number(Fighters_Names::WATSON, std::stoi(Older_User_SideKick_Spaces_Available[selected_space]));
                 watson_info_struct.Is_Placed_On_Map = true;
-                screen.ExitLoopClosure()();
+                control.screen.ExitLoopClosure()();
             });
              Placement_Select_Handler = Container::Vertical({
                 Available_Spaces_RadioBox,
@@ -91,7 +91,7 @@ void SideKick_Placement_Screen_Manager::Dispaly_Watson_Screen(Fighters_Print_Inf
             
         }
 
-        screen.Loop(Renderer(Placement_Select_Handler, [&]{
+        control.screen.Loop(Renderer(Placement_Select_Handler, [&]{
             if(Is_Younger_User_Turn)
             {
                 To_Be_Rendered = vbox({
@@ -124,7 +124,7 @@ void SideKick_Placement_Screen_Manager::Dispaly_Watson_Screen(Fighters_Print_Inf
 void SideKick_Placement_Screen_Manager::Display_Sis1_Screen(Fighters_Print_Info& sis1_info_struct, Controller& control, Element map_and_user_info) 
 {
     int selected_space = 0;
-    auto screen = ScreenInteractive::Fullscreen();
+    
 
 
     Component SideKick_Space_Confirm_Button;
@@ -142,7 +142,7 @@ void SideKick_Placement_Screen_Manager::Display_Sis1_Screen(Fighters_Print_Info&
             sis1_info_struct.Is_Placed_On_Map = true;
             sis1_info_struct.Sis_Number = '1';
             Young_User_SideKick_Spaces_Available.erase(Young_User_SideKick_Spaces_Available.begin() + selected_space);
-            screen.ExitLoopClosure()();
+            control.screen.ExitLoopClosure()();
         });
         Placement_Select_Handler = Container::Vertical({
             Available_Spaces_RadioBox,
@@ -160,7 +160,7 @@ void SideKick_Placement_Screen_Manager::Display_Sis1_Screen(Fighters_Print_Info&
             sis1_info_struct.Is_Placed_On_Map = true;
             sis1_info_struct.Sis_Number = '1';
             Older_User_SideKick_Spaces_Available.erase(Older_User_SideKick_Spaces_Available.begin() + selected_space);
-            screen.ExitLoopClosure()();
+            control.screen.ExitLoopClosure()();
         });
         Placement_Select_Handler = Container::Vertical({
             Available_Spaces_RadioBox,
@@ -169,7 +169,7 @@ void SideKick_Placement_Screen_Manager::Display_Sis1_Screen(Fighters_Print_Info&
         
     }
 
-    screen.Loop(Renderer(Placement_Select_Handler, [&]{
+    control.screen.Loop(Renderer(Placement_Select_Handler, [&]{
         if(Is_Younger_User_Turn)
         {
             To_Be_Rendered = vbox({
@@ -204,7 +204,7 @@ void SideKick_Placement_Screen_Manager::Display_Sis1_Screen(Fighters_Print_Info&
 void SideKick_Placement_Screen_Manager::Display_Sis2_Screen(Fighters_Print_Info& sis2_struct_info, Controller& control, ftxui::Element map_and_user_info)
 {
     int selected_space = 0;
-    auto screen = ScreenInteractive::Fullscreen();
+    
 
     Component SideKick_Space_Confirm_Button;
     Component Placement_Select_Handler;
@@ -221,7 +221,7 @@ void SideKick_Placement_Screen_Manager::Display_Sis2_Screen(Fighters_Print_Info&
             sis2_struct_info.Is_Placed_On_Map = true;
             sis2_struct_info.Sis_Number = '2';
             Young_User_SideKick_Spaces_Available.erase(Young_User_SideKick_Spaces_Available.begin() + selected_space);
-            screen.ExitLoopClosure()();
+            control.screen.ExitLoopClosure()();
         });
         Placement_Select_Handler = Container::Vertical({
             Available_Spaces_RadioBox,
@@ -239,7 +239,7 @@ void SideKick_Placement_Screen_Manager::Display_Sis2_Screen(Fighters_Print_Info&
             sis2_struct_info.Is_Placed_On_Map = true;
             sis2_struct_info.Sis_Number = '2';
             Older_User_SideKick_Spaces_Available.erase(Older_User_SideKick_Spaces_Available.begin() + selected_space);
-            screen.ExitLoopClosure()();
+            control.screen.ExitLoopClosure()();
         });
         Placement_Select_Handler = Container::Vertical({
             Available_Spaces_RadioBox,
@@ -248,7 +248,7 @@ void SideKick_Placement_Screen_Manager::Display_Sis2_Screen(Fighters_Print_Info&
         
     }
 
-    screen.Loop(Renderer(Placement_Select_Handler, [&]{
+    control.screen.Loop(Renderer(Placement_Select_Handler, [&]{
         if(Is_Younger_User_Turn)
         {
             To_Be_Rendered = vbox({
@@ -281,7 +281,7 @@ void SideKick_Placement_Screen_Manager::Display_Sis2_Screen(Fighters_Print_Info&
 void SideKick_Placement_Screen_Manager::Display_Sis3_Screen(Fighters_Print_Info& sis3_struct_info, Controller& control, ftxui::Element map_and_user_info)
 {
     int selected_space = 0;
-    auto screen = ScreenInteractive::Fullscreen();
+    
     
     Component SideKick_Space_Confirm_Button;
     Component Placement_Select_Handler;
@@ -299,7 +299,7 @@ void SideKick_Placement_Screen_Manager::Display_Sis3_Screen(Fighters_Print_Info&
             sis3_struct_info.Is_Placed_On_Map = true;
             sis3_struct_info.Sis_Number = '3';
             Young_User_SideKick_Spaces_Available.erase(Young_User_SideKick_Spaces_Available.begin() + selected_space);
-            screen.ExitLoopClosure()();
+            control.screen.ExitLoopClosure()();
         });
         Placement_Select_Handler = Container::Vertical({
             Available_Spaces_RadioBox,
@@ -316,7 +316,7 @@ void SideKick_Placement_Screen_Manager::Display_Sis3_Screen(Fighters_Print_Info&
             sis3_struct_info.Is_Placed_On_Map = true;
             sis3_struct_info.Sis_Number = '3';
             Older_User_SideKick_Spaces_Available.erase(Older_User_SideKick_Spaces_Available.begin() + selected_space);
-            screen.ExitLoopClosure()();
+            control.screen.ExitLoopClosure()();
         });
         Placement_Select_Handler = Container::Vertical({
             Available_Spaces_RadioBox,
@@ -325,7 +325,7 @@ void SideKick_Placement_Screen_Manager::Display_Sis3_Screen(Fighters_Print_Info&
         
     }
     
-    screen.Loop(Renderer(Placement_Select_Handler, [&]{
+    control.screen.Loop(Renderer(Placement_Select_Handler, [&]{
         
         if(Is_Younger_User_Turn)
         {

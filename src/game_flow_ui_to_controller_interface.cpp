@@ -78,7 +78,7 @@ bool User_Choice_Manager::Screen_Manager(USER user_turn, Controller& control, co
 void User_Choice_Manager::Maneuver_Screen(USER user_turn, Controller& control, const Element& map_and_user_info,  Fighters_Print_Info* fighter_printing_info, int fighters_count)
 {
 
-    auto screen = ScreenInteractive::Fullscreen();
+    
     std::string selected_hero_name = control.Conver_Fighter_Name_Enum_To_String(selected_fighter);
     Graph* game_graph = Graph::Get_Map_Graph_Pointer();
     
@@ -121,12 +121,12 @@ void User_Choice_Manager::Maneuver_Screen(USER user_turn, Controller& control, c
             game_current_screen = GAME_FLOW_SCREENS::CHOOSE_FIGHTER;
         }
         control.Reset_Fighter_Move_Value(selected_fighter);
-        screen.ExitLoopClosure()();
+        control.screen.ExitLoopClosure()();
     });
 
     Component Undo_Button = Button("UNDO", [&]{
         game_current_screen = GAME_FLOW_SCREENS::CHOOSE_ACTION;
-        screen.ExitLoopClosure()();
+        control.screen.ExitLoopClosure()();
     });
 
     auto Moving_Fighter_Interactive_Ui = Container::Vertical({
@@ -137,7 +137,7 @@ void User_Choice_Manager::Maneuver_Screen(USER user_turn, Controller& control, c
 
 
 
-    screen.Loop(Renderer(Moving_Fighter_Interactive_Ui, [&]{
+    control.screen.Loop(Renderer(Moving_Fighter_Interactive_Ui, [&]{
         return vbox({
             hbox({text("SELECTED FIGHTER: "), text(selected_hero_name)}) | hcenter,
             map_and_user_info | hcenter,
@@ -153,7 +153,7 @@ void User_Choice_Manager::Maneuver_Screen(USER user_turn, Controller& control, c
 void User_Choice_Manager::Choose_Fighter_Screen(USER user_turn, Controller& control, const Element& map_and_user_info)
 {
     
-    auto screen = ScreenInteractive::Fullscreen();
+    
     
     std::vector <std::string> Selectable_Fighters;
     std::vector <Fighters_Names> Selectable_Fighters_Enum_Vector;
@@ -166,7 +166,7 @@ void User_Choice_Manager::Choose_Fighter_Screen(USER user_turn, Controller& cont
         attack_type = control.Return_Fighter_Attacking_Range(User_Choice_Manager::selected_fighter);
         control.Select_Fighter(User_Choice_Manager::selected_fighter);
         game_current_screen = GAME_FLOW_SCREENS::CHOOSE_ACTION;
-        screen.ExitLoopClosure()();
+        control.screen.ExitLoopClosure()();
     }});
     
    
@@ -212,7 +212,7 @@ void User_Choice_Manager::Choose_Fighter_Screen(USER user_turn, Controller& cont
 
     Component Fighters_RadioBox = Radiobox(&Selectable_Fighters, &selected_fighter);
     Component Fighter_Selection_Container = Container::Vertical({Fighters_RadioBox, Confirm_Button});
-    screen.Loop(Renderer(Fighter_Selection_Container, [&]{
+    control.screen.Loop(Renderer(Fighter_Selection_Container, [&]{
         return vbox({
             User_Turn_Text | hcenter,
             map_and_user_info | hcenter,
@@ -226,7 +226,7 @@ void User_Choice_Manager::Choose_Fighter_Screen(USER user_turn, Controller& cont
 
 void User_Choice_Manager::Choose_Action_Screen(USER user_turn, Controller& control, const Element& map_and_user_info)
 {
-    auto screen = ScreenInteractive::Fullscreen();
+    
 
     std::string selected_hero_name_as_string = control.Conver_Fighter_Name_Enum_To_String(selected_fighter);
     std::vector <std::string> options = {"MANEUVER", "USE CARDS"};
@@ -241,12 +241,12 @@ void User_Choice_Manager::Choose_Action_Screen(USER user_turn, Controller& contr
         {
             game_current_screen = GAME_FLOW_SCREENS::Card_Selection_Screen;
         }
-        screen.ExitLoopClosure()();
+        control.screen.ExitLoopClosure()();
         
     });
     Component Undo_Button = Button("Undo", [&]{
         game_current_screen = GAME_FLOW_SCREENS::CHOOSE_FIGHTER;
-        screen.ExitLoopClosure()();
+        control.screen.ExitLoopClosure()();
     });
     Component Action_Select_Container = Container::Vertical({radio_box, confirm_button, Undo_Button});
 
@@ -261,7 +261,7 @@ void User_Choice_Manager::Choose_Action_Screen(USER user_turn, Controller& contr
     }
 
 
-    screen.Loop(Renderer(Action_Select_Container, [&]{
+    control.screen.Loop(Renderer(Action_Select_Container, [&]{
         return vbox({
             hbox({text("SELECTED FIGHTER: "), text(selected_hero_name_as_string)}) | hcenter,
             map_and_user_info | hcenter,
@@ -281,7 +281,7 @@ void User_Choice_Manager::Select_Card_Screen(USER user_turn, Controller& control
     std::vector<std::string> Card_Options = control.Return_Hand_As_String(user_turn);
     int selected = 0;
 
-    auto screen = ScreenInteractive::Fullscreen();
+    
 
     if(user_turn == USER::USER1)
     {
@@ -315,14 +315,14 @@ void User_Choice_Manager::Select_Card_Screen(USER user_turn, Controller& control
             selected_Attacker_card_index = selected;
             attacker_card_value = 0;
         }
-        screen.ExitLoopClosure()();
+        control.screen.ExitLoopClosure()();
 
     });
 
     Component Undo_Button = Button("UNDO", [&]{
         game_current_screen = GAME_FLOW_SCREENS::CHOOSE_ACTION;
         
-        screen.ExitLoopClosure()();
+        control.screen.ExitLoopClosure()();
     });
 
     Component Card_Select_RadioBox = Toggle(&Card_Options, &selected);
@@ -377,7 +377,7 @@ void User_Choice_Manager::Select_Card_Screen(USER user_turn, Controller& control
             card_select_container->Render()
         }) | center;
     });
-    screen.Loop(main_renderer);
+    control.screen.Loop(main_renderer);
 }
 
 
@@ -414,7 +414,7 @@ void User_Choice_Manager::Fighting_Screen(USER user_turn, Controller& control, c
 void User_Choice_Manager::Choose_Maneuver_Type(Controller& control)
 {
     std::string selected_fighter_name_as_string = control.Conver_Fighter_Name_Enum_To_String(selected_fighter);
-    auto screen = ScreenInteractive::Fullscreen();
+    
     bool Is_User_Hand_Empty = control.Is_User_Hand_Empty(control.Return_User_Turn());
     std::string user_turn_name_string;
 
@@ -430,17 +430,17 @@ void User_Choice_Manager::Choose_Maneuver_Type(Controller& control)
 
     auto normal_button = Button("NORMAL MANEUVER", [&]{
         game_current_screen = GAME_FLOW_SCREENS::MANEUVER;
-        screen.ExitLoopClosure()();
+        control.screen.ExitLoopClosure()();
     });
 
     auto boost_button = Button("BOOST MANEUVER", [&]{
         game_current_screen = GAME_FLOW_SCREENS::MANEUVER_BOOST_SCREEN;
-        screen.ExitLoopClosure()();
+        control.screen.ExitLoopClosure()();
     });
 
     auto undo_button = Button("UNDO", [&]{
         game_current_screen = GAME_FLOW_SCREENS::CHOOSE_ACTION;
-        screen.ExitLoopClosure()();
+        control.screen.ExitLoopClosure()();
     });
 
     boost_button = boost_button | Maybe([&]{
@@ -453,7 +453,7 @@ void User_Choice_Manager::Choose_Maneuver_Type(Controller& control)
         undo_button
     });
 
-    screen.Loop(Renderer(container, [&]{
+    control.screen.Loop(Renderer(container, [&]{
         return vbox({
             hbox({text("SELECTED FIGHTER: "), text(selected_fighter_name_as_string)}),
             container->Render() | size(WIDTH, EQUAL, 90)
@@ -472,18 +472,18 @@ void User_Choice_Manager::Choose_Card_To_Boost_Maneuver_With(USER user_turn, Con
     std::vector<std::string> user_hand_selectable = control.Return_Hand_As_String(user_turn);
     int selected_card = 0;
 
-    auto screen = ScreenInteractive::Fullscreen();
+    
 
     auto confirm_button = Button("CONRIM", [&]{
         control.Boost_Fighter_Move_Value(selected_fighter, control.return_card_boost_value(selected_card, user_turn));
         control.discard(selected_card, user_turn);
         game_current_screen = GAME_FLOW_SCREENS::MANEUVER;
-        screen.ExitLoopClosure()();
+        control.screen.ExitLoopClosure()();
     });
 
     auto undo_button = Button("UNDO", [&]{
         game_current_screen = GAME_FLOW_SCREENS::CHOOSE_MANEUVER_TYPE;
-        screen.ExitLoopClosure()();
+        control.screen.ExitLoopClosure()();
     });
 
     if(user_turn == USER::USER1)
@@ -503,7 +503,7 @@ void User_Choice_Manager::Choose_Card_To_Boost_Maneuver_With(USER user_turn, Con
         undo_button
     });
 
-    screen.Loop(Renderer(container,  [&]{
+    control.screen.Loop(Renderer(container,  [&]{
         return vbox({
             hbox({text("SELECTED FIGHTER: "), text(selected_fighter_name_as_string)}),
             hbox({text("SELECTED FIGHTER: "), text(selected_fighter_name)}),
@@ -516,7 +516,7 @@ void User_Choice_Manager::Choose_Card_To_Boost_Maneuver_With(USER user_turn, Con
 
 void User_Choice_Manager::Choose_Enemy_Screen(Controller& control)
 {
-    auto screen = ScreenInteractive::Fullscreen();
+    
     Graph* game_graph = Graph::Get_Map_Graph_Pointer();
     std::set<int> space_number_occupied_by_enemies;
     std::vector<Fighters_Names> Available_Enemies;
@@ -548,13 +548,13 @@ void User_Choice_Manager::Choose_Enemy_Screen(Controller& control)
 
     auto undo_button = Button("UNDO", [&]{
         game_current_screen = GAME_FLOW_SCREENS::Card_Selection_Screen;
-        screen.ExitLoopClosure()();
+        control.screen.ExitLoopClosure()();
     });
 
     auto confirm_button = Button("CONFIRM", [&]{
         control.Set_Selected_Enemy(Available_Enemies[selected_enemy]);
         game_current_screen = GAME_FLOW_SCREENS::FIGHTING_SCREEN;
-        screen.ExitLoopClosure()();
+        control.screen.ExitLoopClosure()();
     });
 
     auto enemy_options_toggle_box = Toggle(&Available_Enemies_Strings, &selected_enemy);
@@ -565,7 +565,7 @@ void User_Choice_Manager::Choose_Enemy_Screen(Controller& control)
         undo_button
     });
 
-    screen.Loop(Renderer(container, [&]{
+    control.screen.Loop(Renderer(container, [&]{
         return vbox({
             text(" "),
             text("CHOOSE AN ENEMY TO ATTACK") | bold | underlined |  color(Color::NavajoWhite3) | size(WIDTH, EQUAL, 90) | hcenter,
@@ -637,7 +637,7 @@ void User_Choice_Manager::Scheme_Card_Manager_Screen(Controller& control)
 
 void User_Choice_Manager::Game_Over_Screen(Controller& control)
 {
-    auto screen = ScreenInteractive::Fullscreen();
+    
     USER who_won = control.Return_Who_won_The_Game();
     std::string winner_user_name;
     if(who_won == USER::USER1)
@@ -652,10 +652,10 @@ void User_Choice_Manager::Game_Over_Screen(Controller& control)
 
     auto exit_button = Button("EXIT", [&]{
         game_current_screen = GAME_FLOW_SCREENS::GO_BACK_TO_MAIN_LOOP;
-        screen.ExitLoopClosure()();
+        control.screen.ExitLoopClosure()();
     });
 
-    screen.Loop(Renderer(exit_button, [&]{
+    control.screen.Loop(Renderer(exit_button, [&]{
         return vbox({
             vbox({
                 text(""),

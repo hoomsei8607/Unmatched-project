@@ -54,7 +54,7 @@ bool Scheme_Manager::Screen_Manager(Controller& control)
 
 void Scheme_Manager::Mistform_Screen(Controller& control)
 {
-    auto screen = ScreenInteractive::Fullscreen();
+    
     Graph* game_map_ptr = Graph::Get_Map_Graph_Pointer();
     std::set<int> empty_spaces_on_the_map = game_map_ptr->return_all_unoccupied_spaces();
     std::vector<std::string> spaces_option_for_toggle_box;
@@ -85,11 +85,11 @@ void Scheme_Manager::Mistform_Screen(Controller& control)
         control.fighters_printing_info_array[static_cast<int>(Fighters_Names::DRACULA)].Column_Index = temp_struct_to_update_fighter_position_on_screen.column_index;
 
         current_screen = SCHEME_CARDS_SCREEN::EXIT_TO_MAIN_LOOP;
-        screen.ExitLoopClosure()();
+        control.screen.ExitLoopClosure()();
 
     });
     auto container = Container::Vertical({toggle_box, confirm_button});
-    screen.Loop(Renderer(container, [&]{
+    control.screen.Loop(Renderer(container, [&]{
         return vbox({
             vbox({
                 text(" "),
@@ -106,7 +106,7 @@ void Scheme_Manager::Mistform_Screen(Controller& control)
 
 void Scheme_Manager::Baptism_Of_Blood_Screen(Controller& control)
 {
-    auto screen = ScreenInteractive::Fullscreen();
+    
     bool Is_Any_Sister_Dead = control.Is_Any_Of_Dracula_Sisters_Dead();
     USER user_who_owns_dracula;
     Graph* game_map_ptr = Graph::Get_Map_Graph_Pointer();
@@ -144,14 +144,14 @@ void Scheme_Manager::Baptism_Of_Blood_Screen(Controller& control)
             control.Convert_Space_Number_To_Row_And_Column_Index(control.Return_Hero_Space_Number(Fighters_Names::DRACULA), temp_struct_to_update_fighter_position_on_screen);
             control.fighters_printing_info_array[static_cast<int>(Fighters_Names::DRACULA)].Row_Index = temp_struct_to_update_fighter_position_on_screen.row_index;
             control.fighters_printing_info_array[static_cast<int>(Fighters_Names::DRACULA)].Column_Index = temp_struct_to_update_fighter_position_on_screen.column_index;
-            screen.ExitLoopClosure()();
+            control.screen.ExitLoopClosure()();
         });
         auto container = Container::Vertical({
             toggle_box,
             confirm_button
         });
 
-        screen.Loop(Renderer(container, [&]{
+        control.screen.Loop(Renderer(container, [&]{
             return vbox({
                 vbox({
                     text(" "),
@@ -178,9 +178,9 @@ void Scheme_Manager::Baptism_Of_Blood_Screen(Controller& control)
     {
         
         auto continue_button = Button("CONTINUE", [&]{
-            screen.ExitLoopClosure()();
+            control.screen.ExitLoopClosure()();
         });
-        screen.Loop(Renderer(continue_button, [&]{
+        control.screen.Loop(Renderer(continue_button, [&]{
             return vbox({
                 vbox({
                     text(" "),
@@ -206,7 +206,7 @@ void Scheme_Manager::Baptism_Of_Blood_Screen(Controller& control)
 
 void Scheme_Manager::Ravening_Seduction_Screen(Controller& control)
 {
-    auto screen = ScreenInteractive::Fullscreen();
+    
     std::set<int> available_spaces_to_move_the_enemy_to;
     Graph* game_map_ptr = Graph::Get_Map_Graph_Pointer();
     
@@ -246,13 +246,13 @@ void Scheme_Manager::Ravening_Seduction_Screen(Controller& control)
                 ravening_seduction_sub_screen_number++;
                 auto toggle_box = Radiobox(&options_for_toggle_box, & selected_fighter_index);
                 auto confirm_button = Button("CONFIRM", [&]{
-                    screen.ExitLoopClosure()();
+                    control.screen.ExitLoopClosure()();
                 });
                 auto container = Container::Vertical({
                     toggle_box,
                     confirm_button
                 });
-                screen.Loop(Renderer(container, [&]{
+                control.screen.Loop(Renderer(container, [&]{
                     return vbox({
                         vbox({
                             text(" "),
@@ -297,7 +297,7 @@ void Scheme_Manager::Ravening_Seduction_Screen(Controller& control)
                     control.fighters_printing_info_array[static_cast<int>(Fighters_Names::DRACULA)].Row_Index = temp_struct_to_update_fighter_position_on_screen.row_index;
                     control.fighters_printing_info_array[static_cast<int>(Fighters_Names::DRACULA)].Column_Index = temp_struct_to_update_fighter_position_on_screen.column_index;
 
-                    screen.ExitLoopClosure()();
+                    control.screen.ExitLoopClosure()();
                 });
                 auto radio_box = Radiobox(&selectable_spaces_to_move_enemy, &selected_space);
                 auto container = Container::Vertical({
@@ -305,7 +305,7 @@ void Scheme_Manager::Ravening_Seduction_Screen(Controller& control)
                     confirm_button
                 });
 
-                screen.Loop(Renderer(container, [&]{
+                control.screen.Loop(Renderer(container, [&]{
                     return vbox({
                         vbox({
                             text(" "),
@@ -345,10 +345,10 @@ void Scheme_Manager::Ravening_Seduction_Screen(Controller& control)
                 Element for_render;
                 Component continue_button = Button("CONTINUE", [&]{
                     control.change_fighter_health(selectable_heros[selected_fighter_index], adjacent_sisters);
-                    screen.ExitLoopClosure()();
+                    control.screen.ExitLoopClosure()();
                 });
                 
-                screen.Loop(Renderer(continue_button, [&]{
+                control.screen.Loop(Renderer(continue_button, [&]{
                     if(there_are_sisters_adjacent_to_the_enemy)
                     {
                         return vbox({
@@ -407,7 +407,7 @@ void Scheme_Manager::Ravening_Seduction_Screen(Controller& control)
 
 void Scheme_Manager::Eliminate_The_Impossible_Screen(Controller& control)
 {
-    auto screen = ScreenInteractive::Fullscreen();
+    
     USER enemy_user;
     if(control.Return_User_Turn() == USER::USER1)
     {
@@ -430,11 +430,11 @@ void Scheme_Manager::Eliminate_The_Impossible_Screen(Controller& control)
         {
             control.Change_User_Turn();
         }
-        screen.ExitLoopClosure()();
+        control.screen.ExitLoopClosure()();
     });
     auto toggle_box = Toggle(&enemy_hand_for_radio_box, &selected_card);
     auto container = Container::Vertical({toggle_box, confirm_button});
-    screen.Loop(Renderer(container, [&]{
+    control.screen.Loop(Renderer(container, [&]{
         return vbox({
             vbox({
                 text(" "),
@@ -453,7 +453,7 @@ void Scheme_Manager::Eliminate_The_Impossible_Screen(Controller& control)
 
 void Scheme_Manager::Master_Of_Disguise_Screen(Controller& control)
 {
-    auto screen = ScreenInteractive::Fullscreen();
+    
     Graph* game_map_ptr = Graph::Get_Map_Graph_Pointer();
     USER enemy_user;
     if(control.Return_User_Turn() == USER::USER1)
@@ -486,11 +486,11 @@ void Scheme_Manager::Master_Of_Disguise_Screen(Controller& control)
         {
             control.Change_User_Turn();
         }
-        screen.ExitLoopClosure()();
+        control.screen.ExitLoopClosure()();
     });
 
 
-    screen.Loop(Renderer(confirm_button, [&]{
+    control.screen.Loop(Renderer(confirm_button, [&]{
         return vbox({
             vbox({
                 text(" "),
@@ -510,7 +510,7 @@ void Scheme_Manager::Master_Of_Disguise_Screen(Controller& control)
 
 void Scheme_Manager::Administer_Aid_Screen(Controller& control)
 {
-    auto screen = ScreenInteractive::Fullscreen();
+    
     Graph* game_map_ptr = Graph::Get_Map_Graph_Pointer();
     std::set<int> unoccupied_spaces_adjacent_to_sherlock;
     game_map_ptr->Recursive_Path_Finder(unoccupied_spaces_adjacent_to_sherlock, control.Return_Hero_Space_Number(Fighters_Names::SHERLOCK), 1, control.Return_User_Turn());
@@ -543,10 +543,10 @@ void Scheme_Manager::Administer_Aid_Screen(Controller& control)
         {
             control.Change_User_Turn();
         }
-        screen.ExitLoopClosure()();
+        control.screen.ExitLoopClosure()();
     });
     auto container = Container::Vertical({radio_box, confirm_button});
-    screen.Loop(Renderer(container, [&]{
+    control.screen.Loop(Renderer(container, [&]{
         return vbox({
             vbox({
                 text(" "),
@@ -571,7 +571,7 @@ void Scheme_Manager::Administer_Aid_Screen(Controller& control)
 
 void Scheme_Manager::Confirm_Suspicion_Screen(Controller& control)
 {
-    auto screen = ScreenInteractive::Fullscreen();
+    
     int user_input_value = 0;
     USER attacker = control.Return_User_Turn();
     USER defender;
@@ -613,11 +613,11 @@ void Scheme_Manager::Confirm_Suspicion_Screen(Controller& control)
                     {
                         sub_screen_index = 2;
                     }
-                    screen.ExitLoopClosure()();
+                    control.screen.ExitLoopClosure()();
                 });
                 auto container = Container::Vertical({radio_box, confirm_button});
 
-                screen.Loop(Renderer(container, [&]{
+                control.screen.Loop(Renderer(container, [&]{
                     return vbox({
                         vbox({
                             text(" "),
@@ -652,13 +652,13 @@ void Scheme_Manager::Confirm_Suspicion_Screen(Controller& control)
                     control.change_fighter_health(Fighters_Names::DRACULA, -user_input_value);
                     control.discard(qualified_cards_indices[selected_option], defender);
                     sub_screen_index = 3;
-                    screen.ExitLoopClosure()();
+                    control.screen.ExitLoopClosure()();
                 });
 
                 auto radio_box = Radiobox(&options_for_radio_box, &selected_option);
                 auto container = Container::Vertical({radio_box, confirm_button});
                 
-                screen.Loop(Renderer(container, [&]{
+                control.screen.Loop(Renderer(container, [&]{
                     return vbox({
                         vbox({
                             text(""),
@@ -684,9 +684,9 @@ void Scheme_Manager::Confirm_Suspicion_Screen(Controller& control)
                 //show defenders hand    
                 auto continue_button = Button("CONTINUE", [&]{
                     sub_screen_index = 3;
-                    screen.ExitLoopClosure()();
+                    control.screen.ExitLoopClosure()();
                 });
-                screen.Loop(Renderer(continue_button, [&]{
+                control.screen.Loop(Renderer(continue_button, [&]{
                     return vbox({
                         vbox({
                             text(""),

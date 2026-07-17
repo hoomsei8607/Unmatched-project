@@ -108,7 +108,7 @@ class Controller
         Fighters_Print_Info* fighters_printing_info_array;
         int fighters_printing_info_count;
         ftxui::Element map_and_user_info;
-        ftxui::ScreenInteractive screen;
+        ftxui::ScreenInteractive screen = ftxui::ScreenInteractive::Fullscreen();
 
     private:
         User user1;

@@ -91,7 +91,7 @@ void After_Combat_Sub_Screen_Manager::Dash_Card_Screen(Controller& control)
         break;
     }
 
-    auto screen = ScreenInteractive::Fullscreen();
+    
     Graph* game_graph = Graph::Get_Map_Graph_Pointer();
     std::set<int> Spaces_That_Fighter_Can_Move_To;
     USER user_who_ownes_dracula_and_sisters;
@@ -129,11 +129,11 @@ void After_Combat_Sub_Screen_Manager::Dash_Card_Screen(Controller& control)
         control.fighters_printing_info_array[static_cast<int>(Who_Is_Going_To_Use_Dash)].Row_Index = temp_struct_to_update_fighter_position_on_screen.row_index;
         control.fighters_printing_info_array[static_cast<int>(Who_Is_Going_To_Use_Dash)].Column_Index = temp_struct_to_update_fighter_position_on_screen.column_index;        
         current_screen =  AFTER_COMBAT_SUB_SCREENS::RETURN_TO_FIGHTING_SCREEN_MANAGER;
-        screen.ExitLoopClosure()();
+        control.screen.ExitLoopClosure()();
     });
     auto skip_button = Button("SKIP THE EFFECT", [&]{
         current_screen =  AFTER_COMBAT_SUB_SCREENS::RETURN_TO_FIGHTING_SCREEN_MANAGER;
-        screen.ExitLoopClosure()();
+        control.screen.ExitLoopClosure()();
     });
     auto container = Container::Vertical({
         toggle_box_for_render,
@@ -142,7 +142,7 @@ void After_Combat_Sub_Screen_Manager::Dash_Card_Screen(Controller& control)
     });
     
     
-    screen.Loop(Renderer(container, [&]{
+    control.screen.Loop(Renderer(container, [&]{
         return vbox({
             text(" "),
             hbox({text("SELECTED FIGHTER: "), text(selected_dracula_crew_fighter_name_to_move)}) | hcenter | bold | underlined | color(Color::NavajoWhite3) | size(WIDTH, EQUAL, 100),
@@ -160,7 +160,7 @@ void After_Combat_Sub_Screen_Manager::Dash_Card_Screen(Controller& control)
 void After_Combat_Sub_Screen_Manager::Game_Is_Afoot(Controller& control)
 {
 
-    auto screen = ScreenInteractive::Fullscreen();
+    
     Graph* game_graph = Graph::Get_Map_Graph_Pointer();
     std::set<int> Spaces_That_Fighter_Can_Move_To;
     USER user_who_owns_sherlock;
@@ -195,11 +195,11 @@ void After_Combat_Sub_Screen_Manager::Game_Is_Afoot(Controller& control)
         control.fighters_printing_info_array[static_cast<int>(Fighters_Names::SHERLOCK)].Row_Index = temp_struct_to_update_fighter_position_on_screen.row_index;
         control.fighters_printing_info_array[static_cast<int>(Fighters_Names::SHERLOCK)].Column_Index = temp_struct_to_update_fighter_position_on_screen.column_index;        
         current_screen =  AFTER_COMBAT_SUB_SCREENS::RETURN_TO_FIGHTING_SCREEN_MANAGER;
-        screen.ExitLoopClosure()();
+        control.screen.ExitLoopClosure()();
     });
     auto skip_button = Button("SKIP THE EFFECT", [&]{
         current_screen =  AFTER_COMBAT_SUB_SCREENS::RETURN_TO_FIGHTING_SCREEN_MANAGER;
-        screen.ExitLoopClosure()();
+        control.screen.ExitLoopClosure()();
     });
     auto container = Container::Vertical({
         toggle_box_for_render,
@@ -208,7 +208,7 @@ void After_Combat_Sub_Screen_Manager::Game_Is_Afoot(Controller& control)
     });
     
     
-    screen.Loop(Renderer(container, [&]{
+    control.screen.Loop(Renderer(container, [&]{
         return vbox({
             text(" "),
             hbox({text("SELECTED FIGHTER: "), text("SHERLOCK")}) | hcenter | bold | underlined | color(Color::NavajoWhite3) | size(WIDTH, EQUAL, 100),
@@ -226,7 +226,7 @@ void After_Combat_Sub_Screen_Manager::Game_Is_Afoot(Controller& control)
 
 void After_Combat_Sub_Screen_Manager::Thirst_For_Sustenance_Screen(Controller& control)
 {
-    auto screen = ScreenInteractive::Fullscreen();
+    
     Graph* game_graph = Graph::Get_Map_Graph_Pointer();
     std::set<int> Spaces_That_Fighter_Can_Move_To;
     USER user_who_owns_the_enemy_fighter;
@@ -262,7 +262,7 @@ void After_Combat_Sub_Screen_Manager::Thirst_For_Sustenance_Screen(Controller& c
         control.fighters_printing_info_array[static_cast<int>(Fighters_Names::DRACULA)].Row_Index = temp_struct_to_update_fighter_position_on_screen.row_index;
         control.fighters_printing_info_array[static_cast<int>(Fighters_Names::DRACULA)].Column_Index = temp_struct_to_update_fighter_position_on_screen.column_index;        
         current_screen =  AFTER_COMBAT_SUB_SCREENS::RETURN_TO_FIGHTING_SCREEN_MANAGER;
-        screen.ExitLoopClosure()();
+        control.screen.ExitLoopClosure()();
     });
     auto container = Container::Vertical({
         toggle_box_for_render,
@@ -270,7 +270,7 @@ void After_Combat_Sub_Screen_Manager::Thirst_For_Sustenance_Screen(Controller& c
     });
     
     
-    screen.Loop(Renderer(container, [&]{
+    control.screen.Loop(Renderer(container, [&]{
         return vbox({
             text(" "),
             hbox({text("SELECTED FIGHTER: "), text("DRACULA")}) | hcenter | bold | underlined | color(Color::NavajoWhite3) | size(WIDTH, EQUAL, 100),

@@ -71,7 +71,6 @@ Controller::Controller()
     }
 
     Who_Won_The_Combat = USER::NONE;
-    screen = ftxui::ScreenInteractive::Fullscreen();
 
 }
 

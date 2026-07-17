@@ -18,6 +18,6 @@ int main()
             break;
         }
     }
-    control.screen.ExitLoopClosure()()
+    control.screen.ExitLoopClosure()();
     return 0;
 }

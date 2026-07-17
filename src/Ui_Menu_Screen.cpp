@@ -10,7 +10,7 @@ enum class MENU_SUB_SCREENS{SETTING, HELP, NONE};
 
 using namespace::ftxui;
 
-void User_Interface::Starting_Menu_Screen()
+void User_Interface::Starting_Menu_Screen(Controller& control)
 {
     std::vector<std::string> Menu_Options {"START GAME", "HELP", "EXIT"};
     int Selected_Menu_Option = 0;
@@ -25,7 +25,7 @@ void User_Interface::Starting_Menu_Screen()
         )";
         
         
-        auto screen = ScreenInteractive::Fullscreen();
+        
         
         
         
@@ -93,7 +93,7 @@ void User_Interface::Starting_Menu_Screen()
             {
             case 0:
                 Current_Screen_State = SCREEN_STATE::PROMPT_INPUT;
-                screen.Exit();
+                control.screen.ExitLoopClosure()();
                 return true;
 
             case 1:
@@ -102,7 +102,7 @@ void User_Interface::Starting_Menu_Screen()
                 
             case 2:
                 Current_Screen_State = SCREEN_STATE::PROGRAM_SHOULD_TEMINATE;
-                screen.Exit();
+                control.screen.ExitLoopClosure()();
                 return true;
             }
             return false;
@@ -110,5 +110,5 @@ void User_Interface::Starting_Menu_Screen()
         return false;
     });
 
-    screen.Loop(Input_Interpreter);
+    control.screen.Loop(Input_Interpreter);
 }
