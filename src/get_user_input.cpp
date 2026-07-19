@@ -151,6 +151,7 @@ User1_And_User2_Info User_Interface::Get_User_Input(Controller& control)
                         Hero_Name_Event_Handler->Render() | size(WIDTH, EQUAL, 100),
                     }) | center;
             }
+            return vbox({});
         }
         else
         {
@@ -188,6 +189,7 @@ User1_And_User2_Info User_Interface::Get_User_Input(Controller& control)
                         Hero_Name_Event_Handler->Render() | size(WIDTH, EQUAL, 100),
                     }) | center;
             }
+            return vbox({});
         }
     });
     

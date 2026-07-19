@@ -876,7 +876,8 @@ int Controller::return_card_boost_value(int card,USER user_turn)
     else if (user_turn==USER::USER2)
     {
         return User2_Hand[card]->get_Card_Boost_Value();
-    }         
+    }
+    throw std::logic_error("Invalid user when returning card boost value");
 }
 void Controller::discard(int card,USER user_turn)
 {
@@ -1022,7 +1023,7 @@ std::vector<Card_Base_Class*> Controller::Return_A_Copy_Of_User_Hand(USER user_t
     {
         return User2_Hand;
     }
-    
+    return {};
 }
 
 CARD_TYPE Controller::Return_Selected_Card_Type(USER user_turn, int index)
@@ -1035,6 +1036,7 @@ CARD_TYPE Controller::Return_Selected_Card_Type(USER user_turn, int index)
     {
         return User2_Hand[index]->get_type();
     }
+    throw std::logic_error("Invalid user when returning selected card type");
 }
 
 void Controller::Set_Selected_Enemy(Fighters_Names selected_enemy)

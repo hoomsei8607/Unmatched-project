@@ -61,6 +61,7 @@ void Fighter_Base_Class::change_health(int amount)
     {
         Current_Hp = 0;
         Is_Fighter_Alive = false;
+        return;
     }
     
     Current_Hp+=amount;

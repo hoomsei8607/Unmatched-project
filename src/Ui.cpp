@@ -27,4 +27,5 @@ bool User_Interface::Manage_Screen(Controller& control)
     case SCREEN_STATE::PROGRAM_SHOULD_TEMINATE:
         return false;
     }
+    return false;
 }
