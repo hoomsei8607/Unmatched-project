@@ -32,6 +32,14 @@ void Graph::Recursive_Path_Finder(std::set<int>& paths, int current_space, int t
     {
         for(auto space : Game_Map_Graph[current_space])
         {
+            if((space->Get_Occupied_Status()))
+            {
+                continue;
+            }
+            if(space->Get_Which_User_Is_Occupying_The_Space() != user_turn && space->Get_Which_User_Is_Occupying_The_Space() != USER::NONE)
+            {
+                continue;
+            }
             Recursive_Path_Finder(paths, space->Get_Space_Number(), times_to_call_recursive_function,user_turn, current_step);
         }
     }
@@ -186,6 +194,7 @@ void Graph::Initialize_Graph()
     //space 17
     temp_array = {ZONE_COLORS::PURPLE, ZONE_COLORS::NON, ZONE_COLORS::NON};
     s17.Set_Info(false, false, false, 17, temp_array);
+    Game_Map_Graph[12].push_back(&s17);
     Game_Map_Graph[21].push_back(&s17);
     Game_Map_Graph[23].push_back(&s17);
     

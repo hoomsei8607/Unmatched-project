@@ -14,8 +14,8 @@ User1_And_User2_Info User_Interface::Get_User_Input(Controller& control)
     USER current_user_giving_inputs = USER::USER1;
     std::string User1_Name = "";
     std::string User2_Name = "";
-    std::string User1_Age;
-    std::string User2_Age;
+    std::string User1_Age = "";
+    std::string User2_Age = "";
     HERO_NAME User1_Hero;
     HERO_NAME User2_Hero;
 
@@ -31,7 +31,7 @@ User1_And_User2_Info User_Interface::Get_User_Input(Controller& control)
     auto User2_Name_Confirm_Button = Button("Confirm", [&]{state = USER2_AGE_INPUT; current_page = USER2_AGE_INPUT;});
     
     auto User1_Age_Confrim_Button = Button("Confirm", [&]{
-        if(Is_String_All_Numbers(User1_Age))
+        if(Is_String_All_Numbers(User1_Age) && !User1_Age.empty())
         {
             state = USER2_NAME_INPUT; current_page = USER2_NAME_INPUT;
             current_user_giving_inputs = USER::USER2;
@@ -44,7 +44,7 @@ User1_And_User2_Info User_Interface::Get_User_Input(Controller& control)
     });
    
     auto User2_Age_Confrim_Button = Button("Confirm", [&]{
-        if(Is_String_All_Numbers(User2_Age))
+        if(Is_String_All_Numbers(User2_Age) && !User2_Age.empty())
         {
             state = HERO_NAME_INPUT; 
             current_page = HERO_NAME_INPUT;
@@ -127,10 +127,10 @@ User1_And_User2_Info User_Interface::Get_User_Input(Controller& control)
         User2_Age_Confrim_Button
     });
 
-    std::string Wrong_Age_Input_Replacement;
+    std::string Wrong_Age_Input_Replacement = "";
     auto Replace_Wrong_Age_Input = Input(&Wrong_Age_Input_Replacement, "WRONG AGE! ENTER NUMBERS ONLY");
     auto Replace_Wrong_Age_Input_Confirm_Button = Button("CONFIRM", [&]{
-        if(!Is_String_All_Numbers(Wrong_Age_Input_Replacement))
+        if(!Is_String_All_Numbers(Wrong_Age_Input_Replacement) || Wrong_Age_Input_Replacement.empty())
         {
             Wrong_Age_Input_Replacement.erase();
             return;
