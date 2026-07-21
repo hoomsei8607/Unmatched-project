@@ -1865,3 +1865,38 @@ void Controller::Discard_Cards_If_Deck_Has_More_Than_7_Cards(USER user_turn)
 
     }
 }
+
+void Controller::Update_Fighters_Living_Status_In_Printing_Info_Array()
+{
+    for(auto fighter : Dracula_And_Sisters)
+    {
+        fighters_printing_info_array[static_cast<int>(fighter->Get_Fighter_Name())].Is_Fighter_Alive = fighter->return_is_fighter_alive(); 
+    }
+    for(auto fighter : sherlock_And_Watson)
+    {
+        fighters_printing_info_array[static_cast<int>(fighter->Get_Fighter_Name())].Is_Fighter_Alive = fighter->return_is_fighter_alive();
+    }
+}
+
+void Controller::Clean_Up_The_Graph()
+{
+    Graph* game_map = Graph::Get_Map_Graph_Pointer();
+    for(auto fighter : Dracula_And_Sisters)
+    {
+        if(!fighter->return_is_fighter_alive() && game_map->Get_User_Occupying_Space(fighter->Return_Fighter_Current_Space()) != USER::NONE)
+        {
+            game_map->Set_User_Occupying_Space(USER::NONE, fighter->Return_Fighter_Current_Space());
+            game_map->Change_Space_Occiupied_Status(fighter->Return_Fighter_Current_Space());
+        }
+    }
+
+    for(auto fighter : sherlock_And_Watson)
+    {
+        if(!fighter->return_is_fighter_alive() && game_map->Get_User_Occupying_Space(fighter->Return_Fighter_Current_Space()) != USER::NONE)
+        {
+            game_map->Set_User_Occupying_Space(USER::NONE, fighter->Return_Fighter_Current_Space());
+            game_map->Change_Space_Occiupied_Status(fighter->Return_Fighter_Current_Space());
+        }
+    }
+
+}

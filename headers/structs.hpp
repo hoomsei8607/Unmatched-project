@@ -32,6 +32,7 @@ struct Fighters_Print_Info
     char Fighter_Name;
     bool Is_Placed_On_Map;
     char Sis_Number;
+    bool Is_Fighter_Alive;
 };
 
 struct Fighter_Info

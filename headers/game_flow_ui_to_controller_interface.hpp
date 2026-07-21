@@ -14,15 +14,15 @@ class User_Choice_Manager
 {
     public:
         User_Choice_Manager();
-        bool Screen_Manager(USER user_turn, Controller& control, const ftxui::Element& map_and_user_info, Fighters_Print_Info* fighters_printing_info, int fighters_count);
-        void Choose_Fighter_Screen(USER user_turn, Controller& control, const ftxui::Element& map_and_user_info);
-        void Choose_Action_Screen(USER user_turn, Controller& control, const ftxui::Element& map_and_user_info);
-        void Maneuver_Screen(USER user_turn, Controller& control, const ftxui::Element& map_and_user_info, Fighters_Print_Info* fighter_printing_info, int fighters_count);
+        bool Screen_Manager(USER user_turn, Controller& control, Fighters_Print_Info* fighters_printing_info, int fighters_count);
+        void Choose_Fighter_Screen(USER user_turn, Controller& control);
+        void Choose_Action_Screen(USER user_turn, Controller& control);
+        void Maneuver_Screen(USER user_turn, Controller& control, Fighters_Print_Info* fighter_printing_info, int fighters_count);
         void Select_Card_Screen(USER user_turn, Controller& control, const ftxui::Element& map_and_use_info);
         void Choose_Maneuver_Type(Controller& control);
         void Choose_Card_To_Boost_Maneuver_With(USER user_turn, Controller& control);
         void Choose_Enemy_Screen(Controller& control);
-        void Fighting_Screen(USER user_turn, Controller& control, const ftxui::Element& map_and_user_info);
+        void Fighting_Screen(USER user_turn, Controller& control);
         void Scheme_Card_Manager_Screen(Controller& control);
         void Game_Over_Screen(Controller& control);
     private:

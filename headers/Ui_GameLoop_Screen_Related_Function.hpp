@@ -288,6 +288,10 @@ inline std::string Return_Map_To_Be_Rendered(int Array_Element_Count, Fighters_P
         {
             continue;
         }
+        if(!Info_Array[i].Is_Fighter_Alive)
+        {
+            continue;
+        }
 
         if(Info_Array[i].Fighter_Name != 's')
         {

@@ -261,7 +261,7 @@ void User_Interface::Game_Loop_Screen(Controller& control)
 
         control.map_and_user_info = Users_Info_And_Map;
 
-        if(!user_choice_manager.Screen_Manager(control.Return_User_Turn(), control, Users_Info_And_Map, Map_Printing_Info, 6))
+        if(!user_choice_manager.Screen_Manager(control.Return_User_Turn(), control,  Map_Printing_Info, 6))
         {
             break;
         }

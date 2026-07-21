@@ -46,6 +46,8 @@ class Controller
         void Deselect_All_Selected_Fighters();
         void Update_Map();
         void Discard_Cards_If_Deck_Has_More_Than_7_Cards(USER user_turn);
+        void Update_Fighters_Living_Status_In_Printing_Info_Array();
+        void Clean_Up_The_Graph();
 
         int Return_Fighter_Move_Value(Fighters_Names fighter_name) const;
         int Return_Hero_Space_Number(Fighters_Names fighter_Name) const;

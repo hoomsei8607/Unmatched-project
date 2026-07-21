@@ -783,6 +783,7 @@ void Fighting_Screen_Manager::After_Combat_Screen(Controller& control)
 
     }
 
+    
     current_screen = FIGHTING_SCREEN_SUB_SCREENS::RETURN_TO_MAIN_LOOP;
 
     

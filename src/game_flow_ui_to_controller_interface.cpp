@@ -21,30 +21,30 @@ User_Choice_Manager::User_Choice_Manager()
 
 }
 
-bool User_Choice_Manager::Screen_Manager(USER user_turn, Controller& control, const Element& map_and_user_info,  Fighters_Print_Info* fighter_printing_info, int fighters_count)
+bool User_Choice_Manager::Screen_Manager(USER user_turn, Controller& control,  Fighters_Print_Info* fighter_printing_info, int fighters_count)
 {
     switch (game_current_screen)
     {
         case GAME_FLOW_SCREENS::CHOOSE_FIGHTER:
-            Choose_Fighter_Screen(control.Return_User_Turn(), control, map_and_user_info);
+            Choose_Fighter_Screen(control.Return_User_Turn(), control);
             return true;
 
         case GAME_FLOW_SCREENS::CHOOSE_ACTION:
-            Choose_Action_Screen(control.Return_User_Turn(), control, map_and_user_info);
+            Choose_Action_Screen(control.Return_User_Turn(), control);
             return true;
 
         case GAME_FLOW_SCREENS::MANEUVER:
-            Maneuver_Screen(control.Return_User_Turn(), control, map_and_user_info, fighter_printing_info, fighters_count);
+            Maneuver_Screen(control.Return_User_Turn(), control, fighter_printing_info, fighters_count);
             return true;
 
 
         case GAME_FLOW_SCREENS::Card_Selection_Screen:
-            Select_Card_Screen(control.Return_User_Turn(), control, map_and_user_info);
+            Select_Card_Screen(control.Return_User_Turn(), control, control.map_and_user_info);
             return true;
 
         
         case GAME_FLOW_SCREENS::FIGHTING_SCREEN:
-            Fighting_Screen(control.Return_User_Turn(), control, map_and_user_info);
+            Fighting_Screen(control.Return_User_Turn(), control);
             return true;
 
         case GAME_FLOW_SCREENS::CHOOSE_MANEUVER_TYPE:
@@ -75,7 +75,7 @@ bool User_Choice_Manager::Screen_Manager(USER user_turn, Controller& control, co
 }
 
 
-void User_Choice_Manager::Maneuver_Screen(USER user_turn, Controller& control, const Element& map_and_user_info,  Fighters_Print_Info* fighter_printing_info, int fighters_count)
+void User_Choice_Manager::Maneuver_Screen(USER user_turn, Controller& control,  Fighters_Print_Info* fighter_printing_info, int fighters_count)
 {
 
     
@@ -111,10 +111,14 @@ void User_Choice_Manager::Maneuver_Screen(USER user_turn, Controller& control, c
         control.Convert_Space_Number_To_Row_And_Column_Index(control.Return_Hero_Space_Number(selected_fighter), temp_struct_to_update_fighter_position_on_screen);
         fighter_printing_info[static_cast<int>(selected_fighter)].Row_Index = temp_struct_to_update_fighter_position_on_screen.row_index;
         fighter_printing_info[static_cast<int>(selected_fighter)].Column_Index = temp_struct_to_update_fighter_position_on_screen.column_index;
+        control.Update_Fighters_Living_Status_In_Printing_Info_Array();
+        control.Update_Map();
+        control.Clean_Up_The_Graph();
         if(control.Manage_UserAction_Numbers_And_Return_True_TO_Change_Turn())
         {
             control.Discard_Cards_If_Deck_Has_More_Than_7_Cards(control.Return_User_Turn());
             control.Change_User_Turn();
+            
             game_current_screen = GAME_FLOW_SCREENS::CHOOSE_FIGHTER;
         }
         else
@@ -141,7 +145,7 @@ void User_Choice_Manager::Maneuver_Screen(USER user_turn, Controller& control, c
     control.screen.Loop(Renderer(Moving_Fighter_Interactive_Ui, [&]{
         return vbox({
             hbox({text("SELECTED FIGHTER: "), text(selected_hero_name)}) | hcenter,
-            map_and_user_info | hcenter,
+            control.map_and_user_info | hcenter,
             text("Choose space: "),
             Moving_Fighter_Interactive_Ui->Render()
         }) | size(WIDTH, EQUAL, 120) | center;        
@@ -151,7 +155,7 @@ void User_Choice_Manager::Maneuver_Screen(USER user_turn, Controller& control, c
 
 }
 
-void User_Choice_Manager::Choose_Fighter_Screen(USER user_turn, Controller& control, const Element& map_and_user_info)
+void User_Choice_Manager::Choose_Fighter_Screen(USER user_turn, Controller& control)
 {
     
     
@@ -216,7 +220,7 @@ void User_Choice_Manager::Choose_Fighter_Screen(USER user_turn, Controller& cont
     control.screen.Loop(Renderer(Fighter_Selection_Container, [&]{
         return vbox({
             User_Turn_Text | hcenter,
-            map_and_user_info | hcenter,
+            control.map_and_user_info | hcenter,
             Text_Explanation,
             Fighter_Selection_Container->Render()
         }) | size(WIDTH, EQUAL, 120) | center;
@@ -225,7 +229,7 @@ void User_Choice_Manager::Choose_Fighter_Screen(USER user_turn, Controller& cont
 }
 
 
-void User_Choice_Manager::Choose_Action_Screen(USER user_turn, Controller& control, const Element& map_and_user_info)
+void User_Choice_Manager::Choose_Action_Screen(USER user_turn, Controller& control)
 {
     
 
@@ -265,7 +269,7 @@ void User_Choice_Manager::Choose_Action_Screen(USER user_turn, Controller& contr
     control.screen.Loop(Renderer(Action_Select_Container, [&]{
         return vbox({
             hbox({text("SELECTED FIGHTER: "), text(selected_hero_name_as_string)}) | hcenter,
-            map_and_user_info | hcenter,
+            control.map_and_user_info | hcenter,
             text("Choose Your Action: "),
             Action_Select_Container->Render()
         }) | size(WIDTH, EQUAL, 120) | center;
@@ -383,7 +387,7 @@ void User_Choice_Manager::Select_Card_Screen(USER user_turn, Controller& control
 }
 
 
-void User_Choice_Manager::Fighting_Screen(USER user_turn, Controller& control, const ftxui::Element& map_and_user_info)
+void User_Choice_Manager::Fighting_Screen(USER user_turn, Controller& control)
 {
     Fighting_Screen_Manager fighting_screen_manager_object( attacker_card_value, selected_Attacker_card_index);
     while (true)
@@ -393,6 +397,9 @@ void User_Choice_Manager::Fighting_Screen(USER user_turn, Controller& control, c
             break;
         }
     }
+    control.Update_Fighters_Living_Status_In_Printing_Info_Array();
+    control.Update_Map();
+    control.Clean_Up_The_Graph();
     if(control.Manage_UserAction_Numbers_And_Return_True_TO_Change_Turn())
     {
         control.Discard_Cards_If_Deck_Has_More_Than_7_Cards(control.Return_User_Turn());

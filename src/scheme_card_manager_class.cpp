@@ -197,6 +197,9 @@ void Scheme_Manager::Baptism_Of_Blood_Screen(Controller& control)
     }
     control.change_fighter_health(Fighters_Names::DRACULA, 2);
     current_screen = SCHEME_CARDS_SCREEN::EXIT_TO_MAIN_LOOP;
+    control.Update_Fighters_Living_Status_In_Printing_Info_Array();
+    control.Update_Map();
+    control.Clean_Up_The_Graph();
     if(control.Manage_UserAction_Numbers_And_Return_True_TO_Change_Turn())
     {
         control.Discard_Cards_If_Deck_Has_More_Than_7_Cards(control.Return_User_Turn());
@@ -390,6 +393,9 @@ void Scheme_Manager::Ravening_Seduction_Screen(Controller& control)
             case 3:
             {
                 // change turn and exit
+                control.Update_Fighters_Living_Status_In_Printing_Info_Array();
+                control.Update_Map();
+                control.Clean_Up_The_Graph();
                 if(control.Manage_UserAction_Numbers_And_Return_True_TO_Change_Turn())
                 {
                     control.Discard_Cards_If_Deck_Has_More_Than_7_Cards(control.Return_User_Turn());
@@ -425,6 +431,9 @@ void Scheme_Manager::Eliminate_The_Impossible_Screen(Controller& control)
     auto confirm_button = Button("CONFRIM", [&]{
         current_screen = SCHEME_CARDS_SCREEN::EXIT_TO_MAIN_LOOP;
         control.discard(selected_card, enemy_user);
+        control.Update_Fighters_Living_Status_In_Printing_Info_Array();
+        control.Update_Map();
+        control.Clean_Up_The_Graph();
         if(control.Manage_UserAction_Numbers_And_Return_True_TO_Change_Turn())
         {
             control.Discard_Cards_If_Deck_Has_More_Than_7_Cards(control.Return_User_Turn());
@@ -482,6 +491,9 @@ void Scheme_Manager::Master_Of_Disguise_Screen(Controller& control)
         control.Convert_Space_Number_To_Row_And_Column_Index(control.Return_Hero_Space_Number(Fighters_Names::SHERLOCK), temp_struct_to_update_fighter_position_on_screen);
         control.fighters_printing_info_array[static_cast<int>(Fighters_Names::SHERLOCK)].Row_Index = temp_struct_to_update_fighter_position_on_screen.row_index;
         control.fighters_printing_info_array[static_cast<int>(Fighters_Names::SHERLOCK)].Column_Index = temp_struct_to_update_fighter_position_on_screen.column_index;
+        control.Update_Fighters_Living_Status_In_Printing_Info_Array();
+        control.Update_Map();
+        control.Clean_Up_The_Graph();
         if(control.Manage_UserAction_Numbers_And_Return_True_TO_Change_Turn())
         {
             control.Discard_Cards_If_Deck_Has_More_Than_7_Cards(control.Return_User_Turn());
@@ -540,6 +552,9 @@ void Scheme_Manager::Administer_Aid_Screen(Controller& control)
         control.fighters_printing_info_array[static_cast<int>(Fighters_Names::WATSON)].Row_Index = temp_struct_to_update_fighter_position_on_screen.row_index;
         control.fighters_printing_info_array[static_cast<int>(Fighters_Names::WATSON)].Column_Index = temp_struct_to_update_fighter_position_on_screen.column_index;
         current_screen = SCHEME_CARDS_SCREEN::EXIT_TO_MAIN_LOOP;
+        control.Update_Fighters_Living_Status_In_Printing_Info_Array();
+        control.Update_Map();
+        control.Clean_Up_The_Graph();
         if(control.Manage_UserAction_Numbers_And_Return_True_TO_Change_Turn())
         {
             control.Discard_Cards_If_Deck_Has_More_Than_7_Cards(control.Return_User_Turn());
@@ -709,6 +724,9 @@ void Scheme_Manager::Confirm_Suspicion_Screen(Controller& control)
             //exit and go back main loop    
             effect_has_been_executed_exit_loop = true;
             current_screen = SCHEME_CARDS_SCREEN::EXIT_TO_MAIN_LOOP;
+            control.Update_Fighters_Living_Status_In_Printing_Info_Array();
+            control.Update_Map();
+            control.Clean_Up_The_Graph();
             if(control.Manage_UserAction_Numbers_And_Return_True_TO_Change_Turn())
             {
                 control.Discard_Cards_If_Deck_Has_More_Than_7_Cards(control.Return_User_Turn());
