@@ -8,9 +8,6 @@
 #include <string>
 #include <set>
 
-#include <iostream>
-#include <thread>
-#include <chrono>
 
 
 using namespace ftxui;
@@ -632,17 +629,11 @@ void User_Choice_Manager::Scheme_Card_Manager_Screen(Controller& control)
     {
         if(!exec_scehem_card_effects.Screen_Manager(control))
         {
-            std::cout << "if you see this that means the scheme card has returned false \n which means the card has executed successfuly \n";
-            std::this_thread::sleep_for(std::chrono::seconds(4));
             break;
         }
     }
-    std::cout << "this is after we have exitied scheme manager and before card discard \n";
     control.discard(selected_Attacker_card_index, attacker);
-    std::this_thread::sleep_for(std::chrono::seconds(4));
 
-    std::cout << "this is after scheme card is over and scheme card has been discarded \n";
-    std::this_thread::sleep_for(std::chrono::seconds(4));
 
     if(control.Is_Game_Over())
     {

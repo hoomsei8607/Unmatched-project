@@ -12,12 +12,12 @@ void User_Interface::Game_Loop_Screen(Controller& control)
 {
     //initializing users hand
     control.Initialize_Users_hands();
-
-
+    
+    
     Graph* game_map_ptr = Graph::Get_Map_Graph_Pointer();
     control.Set_Younger_User_Variable_Value();
     SideKick_Placement_Screen_Manager side_kick_Screen_manager(control.Return_Younger_Hero_Name());
-
+    
     User1_And_User2_Info user_info_struct;
     control.Fill_Users_Info_Struct(user_info_struct);
     Space_Row_And_Column_In_Array Temp_Struct_For_Updating_Hero_Position_On_Map;
@@ -28,9 +28,10 @@ void User_Interface::Game_Loop_Screen(Controller& control)
     Fighter_Info Dracula_Sis1_Info;
     Fighter_Info Dracula_Sis2_Info;
     Fighter_Info Dracula_Sis3_Info;
-
+    
     control.fighters_printing_info_array = Map_Printing_Info;
     control.fighters_printing_info_count = 6;
+    control.Update_Fighters_Living_Status_In_Printing_Info_Array();
 
     //placing the heros on the map after we figured out
     //who is younger

@@ -878,16 +878,15 @@ void Fighting_Screen_Manager::Elementary_Defence_Card_Screen(Controller& control
                         }) | center
                     }) | border;
                 }
-                break;
                 control.screen.Loop(Renderer(continue_button, [&]{
                     return Results;
                 }));
+                break;
             }
         case 2:
             //exit
             elementary_card_effect_applied_exit_the_loop = true;
             current_screen = FIGHTING_SCREEN_SUB_SCREENS::IMMIDATE_RESULTS_SCREEN;
-
             break;
         
         }

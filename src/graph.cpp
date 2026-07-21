@@ -32,10 +32,6 @@ void Graph::Recursive_Path_Finder(std::set<int>& paths, int current_space, int t
     {
         for(auto space : Game_Map_Graph[current_space])
         {
-            if((space->Get_Occupied_Status()))
-            {
-                continue;
-            }
             if(space->Get_Which_User_Is_Occupying_The_Space() != user_turn && space->Get_Which_User_Is_Occupying_The_Space() != USER::NONE)
             {
                 continue;

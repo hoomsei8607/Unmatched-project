@@ -296,9 +296,9 @@ void Scheme_Manager::Ravening_Seduction_Screen(Controller& control)
                     control.Set_Fighter_Space_Number(selectable_heros[selected_fighter_index], new_space_number);
 
                     Space_Row_And_Column_In_Array temp_struct_to_update_fighter_position_on_screen;
-                    control.Convert_Space_Number_To_Row_And_Column_Index(control.Return_Hero_Space_Number(Fighters_Names::DRACULA), temp_struct_to_update_fighter_position_on_screen);
-                    control.fighters_printing_info_array[static_cast<int>(Fighters_Names::DRACULA)].Row_Index = temp_struct_to_update_fighter_position_on_screen.row_index;
-                    control.fighters_printing_info_array[static_cast<int>(Fighters_Names::DRACULA)].Column_Index = temp_struct_to_update_fighter_position_on_screen.column_index;
+                    control.Convert_Space_Number_To_Row_And_Column_Index(control.Return_Hero_Space_Number(selectable_heros[selected_fighter_index]), temp_struct_to_update_fighter_position_on_screen);
+                    control.fighters_printing_info_array[static_cast<int>(selectable_heros[selected_fighter_index])].Row_Index = temp_struct_to_update_fighter_position_on_screen.row_index;
+                    control.fighters_printing_info_array[static_cast<int>(selectable_heros[selected_fighter_index])].Column_Index = temp_struct_to_update_fighter_position_on_screen.column_index;
                     control.Update_Map();
                     control.screen.ExitLoopClosure()();
                 });
