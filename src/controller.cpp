@@ -2,6 +2,7 @@
 #include "../headers/fighters_sub_classes.hpp"
 #include "../headers/structs.hpp"
 #include "../headers/cards.hpp"
+#include "../headers/Ui_GameLoop_Screen_Related_Function.hpp"
 #include <stdexcept>
 #include <algorithm>
 #include <random>
@@ -896,7 +897,7 @@ void Controller::discard(int card,USER user_turn)
             return;
         }
         delete User1_Hand[card];
-        User1_Hand.erase(User1_Hand.begin()+card);
+        User1_Hand.erase(User1_Hand.begin() + card);
         user1.user_discard(card);
     }
     else if (user_turn==USER::USER2)
@@ -1876,5 +1877,35 @@ void Controller::change_health_deck_empty(Fighters_Names fighter_name)
         change_fighter_health(Fighters_Names::WATSON,-2);
     }
     
-    
+} 
+void Controller::Update_Map()
+{
+    map_and_user_info = ftxui::paragraphAlignCenter({Return_Map_To_Be_Rendered(6, fighters_printing_info_array)}) | ftxui::border;
+}
+
+void Controller::Discard_Cards_If_Deck_Has_More_Than_7_Cards(USER user_turn)
+{
+    if(user_turn == USER::USER1)
+    {
+        if(User1_Hand.size() <= 7 )
+        {
+            return;
+        }
+        for(; User1_Hand.size() > 7 ;)
+        {
+            discard(0, user_turn);
+        }
+    }
+    else
+    {
+        if(User2_Hand.size() <= 7)
+        {
+            return;
+        }
+        for(; User2_Hand.size() > 7 ;)
+        {
+            discard(0, user_turn);
+        }
+
+    }
 }

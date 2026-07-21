@@ -113,6 +113,7 @@ void User_Choice_Manager::Maneuver_Screen(USER user_turn, Controller& control, c
         fighter_printing_info[static_cast<int>(selected_fighter)].Column_Index = temp_struct_to_update_fighter_position_on_screen.column_index;
         if(control.Manage_UserAction_Numbers_And_Return_True_TO_Change_Turn())
         {
+            control.Discard_Cards_If_Deck_Has_More_Than_7_Cards(control.Return_User_Turn());
             control.Change_User_Turn();
             game_current_screen = GAME_FLOW_SCREENS::CHOOSE_FIGHTER;
         }
@@ -394,7 +395,7 @@ void User_Choice_Manager::Fighting_Screen(USER user_turn, Controller& control, c
     }
     if(control.Manage_UserAction_Numbers_And_Return_True_TO_Change_Turn())
     {
-        //discard cards more than 7
+        control.Discard_Cards_If_Deck_Has_More_Than_7_Cards(control.Return_User_Turn());
         control.Change_User_Turn();
     }
     
@@ -624,15 +625,26 @@ void User_Choice_Manager::Scheme_Card_Manager_Screen(Controller& control)
     {
         if(!exec_scehem_card_effects.Screen_Manager(control))
         {
+            std::cout << "if you see this that means the scheme card has returned false \n which means the card has executed successfuly \n";
+            std::this_thread::sleep_for(std::chrono::seconds(4));
             break;
         }
     }
+    std::cout << "this is after we have exitied scheme manager and before card discard \n";
     control.discard(selected_Attacker_card_index, attacker);
-    //check to see if both heros are alive or not
-    //if both alive
-    game_current_screen = GAME_FLOW_SCREENS::CHOOSE_FIGHTER;
+    std::this_thread::sleep_for(std::chrono::seconds(4));
 
-    //if one has died then finish the game
+    std::cout << "this is after scheme card is over and scheme card has been discarded \n";
+    std::this_thread::sleep_for(std::chrono::seconds(4));
+
+    if(control.Is_Game_Over())
+    {
+        game_current_screen = GAME_FLOW_SCREENS::GAME_OVER_SCREEN;
+    }
+    else
+    {
+        game_current_screen = GAME_FLOW_SCREENS::CHOOSE_FIGHTER;
+    }
     
 }
 

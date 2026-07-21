@@ -8,7 +8,7 @@
 
 
 
-std::string Return_Map_To_Be_Rendered(int Array_Element_Count, Fighters_Print_Info* Info_Array)
+inline std::string Return_Map_To_Be_Rendered(int Array_Element_Count, Fighters_Print_Info* Info_Array)
 {
     
     char mymap[11][71];
