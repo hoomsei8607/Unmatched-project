@@ -46,8 +46,6 @@ bool Scheme_Manager::Screen_Manager(Controller& control)
 
     case SCHEME_CARDS_SCREEN::EXIT_TO_MAIN_LOOP:
         return false;
-    default:
-        break;
     }
     return false;
 }
@@ -201,6 +199,7 @@ void Scheme_Manager::Baptism_Of_Blood_Screen(Controller& control)
     current_screen = SCHEME_CARDS_SCREEN::EXIT_TO_MAIN_LOOP;
     if(control.Manage_UserAction_Numbers_And_Return_True_TO_Change_Turn())
     {
+        control.Discard_Cards_If_Deck_Has_More_Than_7_Cards(control.Return_User_Turn());
         control.Change_User_Turn();
     }
 }
@@ -297,7 +296,7 @@ void Scheme_Manager::Ravening_Seduction_Screen(Controller& control)
                     control.Convert_Space_Number_To_Row_And_Column_Index(control.Return_Hero_Space_Number(Fighters_Names::DRACULA), temp_struct_to_update_fighter_position_on_screen);
                     control.fighters_printing_info_array[static_cast<int>(Fighters_Names::DRACULA)].Row_Index = temp_struct_to_update_fighter_position_on_screen.row_index;
                     control.fighters_printing_info_array[static_cast<int>(Fighters_Names::DRACULA)].Column_Index = temp_struct_to_update_fighter_position_on_screen.column_index;
-
+                    control.Update_Map();
                     control.screen.ExitLoopClosure()();
                 });
                 auto radio_box = Radiobox(&selectable_spaces_to_move_enemy, &selected_space);
@@ -385,20 +384,19 @@ void Scheme_Manager::Ravening_Seduction_Screen(Controller& control)
                         
                     }
                 }));
-
                 break;
             }
         
             case 3:
             {
                 // change turn and exit
-                ravening_seduction_sub_screen_number++;
                 if(control.Manage_UserAction_Numbers_And_Return_True_TO_Change_Turn())
                 {
+                    control.Discard_Cards_If_Deck_Has_More_Than_7_Cards(control.Return_User_Turn());
                     control.Change_User_Turn();
                 }
                 current_screen = SCHEME_CARDS_SCREEN::EXIT_TO_MAIN_LOOP;
-                break;
+                return;
             }
         
         }
@@ -429,6 +427,7 @@ void Scheme_Manager::Eliminate_The_Impossible_Screen(Controller& control)
         control.discard(selected_card, enemy_user);
         if(control.Manage_UserAction_Numbers_And_Return_True_TO_Change_Turn())
         {
+            control.Discard_Cards_If_Deck_Has_More_Than_7_Cards(control.Return_User_Turn());
             control.Change_User_Turn();
         }
         control.screen.ExitLoopClosure()();
@@ -485,6 +484,7 @@ void Scheme_Manager::Master_Of_Disguise_Screen(Controller& control)
         control.fighters_printing_info_array[static_cast<int>(Fighters_Names::SHERLOCK)].Column_Index = temp_struct_to_update_fighter_position_on_screen.column_index;
         if(control.Manage_UserAction_Numbers_And_Return_True_TO_Change_Turn())
         {
+            control.Discard_Cards_If_Deck_Has_More_Than_7_Cards(control.Return_User_Turn());
             control.Change_User_Turn();
         }
         control.screen.ExitLoopClosure()();
@@ -542,6 +542,7 @@ void Scheme_Manager::Administer_Aid_Screen(Controller& control)
         current_screen = SCHEME_CARDS_SCREEN::EXIT_TO_MAIN_LOOP;
         if(control.Manage_UserAction_Numbers_And_Return_True_TO_Change_Turn())
         {
+            control.Discard_Cards_If_Deck_Has_More_Than_7_Cards(control.Return_User_Turn());
             control.Change_User_Turn();
         }
         control.screen.ExitLoopClosure()();
@@ -599,12 +600,8 @@ void Scheme_Manager::Confirm_Suspicion_Screen(Controller& control)
         {
         case 0:
             {
-                //get the guess 
-                //if card exists go to screen1 and ask the defender to choose a card to discard
-                //else go to screen 2 and see the defenders hand
                 auto radio_box = Radiobox(&available_values, &selected_option);
                 auto confirm_button = Button("CONFIRM", [&]{
-                    //do the logic
                     user_input_value = std::stoi(available_values[selected_option]);
                     if(control.Does_Card_Exist_In_Hand_With_The_Corresponding_Value(defender, user_input_value))
                     {
@@ -626,7 +623,7 @@ void Scheme_Manager::Confirm_Suspicion_Screen(Controller& control)
                             text(" "),
                             text("SPECIFY A VALUE: ") | bold,
                             text(" "),
-                            container->Render() | hcenter | size(WIDTH, EQUAL, 100)
+                            container->Render() | size(WIDTH, EQUAL, 100)
                         }) | center
                     }) | border;
                 }));
@@ -714,6 +711,7 @@ void Scheme_Manager::Confirm_Suspicion_Screen(Controller& control)
             current_screen = SCHEME_CARDS_SCREEN::EXIT_TO_MAIN_LOOP;
             if(control.Manage_UserAction_Numbers_And_Return_True_TO_Change_Turn())
             {
+                control.Discard_Cards_If_Deck_Has_More_Than_7_Cards(control.Return_User_Turn());
                 control.Change_User_Turn();
             }
             break;
