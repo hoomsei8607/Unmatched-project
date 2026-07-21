@@ -44,6 +44,7 @@ class Controller
         void Revive_The_Selected_Fighter(Fighters_Names figher_name, int space_to_place_the_fighter_at);
         void Set_Card_Value(USER user_turn, int card_index, int card_value);
         void Deselect_All_Selected_Fighters();
+        void change_health_deck_empty(Fighters_Names);
 
         int Return_Fighter_Move_Value(Fighters_Names fighter_name) const;
         int Return_Hero_Space_Number(Fighters_Names fighter_Name) const;

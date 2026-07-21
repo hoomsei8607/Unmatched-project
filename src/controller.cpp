@@ -481,10 +481,18 @@ void Controller::Disable_Card_Effect(USER user, int index)
 {
     if(user == USER::USER1)
     {
+        if (User1_Hand[index]->get_owner()==Fighters_Names::SHERLOCK||User1_Hand[index]->get_owner()==Fighters_Names::WATSON)
+        {
+            return;
+        }
         User1_Hand[index]->Disable_Card_Effect_Boolian();
     }
     else
     {
+        if (User2_Hand[index]->get_owner()==Fighters_Names::SHERLOCK||User2_Hand[index]->get_owner()==Fighters_Names::WATSON)
+        {
+            return;
+        }
         User2_Hand[index]->Disable_Card_Effect_Boolian();
     }
 }
@@ -921,6 +929,11 @@ void Controller::draw(USER user)
     {   
         if (user1.Return_Hero_Type()==HERO_NAME::DRACULA)
         {
+            if (dracula_deck.size()<1)
+            {
+                change_health_deck_empty(Fighters_Names::DRACULA);
+                return;
+            }
             Instantiate_Card_Object(user,dracula_deck.back());
             user1.user_draw(dracula_deck.back());
             dracula_deck.pop_back();
@@ -928,6 +941,11 @@ void Controller::draw(USER user)
         }
         else if (user1.Return_Hero_Type()==HERO_NAME::SHERLOCK)
         {
+            if (sherlock_deck.size()<1)
+            {
+                change_health_deck_empty(Fighters_Names::SHERLOCK);
+                return;
+            }
             Instantiate_Card_Object(user,sherlock_deck.back());
             user1.user_draw(sherlock_deck.back());
             sherlock_deck.pop_back();
@@ -938,6 +956,11 @@ void Controller::draw(USER user)
     {   
         if (user2.Return_Hero_Type()==HERO_NAME::DRACULA)
         {
+            if (dracula_deck.size()<1)
+            {
+                change_health_deck_empty(Fighters_Names::DRACULA);
+                return;
+            }
             Instantiate_Card_Object(user,dracula_deck.back());
             user2.user_draw(dracula_deck.back());
             dracula_deck.pop_back();
@@ -945,6 +968,11 @@ void Controller::draw(USER user)
         }
         else if (user2.Return_Hero_Type()==HERO_NAME::SHERLOCK)
         {
+            if (sherlock_deck.size()<1)
+            {
+                change_health_deck_empty(Fighters_Names::SHERLOCK);
+                return;
+            }
             Instantiate_Card_Object(user,sherlock_deck.back());
             user2.user_draw(sherlock_deck.back());
             sherlock_deck.pop_back();
@@ -1830,4 +1858,23 @@ USER Controller::Return_Who_won_The_Game() const
         who_won = USER::USER1;
     }
     return who_won;
+}
+
+
+void Controller::change_health_deck_empty(Fighters_Names fighter_name)
+{
+    if (fighter_name==Fighters_Names::DRACULA)
+    {
+        change_fighter_health(Fighters_Names::DRACULA,-2);
+        change_fighter_health(Fighters_Names::SIS1,-2);
+        change_fighter_health(Fighters_Names::SIS2,-2);
+        change_fighter_health(Fighters_Names::SIS3,-2);
+    }
+    if (fighter_name==Fighters_Names::SHERLOCK)
+    {
+        change_fighter_health(Fighters_Names::SHERLOCK,-2);
+        change_fighter_health(Fighters_Names::WATSON,-2);
+    }
+    
+    
 }
