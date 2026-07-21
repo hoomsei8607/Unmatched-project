@@ -64,6 +64,7 @@ bool After_Combat_Sub_Screen_Manager::Screen_Manager(Controller& control)
         return false;
     
     }
+    return false;
 }
 
 void After_Combat_Sub_Screen_Manager::Dash_Card_Screen(Controller& control)
@@ -113,6 +114,11 @@ void After_Combat_Sub_Screen_Manager::Dash_Card_Screen(Controller& control)
     for(int space_number : Spaces_That_Fighter_Can_Move_To)
     {
         available_spaces_for_render.push_back(std::to_string(space_number));
+    }
+    if(available_spaces_for_render.empty())
+    {
+        current_screen = AFTER_COMBAT_SUB_SCREENS::RETURN_TO_FIGHTING_SCREEN_MANAGER;
+        return;
     }
     int selected = 0;
     auto toggle_box_for_render = Toggle(&available_spaces_for_render, &selected);
@@ -180,6 +186,11 @@ void After_Combat_Sub_Screen_Manager::Game_Is_Afoot(Controller& control)
     {
         available_spaces_for_render.push_back(std::to_string(space_number));
     }
+    if(available_spaces_for_render.empty())
+    {
+        current_screen = AFTER_COMBAT_SUB_SCREENS::RETURN_TO_FIGHTING_SCREEN_MANAGER;
+        return;
+    }
     int selected = 0;
     auto toggle_box_for_render = Toggle(&available_spaces_for_render, &selected);
     auto confirm_button = Button("CONFIRM", [&]{
@@ -246,6 +257,11 @@ void After_Combat_Sub_Screen_Manager::Thirst_For_Sustenance_Screen(Controller& c
     for(int space_number : Spaces_That_Fighter_Can_Move_To)
     {
         available_spaces_for_render.push_back(std::to_string(space_number));
+    }
+    if(available_spaces_for_render.empty())
+    {
+        current_screen = AFTER_COMBAT_SUB_SCREENS::RETURN_TO_FIGHTING_SCREEN_MANAGER;
+        return;
     }
     int selected = 0;
     auto toggle_box_for_render = Toggle(&available_spaces_for_render, &selected);

@@ -44,6 +44,7 @@ bool SideKick_Placement_Screen_Manager::Screen_Manager(Controller& control, Elem
         case SideKick_Placement_Screen::CONTINUE_TO_THE_MAIN_MANAGER:
             return false;
     }
+    return false;
 }
 
 

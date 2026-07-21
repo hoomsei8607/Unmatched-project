@@ -49,6 +49,7 @@ bool Scheme_Manager::Screen_Manager(Controller& control)
     default:
         break;
     }
+    return false;
 }
 
 
@@ -682,6 +683,7 @@ void Scheme_Manager::Confirm_Suspicion_Screen(Controller& control)
         case 2:
             {
                 //show defenders hand    
+                Element defender_hand = control.Return_Hand_Elements_For_Render(defender);
                 auto continue_button = Button("CONTINUE", [&]{
                     sub_screen_index = 3;
                     control.screen.ExitLoopClosure()();
@@ -694,7 +696,7 @@ void Scheme_Manager::Confirm_Suspicion_Screen(Controller& control)
                             text(""),
                             text("TAKE A LOOK AT YOUR OPPONENTS HAND"),
                             text(""),
-                            control.Return_Hand_Elements_For_Render(defender) | hcenter,
+                            defender_hand | hcenter,
                             text(""),
                             continue_button -> Render() | hcenter
 

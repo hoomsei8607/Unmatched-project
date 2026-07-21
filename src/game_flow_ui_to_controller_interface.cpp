@@ -363,6 +363,7 @@ void User_Choice_Manager::Select_Card_Screen(USER user_turn, Controller& control
         return true;
     });
     Component card_select_container = Container::Vertical({Card_Select_RadioBox, Confirm_Button, Undo_Button});
+    Element user_hand_for_render = control.Return_Hand_Elements_For_Render(user_turn);
     
     
 
@@ -373,7 +374,7 @@ void User_Choice_Manager::Select_Card_Screen(USER user_turn, Controller& control
         return vbox({
             hbox({text("SELECTED FIGHTER: "), text(selected_fighter_name_as_string)}) | hcenter,
             map_and_use_info | hcenter,
-            control.Return_Hand_Elements_For_Render(user_turn),
+            user_hand_for_render,
             card_select_container->Render()
         }) | center;
     });

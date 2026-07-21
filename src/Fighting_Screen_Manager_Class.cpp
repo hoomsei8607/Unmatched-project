@@ -63,6 +63,7 @@ bool Fighting_Screen_Manager::Screen_Manager(Controller& control)
         return false;
     
     }
+    return false;
 }
 
 void Fighting_Screen_Manager::Taking_Defender_Input_Screen(Controller& control)
@@ -177,7 +178,11 @@ void Fighting_Screen_Manager::Show_Immediate_Combat_Results(Controller& control)
     {
         Defender = USER::USER1;
     }
-    Element defender_selected_card_element = control.Return_A_Single_Card_Graphical_Representation(Defender, Defender_Selected_Card_Index) | size(WIDTH, EQUAL, 30) | size(HEIGHT, EQUAL, 15);
+    Element defender_selected_card_element = text("DEFENDER SKIPPED") | border | size(WIDTH, EQUAL, 30) | size(HEIGHT, EQUAL, 15);
+    if(!Has_Defender_Skipped_Card_Selection)
+    {
+        defender_selected_card_element = control.Return_A_Single_Card_Graphical_Representation(Defender, Defender_Selected_Card_Index) | size(WIDTH, EQUAL, 30) | size(HEIGHT, EQUAL, 15);
+    }
     Element attacker_selected_card_element = control.Return_A_Single_Card_Graphical_Representation(Attacker, Attacker_Selected_Card_Index) | size(WIDTH, EQUAL, 30) | size(HEIGHT, EQUAL, 15);
     
 
@@ -296,7 +301,11 @@ void Fighting_Screen_Manager::During_Combat_Screen(Controller& control)
     {
         Defender = USER::USER1;
     }
-    Element defender_selected_card_element = control.Return_A_Single_Card_Graphical_Representation(Defender, Defender_Selected_Card_Index) | size(WIDTH, EQUAL, 30) | size(HEIGHT, EQUAL, 15);
+    Element defender_selected_card_element = text("DEFENDER SKIPPED") | border | size(WIDTH, EQUAL, 30) | size(HEIGHT, EQUAL, 15);
+    if(!Has_Defender_Skipped_Card_Selection)
+    {
+        defender_selected_card_element = control.Return_A_Single_Card_Graphical_Representation(Defender, Defender_Selected_Card_Index) | size(WIDTH, EQUAL, 30) | size(HEIGHT, EQUAL, 15);
+    }
     Element attacker_selected_card_element = control.Return_A_Single_Card_Graphical_Representation(Attacker, Attacker_Selected_Card_Index) | size(WIDTH, EQUAL, 30) | size(HEIGHT, EQUAL, 15);
     
     if(Has_Defender_Skipped_Card_Selection)
@@ -399,17 +408,19 @@ void Fighting_Screen_Manager::Show_Fight_Results_Screen(Controller& control)
         Defender = USER::USER1;
     }
 
-    if((Attacker_Card_Value - Defender_Card_Value) >= 1)
+    int damage_dealt = Attacker_Card_Value - Defender_Card_Value;
+    if(damage_dealt >= 1)
     {
         //attacker has won
         Fight_Results = "ATTACKER WON THE COMBAT";
-        Damage_Dealt = std::to_string(Attacker_Card_Value - Defender_Card_Value);
+        Damage_Dealt = std::to_string(damage_dealt);
         control.Set_Who_Has_Won_The_Combat_Variable(Attacker);
+        control.change_fighter_health(control.Get_Selected_Enemy(), -damage_dealt);
     }
     else
     {
         Fight_Results = "DEFENDER WON THE COMBAT";
-        Damage_Dealt = std::to_string(Defender_Card_Value - Attacker_Card_Value);
+        Damage_Dealt = "0";
         control.Set_Who_Has_Won_The_Combat_Variable(Defender);
     }
 
@@ -483,18 +494,26 @@ void Fighting_Screen_Manager::After_Combat_Screen(Controller& control)
                 break;
             
             case cards::THIRST_FOR_SUSTENANCE:
-                after_effect_card_screen = AFTER_COMBAT_SUB_SCREENS::THIRST_FOR_SUSTENANCE;
-                if(control.return_who_won_the_combat() != Attacker)
+                if(control.return_who_won_the_combat() == Attacker)
                 {
-                    break;
+                    after_effect_card_screen = AFTER_COMBAT_SUB_SCREENS::THIRST_FOR_SUSTENANCE;
+                    Describtion_For_User = vbox({
+                        text("AFTER COMBAT RESULTS") | underlined | color(Color::NavajoWhite3) | bold | size(WIDTH, EQUAL, 90),
+                        text(" "),
+                        text("CHOOSE A SPACE TO MOVE DRACULA ADJACENT TO THE OPPISNG FIGHTER"),
+                        text(" ")
+                    });
                 }
-
-                Describtion_For_User = vbox({
-                    text("AFTER COMBAT RESULTS") | underlined | color(Color::NavajoWhite3) | bold | size(WIDTH, EQUAL, 90),
-                    text(" "),
-                    text("CHOOSE A SPACE TO MOVE DRACULA ADJACENT TO THE OPPISNG FIGHTER"),
-                    text(" ")
-                });
+                else
+                {
+                    after_effect_card_screen = AFTER_COMBAT_SUB_SCREENS::RETURN_TO_FIGHTING_SCREEN_MANAGER;
+                    Describtion_For_User = vbox({
+                        text(" "),
+                        text("AFTER COMBAT RESULTS") | underlined | color(Color::NavajoWhite3) | bold | size(WIDTH, EQUAL, 90),
+                        text(" "),
+                        text("THIRST FOR SUSTENANCE DOES NOTHING BECAUSE DRACULA DID NOT WIN")
+                    });
+                }
                 break;
             
             case cards::STUDY_METHODS:
@@ -547,7 +566,7 @@ void Fighting_Screen_Manager::After_Combat_Screen(Controller& control)
             });
 
             auto continue_button = Button("CONTINUE", [&]{
-                control.screen.ExitLoopClosure();
+                control.screen.ExitLoopClosure()();
             });
 
             control.screen.Loop(Renderer(continue_button, [&]{
@@ -591,18 +610,26 @@ void Fighting_Screen_Manager::After_Combat_Screen(Controller& control)
                 break;
             
             case cards::THIRST_FOR_SUSTENANCE:
-                after_effect_card_screen = AFTER_COMBAT_SUB_SCREENS::THIRST_FOR_SUSTENANCE;
-                if(control.return_who_won_the_combat() != Attacker)
+                if(control.return_who_won_the_combat() == Attacker)
                 {
-                    break;
+                    after_effect_card_screen = AFTER_COMBAT_SUB_SCREENS::THIRST_FOR_SUSTENANCE;
+                    Describtion_For_User = vbox({
+                        text("AFTER COMBAT RESULTS") | underlined | color(Color::NavajoWhite3) | bold | size(WIDTH, EQUAL, 90),
+                        text(" "),
+                        text("CHOOSE A SPACE TO MOVE DRACULA ADJACENT TO THE OPPISNG FIGHTER"),
+                        text(" ")
+                    });
                 }
-
-                Describtion_For_User = vbox({
-                    text("AFTER COMBAT RESULTS") | underlined | color(Color::NavajoWhite3) | bold | size(WIDTH, EQUAL, 90),
-                    text(" "),
-                    text("CHOOSE A SPACE TO MOVE DRACULA ADJACENT TO THE OPPISNG FIGHTER"),
-                    text(" ")
-                });
+                else
+                {
+                    after_effect_card_screen = AFTER_COMBAT_SUB_SCREENS::RETURN_TO_FIGHTING_SCREEN_MANAGER;
+                    Describtion_For_User = vbox({
+                        text(" "),
+                        text("AFTER COMBAT RESULTS") | underlined | color(Color::NavajoWhite3) | bold | size(WIDTH, EQUAL, 90),
+                        text(" "),
+                        text("THIRST FOR SUSTENANCE DOES NOTHING BECAUSE DRACULA DID NOT WIN")
+                    });
+                }
                 break;
             
             case cards::STUDY_METHODS:
@@ -669,18 +696,26 @@ void Fighting_Screen_Manager::After_Combat_Screen(Controller& control)
                 break;
             
             case cards::THIRST_FOR_SUSTENANCE:
-                after_effect_card_screen = AFTER_COMBAT_SUB_SCREENS::THIRST_FOR_SUSTENANCE;
-                if(control.return_who_won_the_combat() != Attacker)
+                if(control.return_who_won_the_combat() == Attacker)
                 {
-                    break;
+                    after_effect_card_screen = AFTER_COMBAT_SUB_SCREENS::THIRST_FOR_SUSTENANCE;
+                    Describtion_For_User = vbox({
+                        text("AFTER COMBAT RESULTS") | underlined | color(Color::NavajoWhite3) | bold | size(WIDTH, EQUAL, 90),
+                        text(" "),
+                        text("CHOOSE A SPACE TO MOVE DRACULA ADJACENT TO THE OPPISNG FIGHTER"),
+                        text(" ")
+                    });
                 }
-                Describtion_For_User = vbox({
-                    text("AFTER COMBAT RESULTS") | underlined | color(Color::NavajoWhite3) | bold | size(WIDTH, EQUAL, 90),
-                    text(" "),
-                    text("CHOOSE A SPACE TO MOVE DRACULA ADJACENT TO THE OPPISNG FIGHTER"),
-                    text(" ")
-                });
-
+                else
+                {
+                    after_effect_card_screen = AFTER_COMBAT_SUB_SCREENS::RETURN_TO_FIGHTING_SCREEN_MANAGER;
+                    Describtion_For_User = vbox({
+                        text(" "),
+                        text("AFTER COMBAT RESULTS") | underlined | color(Color::NavajoWhite3) | bold | size(WIDTH, EQUAL, 90),
+                        text(" "),
+                        text("THIRST FOR SUSTENANCE DOES NOTHING BECAUSE DRACULA DID NOT WIN")
+                    });
+                }
                 break;
             
             case cards::STUDY_METHODS:
@@ -734,7 +769,7 @@ void Fighting_Screen_Manager::After_Combat_Screen(Controller& control)
             });
 
             auto continue_button = Button("CONTINUE", [&]{
-                control.screen.ExitLoopClosure();
+                control.screen.ExitLoopClosure()();
             });
 
             control.screen.Loop(Renderer(continue_button, [&]{
