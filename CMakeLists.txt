@@ -1,32 +1,66 @@
-cmake_minimum_required(VERSION 3.10)
-project(UNMATCHED_BOARD_GAME)
+cmake_minimum_required(VERSION 3.15)
+project(UNMATCHED_BOARD_GAME LANGUAGES CXX)
+
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
+set(CMAKE_CXX_EXTENSIONS OFF)
 
 include(FetchContent)
-FetchContent_Declare(ftxui GIT_REPOSITORY https://github.com/ArthurSonzogni/FTXUI.git GIT_TAG v6.1.9)
-FetchContent_MakeAvailable(ftxui)
-add_executable(app src/main.cpp)
-add_library(My_Written_Code 
-                src/Ui_Menu_Screen.cpp
-                src/Ui_GameLoop_Screen.cpp
-                src/Ui.cpp
-                src/get_user_input.cpp
-                src/controller.cpp
-                src/user.cpp
-                src/fighter_abstract.cpp
-                src/fighter_sub_classes.cpp
-                src/main_game_loop_sideckick_placement_manager.cpp
-                src/game_flow_ui_to_controller_interface.cpp
-                src/graph.cpp
-                src/space.cpp
-                src/cards.cpp
-                src/card_abstract.cpp
-                src/Fighting_Screen_Manager_Class.cpp
-                src/after_combat_sub_screen_manager.cpp
-                src/scheme_card_manager_class.cpp
-                )
-target_link_directories(My_Written_Code PUBLIC headers)
 
-target_link_libraries(My_Written_Code PUBLIC ftxui::screen ftxui::dom ftxui::component)
-target_link_libraries(app PRIVATE My_Written_Code)
+FetchContent_Declare(
+    ftxui
+    GIT_REPOSITORY https://github.com/ArthurSonzogni/FTXUI.git
+    GIT_TAG v6.1.9
+)
+FetchContent_MakeAvailable(ftxui)
+
+FetchContent_Declare(
+    raylib
+    GIT_REPOSITORY https://github.com/raysan5/raylib.git
+    GIT_TAG 5.5
+)
+FetchContent_MakeAvailable(raylib)
+
+add_library(My_Written_Code
+    src/Ui_Menu_Screen.cpp
+    src/Ui_GameLoop_Screen.cpp
+    src/Ui.cpp
+    src/get_user_input.cpp
+    src/controller.cpp
+    src/user.cpp
+    src/fighter_abstract.cpp
+    src/fighter_sub_classes.cpp
+    src/main_game_loop_sideckick_placement_manager.cpp
+    src/game_flow_ui_to_controller_interface.cpp
+    src/graph.cpp
+    src/space.cpp
+    src/cards.cpp
+    src/card_abstract.cpp
+    src/Fighting_Screen_Manager_Class.cpp
+    src/after_combat_sub_screen_manager.cpp
+    src/scheme_card_manager_class.cpp
+)
+
+target_include_directories(My_Written_Code PUBLIC
+    ${CMAKE_CURRENT_SOURCE_DIR}/headers
+)
+
+target_link_libraries(My_Written_Code PUBLIC
+    ftxui::screen
+    ftxui::dom
+    ftxui::component
+)
+
+add_executable(app
+    src/main.cpp
+    src/raylib/RaylibUI.cpp
+)
+
+target_link_libraries(app PRIVATE
+    My_Written_Code
+    raylib
+)
+
+if (UNIX AND NOT APPLE)
+    target_link_libraries(app PRIVATE m pthread dl rt X11)
+endif()
