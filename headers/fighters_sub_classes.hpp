@@ -2,53 +2,35 @@
 #define HERO_CLASSES_HPP
 #include "fighter_abstract.hpp"
 
-class Dracula : public Fighter_Base_Class //singleton
+class Dracula : public Fighter_Base_Class
 {
-    public:
-
-        static Dracula* Get_Instance();
-        Dracula(const Dracula&) = delete;
-        static void Destroy_Object();
-    private:
-        Dracula();
-        static Dracula* Object_Instance;
-
+public:
+    Dracula();
 };
 
 
-class Sherlock : public Fighter_Base_Class //singleton
+class Sherlock : public Fighter_Base_Class
 {
-    public:
-        static Sherlock* Get_Instance();
-        Sherlock(const Sherlock&) = delete;
-        static void Destroy_Object();
-    private:
-        Sherlock() ;
-        static Sherlock* Object_Instance;
-
+public:
+    Sherlock();
 };
+
 
 class Watson : public Fighter_Base_Class
 {
-    public:
-        static Watson* Get_Instance();
-        Watson(const Watson&) = delete;
-        static void Destroy_Object();
-
-    private:
-        Watson() ;
-        static Watson* Object_Instance;
+public:
+    Watson();
 };
 
 
 class Dracula_Sister : public Fighter_Base_Class
 {
-    public:
-        Dracula_Sister(int sister_number);
-    private:
-        int sister_number;
-};
+public:
+    Dracula_Sister(int sister_number);
 
+private:
+    int sister_number;
+};
 
 
 #endif

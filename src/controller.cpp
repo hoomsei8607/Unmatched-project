@@ -46,13 +46,21 @@ Controller::Controller()
     Space_To_Array_Index_Map[31] = {10, 37};   
     Space_To_Array_Index_Map[32] = {10, 55};   
 
-    Dracula_And_Sisters[static_cast<int>(Dracula_And_Sisters_Array_Index::DRACULA)] = Dracula::Get_Instance();
-    Dracula_And_Sisters[static_cast<int>(Dracula_And_Sisters_Array_Index::SIS1)] = new Dracula_Sister(1);
-    Dracula_And_Sisters[static_cast<int>(Dracula_And_Sisters_Array_Index::SIS2)] = new Dracula_Sister(2);
-    Dracula_And_Sisters[static_cast<int>(Dracula_And_Sisters_Array_Index::SIS3)] = new Dracula_Sister(3);
 
-    sherlock_And_Watson[static_cast<int>(Sherlock_And_Watson_Array_Index::SHERLOCK)] = Sherlock::Get_Instance();
-    sherlock_And_Watson[static_cast<int>(Sherlock_And_Watson_Array_Index::WATSON)] = Watson::Get_Instance();
+    all_fighters.push_back(new Dracula);
+    all_fighters.push_back(new Dracula_Sister(1));
+    all_fighters.push_back(new Dracula_Sister(2));
+    all_fighters.push_back(new Dracula_Sister(3));
+    all_fighters.push_back(new Sherlock());
+    all_fighters.push_back(new Watson());
+
+    // Dracula_And_Sisters[static_cast<int>(Dracula_And_Sisters_Array_Index::DRACULA)] = Dracula::Get_Instance();
+    // Dracula_And_Sisters[static_cast<int>(Dracula_And_Sisters_Array_Index::SIS1)] = new Dracula_Sister(1);
+    // Dracula_And_Sisters[static_cast<int>(Dracula_And_Sisters_Array_Index::SIS2)] = new Dracula_Sister(2);
+    // Dracula_And_Sisters[static_cast<int>(Dracula_And_Sisters_Array_Index::SIS3)] = new Dracula_Sister(3);
+
+    // sherlock_And_Watson[static_cast<int>(Sherlock_And_Watson_Array_Index::SHERLOCK)] = Sherlock::Get_Instance();
+    // sherlock_And_Watson[static_cast<int>(Sherlock_And_Watson_Array_Index::WATSON)] = Watson::Get_Instance();
 
     dracula_deck={cards::FEEDING_FRENZY,cards::FEEDING_FRENZY,cards::MISTFORM,cards::MISTFORM,cards::AMBUSH,cards::AMBUSH,cards::BAPTISM_OF_BLOOD,cards::BAPTISM_OF_BLOOD,cards::BEASTFORM,cards::BEASTFORM,cards::DASH,cards::DASH,cards::DASH
     ,cards::EXPLOIT,cards::EXPLOIT,cards::EXPLOIT,cards::LOOK_INTO_MY_EYES,cards::LOOK_INTO_MY_EYES,cards::LOOK_INTO_MY_EYES,cards::PREY_UPON,cards::PREY_UPON,
@@ -113,14 +121,12 @@ void Controller::Fill_Users_Info_Struct(User1_And_User2_Info& info_struct) const
 
 Controller::~Controller()
 {
-    Dracula::Destroy_Object();
-    Watson::Destroy_Object();
-    Sherlock::Destroy_Object();
-    delete Dracula_And_Sisters[static_cast<int>(Dracula_And_Sisters_Array_Index::SIS1)];
-    delete Dracula_And_Sisters[static_cast<int>(Dracula_And_Sisters_Array_Index::SIS2)];
-    delete Dracula_And_Sisters[static_cast<int>(Dracula_And_Sisters_Array_Index::SIS3)];
-}
+    for(auto fighter : all_fighters)
+    {
+        delete fighter;
+    }
 
+}
 
 CARD_EFFECT_TYPE Controller::Return_Selected_Card_Effect_Type(USER user_turn, int index)
 {
@@ -212,39 +218,17 @@ ftxui::Element Controller::Return_A_Single_Card_Graphical_Representation(USER us
 
 void Controller::Fill_Fighter_Info_Struct(Fighters_Names fighter_name, Fighter_Info& info_struct) const
 {
-    Fighter_Base_Class* Base_Fighter_Class_Pointer = nullptr;
+    Fighter_Base_Class* fighter = Get_Fighter(fighter_name);
 
-    switch (fighter_name)
+    if(fighter == nullptr)
     {
-        case Fighters_Names::DRACULA:
-            Base_Fighter_Class_Pointer = Dracula_And_Sisters[static_cast<int>(Dracula_And_Sisters_Array_Index::DRACULA)];
-            break;
-                
-        case Fighters_Names::SHERLOCK:
-            Base_Fighter_Class_Pointer = sherlock_And_Watson[static_cast<int>(Sherlock_And_Watson_Array_Index::SHERLOCK)];
-            break;
-                
-        case Fighters_Names::WATSON:
-            Base_Fighter_Class_Pointer = sherlock_And_Watson[static_cast<int>(Sherlock_And_Watson_Array_Index::WATSON)];
-            break;
-                
-        case Fighters_Names::SIS1:
-            Base_Fighter_Class_Pointer = Dracula_And_Sisters[static_cast<int>(Dracula_And_Sisters_Array_Index::SIS1)];
-            break;
-            
-        case Fighters_Names::SIS2:
-            Base_Fighter_Class_Pointer = Dracula_And_Sisters[static_cast<int>(Dracula_And_Sisters_Array_Index::SIS2)];
-            break;
-
-        case Fighters_Names::SIS3:
-            Base_Fighter_Class_Pointer = Dracula_And_Sisters[static_cast<int>(Dracula_And_Sisters_Array_Index::SIS3)];
-            break;
-        
+        return;
     }
-    info_struct.Current_Hp = Base_Fighter_Class_Pointer->Return_Fighter_Current_Hp();
-    info_struct.Initial_Hp = Base_Fighter_Class_Pointer->Return_Fighter_Initial_Hp();
-    info_struct.Move_Value = Base_Fighter_Class_Pointer->Return_Fighter_Current_Move_Value();
-    info_struct.Range = Base_Fighter_Class_Pointer->Return_Fighter_Attacking_Range();
+
+    info_struct.Current_Hp = fighter->Return_Fighter_Current_Hp();
+    info_struct.Initial_Hp = fighter->Return_Fighter_Initial_Hp();
+    info_struct.Move_Value = fighter->Return_Fighter_Current_Move_Value();
+    info_struct.Range = fighter->Return_Fighter_Attacking_Range();
 }
 
 HERO_NAME Controller::Return_Younger_Hero_Name() const
@@ -255,37 +239,15 @@ HERO_NAME Controller::Return_Younger_Hero_Name() const
     }
     return user1.Return_Hero_Type();
 }
-
-void Controller::Set_Fighter_Space_Number(Fighters_Names fighter_name, int new_space) 
+void Controller::Set_Fighter_Space_Number(Fighters_Names fighter_name,int new_space)
 {
-    switch (fighter_name)
+    for(auto fighter : all_fighters)
     {
-    case Fighters_Names::DRACULA:
-        Dracula_And_Sisters[static_cast<int>(Dracula_And_Sisters_Array_Index::DRACULA)]->Set_Current_Fighter_Space_Number(new_space);
-        break;
-    
-    case Fighters_Names::SHERLOCK:
-        sherlock_And_Watson[static_cast<int>(Sherlock_And_Watson_Array_Index::SHERLOCK)]->Set_Current_Fighter_Space_Number(new_space);
-        break;
-    
-    case Fighters_Names::WATSON:
-        sherlock_And_Watson[static_cast<int>(Sherlock_And_Watson_Array_Index::WATSON)]->Set_Current_Fighter_Space_Number(new_space);
-        break;
-    
-    case Fighters_Names::SIS1:
-        Dracula_And_Sisters[static_cast<int>(Dracula_And_Sisters_Array_Index::SIS1)]->Set_Current_Fighter_Space_Number(new_space);
-        break;
-    
-    case Fighters_Names::SIS2:
-        Dracula_And_Sisters[static_cast<int>(Dracula_And_Sisters_Array_Index::SIS2)]->Set_Current_Fighter_Space_Number(new_space);
-        break;
-    
-    case Fighters_Names::SIS3:
-        Dracula_And_Sisters[static_cast<int>(Dracula_And_Sisters_Array_Index::SIS3)]->Set_Current_Fighter_Space_Number(new_space);
-        break;
-    
-    default:
-        break;
+        if(fighter->Get_Fighter_Name()==fighter_name)
+        {
+            fighter->Set_Current_Fighter_Space_Number(new_space);
+            return;
+        }
     }
 }
 
@@ -301,34 +263,12 @@ void Controller::Convert_Space_Number_To_Row_And_Column_Index(int space_number, 
 
 int Controller::Return_Hero_Space_Number(Fighters_Names fighter_name) const
 {
-    switch (fighter_name)
+    Fighter_Base_Class* ptr = Get_Fighter(fighter_name);
+    if(ptr == nullptr)
     {
-            
-        case Fighters_Names::DRACULA:
-            return Dracula_And_Sisters[static_cast<int>(Dracula_And_Sisters_Array_Index::DRACULA)]->Return_Fighter_Current_Space();
-            
-        
-        case Fighters_Names::SIS1:
-            return Dracula_And_Sisters[static_cast<int>(Dracula_And_Sisters_Array_Index::SIS1)]->Return_Fighter_Current_Space();
-            
-        
-        case Fighters_Names::SIS2:
-            return Dracula_And_Sisters[static_cast<int>(Dracula_And_Sisters_Array_Index::SIS2)]->Return_Fighter_Current_Space();
-            
-        
-        case Fighters_Names::SIS3:
-            return Dracula_And_Sisters[static_cast<int>(Dracula_And_Sisters_Array_Index::SIS3)]->Return_Fighter_Current_Space();
-            
-        
-        case Fighters_Names::SHERLOCK:
-            return sherlock_And_Watson[static_cast<int>(Sherlock_And_Watson_Array_Index::SHERLOCK)]->Return_Fighter_Current_Space();
-            
-            
-        case Fighters_Names::WATSON:
-            return sherlock_And_Watson[static_cast<int>(Sherlock_And_Watson_Array_Index::WATSON)]->Return_Fighter_Current_Space();
-           
+        return -1;
     }
-    return -1;
+    return ptr->Return_Fighter_Current_Space();
 }
 
 bool Controller::Is_User_Hand_Empty(USER user_turn)
@@ -378,69 +318,29 @@ std::string Controller::Conver_Fighter_Name_Enum_To_String(Fighters_Names fighte
 
 void Controller::Boost_Fighter_Move_Value(Fighters_Names fighter_name, int boost_value)
 {
-    switch (fighter_name)
+
+    Fighter_Base_Class* ptr = Get_Fighter(fighter_name);
+    if(ptr == nullptr)
     {
-    case Fighters_Names::DRACULA:
-        Dracula_And_Sisters[static_cast<int>(Dracula_And_Sisters_Array_Index::DRACULA)]->Boost_Move_Value(boost_value);
-        break;
-    
-    case Fighters_Names::SIS1:
-        Dracula_And_Sisters[static_cast<int>(Dracula_And_Sisters_Array_Index::SIS1)]->Boost_Move_Value(boost_value);
-        break;
-    
-    case Fighters_Names::SIS2:
-        Dracula_And_Sisters[static_cast<int>(Dracula_And_Sisters_Array_Index::SIS2)]->Boost_Move_Value(boost_value);
-        break;
-    
-    case Fighters_Names::SIS3:
-        Dracula_And_Sisters[static_cast<int>(Dracula_And_Sisters_Array_Index::SIS3)]->Boost_Move_Value(boost_value);
-        break;
-    
-    case Fighters_Names::SHERLOCK:
-        sherlock_And_Watson[static_cast<int>(Sherlock_And_Watson_Array_Index::SHERLOCK)]->Boost_Move_Value(boost_value);
-        break;
-    
-    case Fighters_Names::WATSON:
-        sherlock_And_Watson[static_cast<int>(Sherlock_And_Watson_Array_Index::WATSON)]->Boost_Move_Value(boost_value);
-        break;
-    
+        return;
     }
+    ptr->Boost_Move_Value(boost_value);
 }
 
 void Controller::Reset_Fighter_Move_Value(Fighters_Names fighter_name)
 {
-        switch (fighter_name)
+
+    Fighter_Base_Class* ptr = Get_Fighter(fighter_name);
+    if(ptr == nullptr)
     {
-    case Fighters_Names::DRACULA:
-        Dracula_And_Sisters[static_cast<int>(Dracula_And_Sisters_Array_Index::DRACULA)]->Reset_Move_Value();
-        break;
-    
-    case Fighters_Names::SIS1:
-        Dracula_And_Sisters[static_cast<int>(Dracula_And_Sisters_Array_Index::SIS1)]->Reset_Move_Value();
-        break;
-    
-    case Fighters_Names::SIS2:
-        Dracula_And_Sisters[static_cast<int>(Dracula_And_Sisters_Array_Index::SIS2)]->Reset_Move_Value();
-        break;
-    
-    case Fighters_Names::SIS3:
-        Dracula_And_Sisters[static_cast<int>(Dracula_And_Sisters_Array_Index::SIS3)]->Reset_Move_Value();
-        break;
-    
-    case Fighters_Names::SHERLOCK:
-        sherlock_And_Watson[static_cast<int>(Sherlock_And_Watson_Array_Index::SHERLOCK)]->Reset_Move_Value();
-        break;
-    
-    case Fighters_Names::WATSON:
-        sherlock_And_Watson[static_cast<int>(Sherlock_And_Watson_Array_Index::WATSON)]->Reset_Move_Value();
-        break;
-    
+        return;
     }
+    ptr->Reset_Move_Value();
 }
 
 void Controller::Set_Younger_User_Variable_Value()
 {
-    if(user1.Return_User_Age() > user2.Return_User_Age())
+    if(std::stoi(user1.Return_User_Age()) > std::stoi(user2.Return_User_Age()))
     {
         Younger_User = USER::USER2;
     }
@@ -540,27 +440,13 @@ std::string Controller::Return_Younger_User_Name() const
 
 int Controller::Return_Fighter_Move_Value(Fighters_Names fighter_name) const
 {
-    switch (fighter_name)
-    {
-    case Fighters_Names::DRACULA:
-        return Dracula_And_Sisters[static_cast<int>(Dracula_And_Sisters_Array_Index::DRACULA)]->Return_Fighter_Current_Move_Value();
     
-    case Fighters_Names::SIS1:
-        return Dracula_And_Sisters[static_cast<int>(Dracula_And_Sisters_Array_Index::SIS1)]->Return_Fighter_Current_Move_Value();
-        
-    case Fighters_Names::SIS2:
-        return Dracula_And_Sisters[static_cast<int>(Dracula_And_Sisters_Array_Index::SIS2)]->Return_Fighter_Current_Move_Value();
-        
-    case Fighters_Names::SIS3:
-        return Dracula_And_Sisters[static_cast<int>(Dracula_And_Sisters_Array_Index::SIS3)]->Return_Fighter_Current_Move_Value();
-        
-    case Fighters_Names::SHERLOCK:
-        return sherlock_And_Watson[static_cast<int>(Sherlock_And_Watson_Array_Index::SHERLOCK)]->Return_Fighter_Current_Move_Value();
-    case Fighters_Names::WATSON:
-        return sherlock_And_Watson[static_cast<int>(Sherlock_And_Watson_Array_Index::WATSON)]->Return_Fighter_Current_Move_Value();
-        
-    }   
-    return -1;
+    Fighter_Base_Class* ptr = Get_Fighter(fighter_name);
+    if(ptr == nullptr)
+    {
+        return -1;
+    }
+    return ptr->Return_Fighter_Current_Move_Value();
 }
 
 void Controller::Set_Current_User_Action(USER_ACTION user_action)
@@ -594,28 +480,13 @@ bool Controller::Manage_UserAction_Numbers_And_Return_True_TO_Change_Turn()
 }
 bool Controller::Return_Is_Fighter_Alive(Fighters_Names name) const
 {
-    switch (name)
+    
+    Fighter_Base_Class* ptr = Get_Fighter(name);
+    if(ptr == nullptr)
     {
-    case Fighters_Names::DRACULA:
-        return Dracula_And_Sisters[static_cast<int>(Dracula_And_Sisters_Array_Index::DRACULA)]->return_is_fighter_alive();
-        break;
-    case Fighters_Names::SIS1:
-        return Dracula_And_Sisters[static_cast<int>(Dracula_And_Sisters_Array_Index::SIS1)]->return_is_fighter_alive();
-        break;
-    case Fighters_Names::SIS2:
-        return Dracula_And_Sisters[static_cast<int>(Dracula_And_Sisters_Array_Index::SIS2)]->return_is_fighter_alive();
-        break;
-    case Fighters_Names::SIS3:
-        return Dracula_And_Sisters[static_cast<int>(Dracula_And_Sisters_Array_Index::SIS3)]->return_is_fighter_alive();
-        break;
-    case Fighters_Names::SHERLOCK:
-        return sherlock_And_Watson[static_cast<int>(Sherlock_And_Watson_Array_Index::SHERLOCK)]->return_is_fighter_alive();
-        break;
-    case Fighters_Names::WATSON:
-        return sherlock_And_Watson[static_cast<int>(Sherlock_And_Watson_Array_Index::WATSON)]->return_is_fighter_alive();
-        break;
+        return false;
     }
-    return false;
+    return ptr->return_is_fighter_alive();
 }
 
 std::string Controller::Return_User1_Username() const
@@ -984,30 +855,13 @@ void Controller::draw(USER user)
 
 void Controller::change_fighter_health(Fighters_Names fighter ,int amount)
 {
-    switch (fighter)
-    {
-    case Fighters_Names::DRACULA :
-        Dracula_And_Sisters[0]->change_health(amount);
-        break;
-    case Fighters_Names::SIS1 :
-        Dracula_And_Sisters[1]->change_health(amount);
-        break;
-    case Fighters_Names::SIS2 :
-        Dracula_And_Sisters[2]->change_health(amount);
-        break;
-    case Fighters_Names::SIS3 :
-        Dracula_And_Sisters[3]->change_health(amount);
-        break;
-    case Fighters_Names::SHERLOCK :
-        sherlock_And_Watson[0]->change_health(amount);
-        break;
-    case Fighters_Names::WATSON :
-        sherlock_And_Watson[1]->change_health(amount);
-        break;
-    default:
-        break;
-    }
     
+    Fighter_Base_Class* ptr = Get_Fighter(fighter);
+    if(ptr == nullptr)
+    {
+        return;
+    }
+    ptr->change_health(amount);
     
 }
 
@@ -1081,19 +935,12 @@ Fighters_Names Controller::Get_Selected_Enemy()
 Fighters_Names Controller::Return_Fighter_Base_On_Space_Number(int space_number)
 {
     Fighters_Names return_if_not_found = Fighters_Names::NONE;
-    for(auto fighter : Dracula_And_Sisters)
+    for(auto fighter : all_fighters)
     {
         if(fighter->Return_Fighter_Current_Space() == space_number)
         {
             return fighter->Get_Fighter_Name();
              
-        }
-    }
-    for(auto fighter : sherlock_And_Watson)
-    {
-        if(fighter->Return_Fighter_Current_Space() == space_number)
-        {
-            return fighter->Get_Fighter_Name();
         }
     }
     return return_if_not_found;
@@ -1113,43 +960,12 @@ ATTACKING_RANGE Controller::Return_Fighter_Attacking_Range(Fighters_Names select
         user_hero = user2.Return_Hero_Type();
     }
 
-    if(user_hero == HERO_NAME::DRACULA)
+    Fighter_Base_Class* ptr = Get_Fighter(selected_fighter);
+    if(ptr == nullptr)
     {
-        switch (selected_fighter)
-        {
-        case Fighters_Names::DRACULA:
-            to_be_returned = Dracula_And_Sisters[static_cast<int>(Dracula_And_Sisters_Array_Index::DRACULA)]->Return_Fighter_Attacking_Range_Enum_Type();
-            break;
-        
-        case Fighters_Names::SIS1:
-            to_be_returned = Dracula_And_Sisters[static_cast<int>(Dracula_And_Sisters_Array_Index::SIS1)]->Return_Fighter_Attacking_Range_Enum_Type();
-            break;
-        
-        case Fighters_Names::SIS2:
-            to_be_returned = Dracula_And_Sisters[static_cast<int>(Dracula_And_Sisters_Array_Index::SIS2)]->Return_Fighter_Attacking_Range_Enum_Type();
-            break;
-        
-        case Fighters_Names::SIS3:
-            to_be_returned = Dracula_And_Sisters[static_cast<int>(Dracula_And_Sisters_Array_Index::SIS3)]->Return_Fighter_Attacking_Range_Enum_Type();
-            break;
-        
-        }
+        return to_be_returned;
     }
-    else
-    {
-        switch (selected_fighter)
-        {
-        case Fighters_Names::SHERLOCK:
-            to_be_returned = sherlock_And_Watson[static_cast<int>(Sherlock_And_Watson_Array_Index::SHERLOCK)]->Return_Fighter_Attacking_Range_Enum_Type();
-            break;
-        
-        case Fighters_Names::WATSON:
-            to_be_returned = sherlock_And_Watson[static_cast<int>(Sherlock_And_Watson_Array_Index::WATSON)]->Return_Fighter_Attacking_Range_Enum_Type();
-            break;
-        
-        }
-    }
-    return to_be_returned;
+    return ptr->Return_Fighter_Attacking_Range_Enum_Type();
 }
 
 void Controller::Set_User_Turn(USER user_turn)
@@ -1551,179 +1367,132 @@ USER Controller::return_who_won_the_combat() const
 
 Fighters_Names Controller::Which_Fighter_Is_Currently_Selected(HERO_NAME hero_of_the_team)
 {
-    Fighters_Names to_be_returned;
+    for(auto fighter : all_fighters)
+    {
+        if(fighter->Is_Fighter_Selected())
+        {
+            return fighter->Get_Fighter_Name();
+        }
+    }
 
-    if(hero_of_the_team == HERO_NAME::DRACULA)
-    {
-        if(Dracula_And_Sisters[static_cast<int>(Dracula_And_Sisters_Array_Index::DRACULA)]->Is_Fighter_Selected())
-        {
-            to_be_returned = Fighters_Names::DRACULA;
-        }
-        if(Dracula_And_Sisters[static_cast<int>(Dracula_And_Sisters_Array_Index::SIS1)]->Is_Fighter_Selected())
-        {
-            to_be_returned = Fighters_Names::SIS1;
-        }
-        if(Dracula_And_Sisters[static_cast<int>(Dracula_And_Sisters_Array_Index::SIS2)]->Is_Fighter_Selected())
-        {
-            to_be_returned = Fighters_Names::SIS2;
-        }
-        if(Dracula_And_Sisters[static_cast<int>(Dracula_And_Sisters_Array_Index::SIS3)]->Is_Fighter_Selected())
-        {
-            to_be_returned = Fighters_Names::SIS3;
-        }
-    }
-    if(hero_of_the_team == HERO_NAME::SHERLOCK)
-    {
-        if(sherlock_And_Watson[static_cast<int>(Sherlock_And_Watson_Array_Index::WATSON)]->Is_Fighter_Selected())
-        {
-            to_be_returned = Fighters_Names::WATSON;
-        }
-        if(sherlock_And_Watson[static_cast<int>(Sherlock_And_Watson_Array_Index::SHERLOCK)]->Is_Fighter_Selected())
-        {
-            to_be_returned = Fighters_Names::SHERLOCK;
-        }
-    }
-    return to_be_returned;
+    return Fighters_Names::NONE;
 }
 
 void Controller::Select_Fighter(Fighters_Names fighter_name)
 {
-    for(auto fighter : Dracula_And_Sisters)
+    
+    Fighter_Base_Class* ptr = Get_Fighter(fighter_name);
+    if(ptr == nullptr)
     {
-        if(fighter->Get_Fighter_Name() == fighter_name)
-        {
-            fighter->Select_Fighter();
-            return;
-        }
+        return;
     }
-    for(auto fighter : sherlock_And_Watson)
-    {
-        if(fighter->Get_Fighter_Name() == fighter_name)
-        {
-            fighter->Select_Fighter();
-            return;
-        }
-    }
+    ptr->Select_Fighter();
 }
-
 bool Controller::Is_Any_Of_Dracula_Sisters_Dead()
 {
-    for(int i = 0 ; i < 4 ; i++)
+    for(auto fighter : all_fighters)
     {
-        if(i == static_cast<int>(Dracula_And_Sisters_Array_Index::DRACULA))
+        if(fighter->Get_Fighter_Name() == Fighters_Names::SIS1 ||
+           fighter->Get_Fighter_Name() == Fighters_Names::SIS2 ||
+           fighter->Get_Fighter_Name() == Fighters_Names::SIS3)
         {
-            continue;
-        }
-
-        if(!Dracula_And_Sisters[i]->return_is_fighter_alive())
-        {
-            return true;
+            if(!fighter->return_is_fighter_alive())
+            {
+                return true;
+            }
         }
     }
+
     return false;
 }
 
-
 void Controller::Revive_The_Selected_Fighter(Fighters_Names fighter_name, int space_to_place_the_fighter_at)
 {
-    Fighter_Base_Class* pointer_to_the_fighter_object;
-    switch (fighter_name)
+    Fighter_Base_Class* fighter = Get_Fighter(fighter_name);
+
+    if(fighter == nullptr)
     {
-    case Fighters_Names::DRACULA:
-        pointer_to_the_fighter_object = Dracula_And_Sisters[static_cast<int>(Dracula_And_Sisters_Array_Index::DRACULA)];
-        break;
-    
-    case Fighters_Names::SIS1:
-        pointer_to_the_fighter_object = Dracula_And_Sisters[static_cast<int>(Dracula_And_Sisters_Array_Index::SIS1)];
-        break;
-    
-    case Fighters_Names::SIS2:
-        pointer_to_the_fighter_object = Dracula_And_Sisters[static_cast<int>(Dracula_And_Sisters_Array_Index::SIS2)];
-        break;
-    
-    case Fighters_Names::SIS3:
-        pointer_to_the_fighter_object = Dracula_And_Sisters[static_cast<int>(Dracula_And_Sisters_Array_Index::SIS3)];
-        break;
-    
-    case Fighters_Names::SHERLOCK:
-        pointer_to_the_fighter_object = sherlock_And_Watson[static_cast<int>(Sherlock_And_Watson_Array_Index::SHERLOCK)];
-        break;
-    
-    case Fighters_Names::WATSON:
-        pointer_to_the_fighter_object = sherlock_And_Watson[static_cast<int>(Sherlock_And_Watson_Array_Index::WATSON)];
-        break;
-    
-    default:
-        pointer_to_the_fighter_object = nullptr;
-        break;
+        return;
     }
-    pointer_to_the_fighter_object->Reset_All_Info_For_Revive(space_to_place_the_fighter_at);
+
+    fighter->Reset_All_Info_For_Revive(space_to_place_the_fighter_at);
 }
 
 Fighters_Names Controller::Return_Dead_Sister_Number()
 {
-    Fighters_Names to_be_returned;
-    for(int i = 0 ; i < 4 ; i++)
+    for(auto fighter : all_fighters)
     {
-        if(i == static_cast<int>(Dracula_And_Sisters_Array_Index::DRACULA))
+        if(fighter->Get_Fighter_Name() == Fighters_Names::SIS1 ||
+           fighter->Get_Fighter_Name() == Fighters_Names::SIS2 ||
+           fighter->Get_Fighter_Name() == Fighters_Names::SIS3)
         {
-            continue;
-        }
-        if(!Dracula_And_Sisters[i]->return_is_fighter_alive())
-        {
-            to_be_returned = Dracula_And_Sisters[i]->Get_Fighter_Name();
-            break;
+            if(!fighter->return_is_fighter_alive())
+            {
+                return fighter->Get_Fighter_Name();
+            }
         }
     }
-    return to_be_returned;
+
+    return Fighters_Names::NONE;
 }
 
 std::vector<Fighters_Names> Controller::Return_Alive_Fighters(HERO_NAME which_crew)
 {
-    std::vector<Fighters_Names> to_be_returned;
-    switch (which_crew)
+    std::vector<Fighters_Names> result;
+
+    for(auto fighter : all_fighters)
     {
-    case HERO_NAME::DRACULA:
-        for(auto fighter : Dracula_And_Sisters)
+        if(!fighter->return_is_fighter_alive())
         {
-            if(fighter->return_is_fighter_alive())
+            continue;
+        }
+
+
+        if(which_crew == HERO_NAME::DRACULA)
+        {
+            if(fighter->Get_Fighter_Name() == Fighters_Names::DRACULA ||
+               fighter->Get_Fighter_Name() == Fighters_Names::SIS1 ||
+               fighter->Get_Fighter_Name() == Fighters_Names::SIS2 ||
+               fighter->Get_Fighter_Name() == Fighters_Names::SIS3)
             {
-                to_be_returned.push_back(fighter->Get_Fighter_Name());
+                result.push_back(fighter->Get_Fighter_Name());
             }
         }
-        break;
-    
-    case HERO_NAME::SHERLOCK:
-        for(auto fighter : sherlock_And_Watson)
+
+
+        if(which_crew == HERO_NAME::SHERLOCK)
         {
-            if(fighter->return_is_fighter_alive())
+            if(fighter->Get_Fighter_Name() == Fighters_Names::SHERLOCK ||
+               fighter->Get_Fighter_Name() == Fighters_Names::WATSON)
             {
-                to_be_returned.push_back(fighter->Get_Fighter_Name());
+                result.push_back(fighter->Get_Fighter_Name());
             }
         }
-        break;
-    
-    default:
-        break;
     }
-    return to_be_returned;
+
+    return result;
 }
 
 std::vector<int> Controller::Return_Sisters_Space_Numbers()
 {
-    std::vector<int> to_be_returned;
-    for(int i = 0 ; i < 4 ; i++)
+    std::vector<int> result;
+
+
+    for(auto fighter : all_fighters)
     {
-        if(i == static_cast<int>(Dracula_And_Sisters_Array_Index::DRACULA))
+        if(fighter->Get_Fighter_Name() == Fighters_Names::SIS1 ||
+           fighter->Get_Fighter_Name() == Fighters_Names::SIS2 ||
+           fighter->Get_Fighter_Name() == Fighters_Names::SIS3)
         {
-            continue;
-        }
-        if(Dracula_And_Sisters[i]->return_is_fighter_alive())
-        {
-            to_be_returned.push_back(Dracula_And_Sisters[i]->Return_Fighter_Current_Space());
+            if(fighter->return_is_fighter_alive())
+            {
+                result.push_back(fighter->Return_Fighter_Current_Space());
+            }
         }
     }
-    return to_be_returned;
+
+
+    return result;
 }
 
 void Controller::Set_Card_Value(USER user_turn, int card_index, int card_value)
@@ -1808,14 +1577,7 @@ std::vector<int> Controller::Return_Card_Indexes_That_Match_The_Given_Value(USER
 
 void Controller::Deselect_All_Selected_Fighters()
 {
-    for(auto fighter : Dracula_And_Sisters)
-    {
-        if(fighter->Is_Fighter_Selected())
-        {
-            fighter->Deselect_Fighter();
-        }
-    }
-    for(auto fighter : sherlock_And_Watson)
+    for(auto fighter : all_fighters)
     {
         if(fighter->Is_Fighter_Selected())
         {
@@ -1826,41 +1588,47 @@ void Controller::Deselect_All_Selected_Fighters()
 
 bool Controller::Is_Game_Over()
 {
-    if(!Dracula_And_Sisters[static_cast<int>(Dracula_And_Sisters_Array_Index::DRACULA)]->return_is_fighter_alive())
+    Fighter_Base_Class* dracula = Get_Fighter(Fighters_Names::DRACULA);
+    Fighter_Base_Class* sherlock = Get_Fighter(Fighters_Names::SHERLOCK);
+
+
+    if(dracula == nullptr || sherlock == nullptr)
     {
-        return true;
+        return false;
     }
-    if(!sherlock_And_Watson[static_cast<int>(Sherlock_And_Watson_Array_Index::SHERLOCK)]->return_is_fighter_alive())
-    {
-        return true;
-    }
-    return false;
+
+
+    return !dracula->return_is_fighter_alive() ||
+           !sherlock->return_is_fighter_alive();
 }
 
 
 USER Controller::Return_Who_won_The_Game() const
 {
-    HERO_NAME dead_hero_name;
-    USER who_won;
-    if(!Dracula_And_Sisters[static_cast<int>(Dracula_And_Sisters_Array_Index::DRACULA)]->return_is_fighter_alive())
-    {
-        dead_hero_name = HERO_NAME::DRACULA;
-    }
-    else
-    {
-        dead_hero_name = HERO_NAME::SHERLOCK;
-    }
-    if(user1.Return_Hero_Type() == dead_hero_name)
-    {
-        who_won = USER::USER2;
-    }
-    else
-    {
-        who_won = USER::USER1;
-    }
-    return who_won;
-}
+    Fighter_Base_Class* dracula = Get_Fighter(Fighters_Names::DRACULA);
+    Fighter_Base_Class* sherlock = Get_Fighter(Fighters_Names::SHERLOCK);
 
+
+    HERO_NAME dead_hero;
+
+
+    if(!dracula->return_is_fighter_alive())
+    {
+        dead_hero = HERO_NAME::DRACULA;
+    }
+    else
+    {
+        dead_hero = HERO_NAME::SHERLOCK;
+    }
+
+
+    if(user1.Return_Hero_Type() == dead_hero)
+    {
+        return USER::USER2;
+    }
+
+    return USER::USER1;
+}
 
 void Controller::change_health_deck_empty(Fighters_Names fighter_name)
 {
@@ -1912,20 +1680,16 @@ void Controller::Discard_Cards_If_Deck_Has_More_Than_7_Cards(USER user_turn)
 
 void Controller::Update_Fighters_Living_Status_In_Printing_Info_Array()
 {
-    for(auto fighter : Dracula_And_Sisters)
+    for(auto fighter : all_fighters)
     {
         fighters_printing_info_array[static_cast<int>(fighter->Get_Fighter_Name())].Is_Fighter_Alive = fighter->return_is_fighter_alive(); 
-    }
-    for(auto fighter : sherlock_And_Watson)
-    {
-        fighters_printing_info_array[static_cast<int>(fighter->Get_Fighter_Name())].Is_Fighter_Alive = fighter->return_is_fighter_alive();
     }
 }
 
 void Controller::Clean_Up_The_Graph()
 {
     Graph* game_map = Graph::Get_Map_Graph_Pointer();
-    for(auto fighter : Dracula_And_Sisters)
+    for(auto fighter : all_fighters)
     {
         if(!fighter->return_is_fighter_alive() && game_map->Get_User_Occupying_Space(fighter->Return_Fighter_Current_Space()) != USER::NONE)
         {
@@ -1934,13 +1698,313 @@ void Controller::Clean_Up_The_Graph()
         }
     }
 
-    for(auto fighter : sherlock_And_Watson)
+
+}
+
+Fighter_Base_Class* Controller::Get_Fighter(Fighters_Names fighter_name) const
+{
+    for(auto fighter : all_fighters)
     {
-        if(!fighter->return_is_fighter_alive() && game_map->Get_User_Occupying_Space(fighter->Return_Fighter_Current_Space()) != USER::NONE)
+        if(fighter->Get_Fighter_Name() == fighter_name)
         {
-            game_map->Set_User_Occupying_Space(USER::NONE, fighter->Return_Fighter_Current_Space());
-            game_map->Change_Space_Occiupied_Status(fighter->Return_Fighter_Current_Space());
+            return fighter;
         }
     }
 
+    return nullptr;
+}
+
+USER Controller::Set_Starting_User_By_Ages(int user1_age, int user2_age)
+{
+    if(user1_age < user2_age)
+    {
+        Younger_User = USER::USER1;
+    }
+    else if(user2_age < user1_age)
+    {
+        Younger_User = USER::USER2;
+    }
+    else
+    {
+        Younger_User = (rand() % 2 == 0) ? USER::USER1 : USER::USER2;
+    }
+
+    User_Turn = Younger_User;
+
+    return User_Turn;
+}
+
+void Controller::Initialize_Hero_Space_Numbers()
+{
+    USER first_user = Return_Younger_User();
+
+    if(first_user == USER::USER1)
+    {
+        if(user1.Return_Hero_Type() == HERO_NAME::DRACULA)
+        {
+            Set_Fighter_Space_Number(Fighters_Names::DRACULA, 9);
+            
+            Graph::Get_Map_Graph_Pointer()->Set_User_Occupying_Space(first_user, 9);
+            Graph::Get_Map_Graph_Pointer()->Change_Space_Occiupied_Status(9);
+
+        }
+        else if(user1.Return_Hero_Type() == HERO_NAME::SHERLOCK)
+        {
+            Set_Fighter_Space_Number(Fighters_Names::SHERLOCK, 9);
+            Graph::Get_Map_Graph_Pointer()->Set_User_Occupying_Space(first_user, 9);
+            Graph::Get_Map_Graph_Pointer()->Change_Space_Occiupied_Status(9);
+        }
+        else if(user1.Return_Hero_Type() == HERO_NAME::INVISIBLE_MAN)
+        {
+            Set_Fighter_Space_Number(Fighters_Names::INVISIBLE_MAN, 9);
+            Graph::Get_Map_Graph_Pointer()->Set_User_Occupying_Space(first_user, 9);
+            Graph::Get_Map_Graph_Pointer()->Change_Space_Occiupied_Status(9);
+        }
+
+        if(user2.Return_Hero_Type() == HERO_NAME::DRACULA)
+        {
+            Set_Fighter_Space_Number(Fighters_Names::DRACULA, 22);
+            Graph::Get_Map_Graph_Pointer()->Set_User_Occupying_Space(USER::USER2, 22);
+            Graph::Get_Map_Graph_Pointer()->Change_Space_Occiupied_Status(22);
+        }
+        else if(user2.Return_Hero_Type() == HERO_NAME::SHERLOCK)
+        {
+            Set_Fighter_Space_Number(Fighters_Names::SHERLOCK, 22);
+            Graph::Get_Map_Graph_Pointer()->Set_User_Occupying_Space(USER::USER2, 22);
+            Graph::Get_Map_Graph_Pointer()->Change_Space_Occiupied_Status(22);
+        }
+        else if(user2.Return_Hero_Type() == HERO_NAME::INVISIBLE_MAN)
+        {
+            Set_Fighter_Space_Number(Fighters_Names::INVISIBLE_MAN, 22);
+            Graph::Get_Map_Graph_Pointer()->Set_User_Occupying_Space(USER::USER2, 22);
+            Graph::Get_Map_Graph_Pointer()->Change_Space_Occiupied_Status(22);
+        }
+    }
+    else if(first_user == USER::USER2)
+    {
+        if(user2.Return_Hero_Type() == HERO_NAME::DRACULA)
+        {
+            Set_Fighter_Space_Number(Fighters_Names::DRACULA, 9);
+            Graph::Get_Map_Graph_Pointer()->Set_User_Occupying_Space(first_user, 9);
+            Graph::Get_Map_Graph_Pointer()->Change_Space_Occiupied_Status(9);
+        }
+        else if(user2.Return_Hero_Type() == HERO_NAME::SHERLOCK)
+        {
+            Set_Fighter_Space_Number(Fighters_Names::SHERLOCK, 9);
+            Graph::Get_Map_Graph_Pointer()->Set_User_Occupying_Space(first_user, 9);
+            Graph::Get_Map_Graph_Pointer()->Change_Space_Occiupied_Status(9);
+        }
+        else if (user2.Return_Hero_Type() == HERO_NAME::INVISIBLE_MAN)
+        {
+            Set_Fighter_Space_Number(Fighters_Names::INVISIBLE_MAN, 9);
+            Graph::Get_Map_Graph_Pointer()->Set_User_Occupying_Space(first_user, 9);
+            Graph::Get_Map_Graph_Pointer()->Change_Space_Occiupied_Status(9);
+            
+        }
+
+        if(user1.Return_Hero_Type() == HERO_NAME::DRACULA)
+        {
+            Set_Fighter_Space_Number(Fighters_Names::DRACULA, 22);
+            Graph::Get_Map_Graph_Pointer()->Set_User_Occupying_Space(USER::USER1, 22);
+            Graph::Get_Map_Graph_Pointer()->Change_Space_Occiupied_Status(22);
+        }
+        else if(user1.Return_Hero_Type() == HERO_NAME::SHERLOCK)
+        {
+            Set_Fighter_Space_Number(Fighters_Names::SHERLOCK, 22);
+            Graph::Get_Map_Graph_Pointer()->Set_User_Occupying_Space(USER::USER1, 22);
+            Graph::Get_Map_Graph_Pointer()->Change_Space_Occiupied_Status(22);
+        }
+        else if(user1.Return_Hero_Type() == HERO_NAME::INVISIBLE_MAN)
+        {
+            Set_Fighter_Space_Number(Fighters_Names::INVISIBLE_MAN, 22);
+            Graph::Get_Map_Graph_Pointer()->Set_User_Occupying_Space(USER::USER1, 22);
+            Graph::Get_Map_Graph_Pointer()->Change_Space_Occiupied_Status(22);
+        }
+    }
+
+    
+}
+
+std::vector<int> Controller::Return_Available_Placement_Spaces(USER user)
+{
+    if(user == Return_Younger_User())
+    {
+        return {1, 2, 3, 4, 7, 8, 10, 11, 15};
+    }
+
+    return {17, 21, 23, 29};
+}
+
+
+
+std::set<int> Controller::Return_Maneuver_Available_Spaces(Fighters_Names fighter)
+{
+    std::set<int> available_spaces;
+
+    Fighter_Base_Class* fighter_object = Get_Fighter(fighter);
+
+    if (fighter_object == nullptr)
+    {
+        return available_spaces;
+    }
+
+    int current_space = fighter_object->Return_Fighter_Current_Space();
+
+    int move_value = fighter_object->Return_Fighter_Current_Move_Value();
+
+    Graph* game_graph = Graph::Get_Map_Graph_Pointer();
+
+    game_graph->Recursive_Path_Finder(
+        available_spaces,
+        current_space,
+        move_value,
+        Return_User_Turn()
+    );
+
+    available_spaces.erase(current_space);
+
+    return available_spaces;
+}
+
+bool Controller::Can_User_Select_Fighter(USER user, Fighters_Names fighter)
+{
+    if(user != User_Turn)
+    {
+        return false;
+    }
+
+    HERO_NAME user_hero;
+
+    if(user == USER::USER1)
+    {
+        user_hero = user1.Return_Hero_Type();
+    }
+    else if(user == USER::USER2)
+    {
+        user_hero = user2.Return_Hero_Type();
+    }
+    else
+    {
+        return false;
+    }
+
+    switch(user_hero)
+    {
+        case HERO_NAME::DRACULA:
+
+            return
+                fighter == Fighters_Names::DRACULA ||
+                fighter == Fighters_Names::SIS1 ||
+                fighter == Fighters_Names::SIS2 ||
+                fighter == Fighters_Names::SIS3;
+
+        case HERO_NAME::SHERLOCK:
+
+            return
+                fighter == Fighters_Names::SHERLOCK ||
+                fighter == Fighters_Names::WATSON;
+
+        case HERO_NAME::INVISIBLE_MAN:
+
+            return fighter == Fighters_Names::INVISIBLE_MAN;
+    }
+
+    return false;
+}
+
+
+bool Controller::Move_Fighter(Fighters_Names fighter_name, int new_space)
+{
+    Fighter_Base_Class* fighter = Get_Fighter(fighter_name);
+
+    if(fighter == nullptr)
+    {
+        return false;
+    }
+
+    if(new_space < 1 || new_space > 32)
+    {
+        return false;
+    }
+
+    int old_space = fighter->Return_Fighter_Current_Space();
+
+    if(old_space < 1 || old_space > 32)
+    {
+        return false;
+    }
+
+    if(!Can_User_Select_Fighter(User_Turn, fighter_name))
+    {
+        return false;
+    }
+
+    Graph* game_graph = Graph::Get_Map_Graph_Pointer();
+
+    if(game_graph->Get_User_Occupying_Space(new_space) != USER::NONE)
+    {
+        return false;
+    }
+
+    Space* destination_space = nullptr;
+
+    game_graph->Set_The_Passed_Pointer_To_The_Corresponding_Space_Object(
+        destination_space,
+        new_space
+    );
+
+    if(destination_space == nullptr)
+    {
+        return false;
+    }
+
+    if(destination_space->Get_Occupied_Status())
+    {
+        return false;
+    }
+
+    std::set<int> available_spaces =
+        Return_Maneuver_Available_Spaces(fighter_name);
+
+    if(available_spaces.find(new_space) == available_spaces.end())
+    {
+        return false;
+    }
+
+    USER fighter_owner =
+        game_graph->Get_User_Occupying_Space(old_space);
+
+    if(fighter_owner == USER::NONE)
+    {
+        return false;
+    }
+
+
+    game_graph->Set_User_Occupying_Space(
+        USER::NONE,
+        old_space
+    );
+
+    game_graph->Change_Space_Occiupied_Status(old_space);
+
+
+    fighter->Set_Current_Fighter_Space_Number(new_space);
+
+
+    game_graph->Set_User_Occupying_Space(
+        fighter_owner,
+        new_space
+    );
+
+    game_graph->Change_Space_Occiupied_Status(new_space);
+
+
+    Discard_Cards_If_Deck_Has_More_Than_7_Cards(User_Turn);
+
+    if(Manage_UserAction_Numbers_And_Return_True_TO_Change_Turn())
+    {
+        Change_User_Turn();
+    }
+
+    return true;
 }

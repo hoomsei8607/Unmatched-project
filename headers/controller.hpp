@@ -4,6 +4,7 @@
 #include "structs.hpp"
 #include <string>
 #include <vector>
+#include <set>
 #include <map>
 #include "fighter_abstract.hpp"
 
@@ -49,6 +50,8 @@ class Controller
         void Discard_Cards_If_Deck_Has_More_Than_7_Cards(USER user_turn);
         void Update_Fighters_Living_Status_In_Printing_Info_Array();
         void Clean_Up_The_Graph();
+        void Initialize_Hero_Space_Numbers();
+        
 
         int Return_Fighter_Move_Value(Fighters_Names fighter_name) const;
         int Return_Hero_Space_Number(Fighters_Names fighter_Name) const;
@@ -65,12 +68,15 @@ class Controller
         bool Is_Any_Of_Dracula_Sisters_Dead();
         bool Does_Card_Exist_In_Hand_With_The_Corresponding_Value(USER user_turn, int card_value); // this function only searches for attack or defence cards
         bool Is_Game_Over();
+        bool Can_User_Select_Fighter(USER user, Fighters_Names fighter);
+        bool Move_Fighter(Fighters_Names fighter_name, int new_space);
 
         USER Return_User_Turn() const;
         USER Return_Younger_User() const;
         USER Return_Older_User() const;
         USER return_who_won_the_combat() const;
         USER Return_Who_won_The_Game() const;
+        USER Set_Starting_User_By_Ages(int user1_age, int user2_age);
         
         std::string Return_Card_Name(USER user_turn, int index);
         std::string Conver_Fighter_Name_Enum_To_String(Fighters_Names fighter_name);
@@ -93,6 +99,7 @@ class Controller
         std::vector<Fighters_Names> Return_Alive_Fighters(HERO_NAME which_crew);
         std::vector<int> Return_Sisters_Space_Numbers();
         std::vector<int> Return_Card_Indexes_That_Match_The_Given_Value(USER user_turn, int card_value); //this function works only for attack and defence cards only
+        std::vector<int> Return_Available_Placement_Spaces(USER user);
         
         CARD_TYPE Return_Selected_Card_Type(USER user_turn, int index);
         
@@ -102,12 +109,18 @@ class Controller
         
         ATTACKING_RANGE Return_Fighter_Attacking_Range(Fighters_Names selected_fighter);
         
-        
+
+        Fighter_Base_Class* Get_Fighter(Fighters_Names name) const;
+
+
         Fighters_Names Which_Fighter_Is_Currently_Selected(HERO_NAME hero_of_team);
         Fighters_Names Return_Fighter_Base_On_Space_Number(int space_number);
         Fighters_Names Get_Selected_Enemy();
         Fighters_Names Return_Card_Owner_Name(USER user_turn, int index);
         Fighters_Names Return_Dead_Sister_Number();
+
+
+        std::set<int> Return_Maneuver_Available_Spaces(Fighters_Names fighter);
 
         ~Controller();
         Fighters_Print_Info* fighters_printing_info_array;
@@ -123,8 +136,7 @@ class Controller
         USER User_Turn;
         USER_ACTION current_user_action;
 
-        Fighter_Base_Class* Dracula_And_Sisters[4];
-        Fighter_Base_Class* sherlock_And_Watson[2];
+        std::vector<Fighter_Base_Class*> all_fighters;
 
         std::vector <Card_Base_Class*>  User1_Hand;
         std::vector <Card_Base_Class*>  User2_Hand;
