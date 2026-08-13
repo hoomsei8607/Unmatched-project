@@ -41,6 +41,8 @@ public:
         USER1_HERO_SELECT,
         USER2_HERO_SELECT,
 
+        FIGHT,
+
         GAME,
 
         HELP,
@@ -90,6 +92,52 @@ private:
 
     Texture2D invisible_man_image;
 
+    //card textures: dracula
+    Texture2D ambushDrac;
+    Texture2D baptismBloodDrac;
+    Texture2D beastformDrac;
+    Texture2D dashDrac;
+    Texture2D domybiddingDrac;
+    Texture2D exploitDrac;
+    Texture2D feedingfrenzyDrac;
+    Texture2D feintDrac;
+    Texture2D lookintomyeyesDrac;
+    Texture2D mistformDrac;
+    Texture2D preyuponDrac;
+    Texture2D raveningseductionDrac;
+    Texture2D thirstforsustenanceDrac;
+
+
+    //card textures: sherlock
+    Texture2D admisiteraidSher;
+    Texture2D confirmsuspicionSher;
+    Texture2D counterpunchSher;
+    Texture2D deducestrategySher;
+    Texture2D educationenverendsSher;
+    Texture2D elementarySher;
+    Texture2D eliminatetheimpossibleSher;
+    Texture2D feintSher;
+    Texture2D fixedpointSher;
+    Texture2D masterofdisguiseSher;
+    Texture2D servicerevolverSher;
+    Texture2D studymethodsSher;
+    Texture2D thegameisafootSher;
+
+    //card texturs: invisible man
+    Texture2D codednotesInv;
+    Texture2D cofoundInv;
+    Texture2D covertprepInv;
+    Texture2D dreamingofrevengeInv;
+    Texture2D emergefrommistInv;
+    Texture2D impossibletoseeInv;
+    Texture2D intothinairInv;
+    Texture2D lurkingInv;
+    Texture2D reignofterrorInv;
+    Texture2D rollingfogInv;
+    Texture2D slipawayInv;
+    Texture2D steplightlyInv;
+    Texture2D vanishInv;
+
     const int MAP_OFFSET_X = 300;
     const int MAP_OFFSET_Y = 150;
 
@@ -102,9 +150,50 @@ private:
     bool maneuver_mode = false;
     Fighters_Names selected_fighter = Fighters_Names::NONE;
     int selected_fighter_space = -1;
+    bool fight_selection_mode = false;
     std::set<int> maneuver_available_spaces;
     int selected_maneuver_space = -1;
+
+
     Rectangle maneuver_button;
+    Rectangle fight_button;
+    Rectangle confirm_card_button;
+
+    Rectangle back_button;
+    Rectangle skip_button;
+
+    enum class FightScreenState
+    {
+        ATTACKER_CARD_SELECTION,
+        DEFENDER_CARD_SELECTION,
+
+        BEFORE_COMBAT,
+        DURING_COMBAT,
+        COMBAT_RESULT,
+        AFTER_COMBAT
+    };
+
+
+    void ExecuteBeforeCombat();
+    void ExecuteDuringCombat();
+    void ExecuteAfterCombat();
+    void DrawCombatResult();
+    void HandleCombatPhaseScreens();
+
+    FightScreenState fight_screen_state = FightScreenState::ATTACKER_CARD_SELECTION;
+
+    int selected_attacker_card = -1;
+    int selected_defender_card = -1;
+    int attacker_card_value = 0;
+    int defender_card_value = 0;
+    int combat_damage = 0;
+
+    std::string combat_phase_log;
+    std::string combat_result_text;
+
+
+
+
 
     void Start_SideKick_Placement();
     void Handle_SideKick_Placement();
@@ -114,10 +203,31 @@ private:
     void DrawManeuverAvailableSpaces();
     void Handle_Fighter_Selection();
     void Handle_Maneuver();
+
+    void DrawFightButton();
+
+    void DrawFightScreen();
+
+    void DrawFightHero(Fighters_Names fighter, Vector2 position);
+    void DrawAttackerHand();
+    void DrawDefenderHand();
+    void HandleFightCardSelection();
+
+    bool IsCardOwnedByFighter(Fighters_Names fighter, Fighters_Names card_owner);
+    bool IsCardUsableInFight(USER user, int card_index);
+
+    void Handle_Fight();
+
     int GetClickedManeuverSpace();
 
     bool IsManeuverButtonClicked();
+    bool IsFightButtonClicked();
+    bool IsConfirmCardButtonClicked();
+    bool IsBackButtonClicked();
+    bool IsSkipButtonClicked();
 
+    Texture2D GetCardTexture(cards card);
+    void DrawCardTexture(cards card, Rectangle destination);
 
 
     void Update();

@@ -54,13 +54,6 @@ Controller::Controller()
     all_fighters.push_back(new Sherlock());
     all_fighters.push_back(new Watson());
 
-    // Dracula_And_Sisters[static_cast<int>(Dracula_And_Sisters_Array_Index::DRACULA)] = Dracula::Get_Instance();
-    // Dracula_And_Sisters[static_cast<int>(Dracula_And_Sisters_Array_Index::SIS1)] = new Dracula_Sister(1);
-    // Dracula_And_Sisters[static_cast<int>(Dracula_And_Sisters_Array_Index::SIS2)] = new Dracula_Sister(2);
-    // Dracula_And_Sisters[static_cast<int>(Dracula_And_Sisters_Array_Index::SIS3)] = new Dracula_Sister(3);
-
-    // sherlock_And_Watson[static_cast<int>(Sherlock_And_Watson_Array_Index::SHERLOCK)] = Sherlock::Get_Instance();
-    // sherlock_And_Watson[static_cast<int>(Sherlock_And_Watson_Array_Index::WATSON)] = Watson::Get_Instance();
 
     dracula_deck={cards::FEEDING_FRENZY,cards::FEEDING_FRENZY,cards::MISTFORM,cards::MISTFORM,cards::AMBUSH,cards::AMBUSH,cards::BAPTISM_OF_BLOOD,cards::BAPTISM_OF_BLOOD,cards::BEASTFORM,cards::BEASTFORM,cards::DASH,cards::DASH,cards::DASH
     ,cards::EXPLOIT,cards::EXPLOIT,cards::EXPLOIT,cards::LOOK_INTO_MY_EYES,cards::LOOK_INTO_MY_EYES,cards::LOOK_INTO_MY_EYES,cards::PREY_UPON,cards::PREY_UPON,
@@ -80,6 +73,7 @@ Controller::Controller()
     }
 
     Who_Won_The_Combat = USER::NONE;
+    current_user_action = USER_ACTION::USER1_ACTION1;
 
 }
 
@@ -349,6 +343,14 @@ void Controller::Set_Younger_User_Variable_Value()
         Younger_User = USER::USER1;
     }
     User_Turn = Younger_User;
+    if(User_Turn == USER::USER1)
+    {
+        current_user_action = USER_ACTION::USER1_ACTION1;
+    }
+    else
+    {
+        current_user_action = USER_ACTION::USER2_ACTION1;
+    }
 }
 
 void Controller::Change_User_Turn()
@@ -1004,7 +1006,8 @@ bool Controller::Should_Card_Effect_Be_Executed(USER user, int index)
 
 void Controller::Call_Card_Effect_Function(USER user_turn, cards card_name, int index, Fighters_Names selected_enemy, int choice,int selected_card)
 {
-    std::vector<Card_Base_Class*>* pointer_to_user_hand;
+    std::vector<Card_Base_Class*>* pointer_to_user_hand = nullptr;
+
     if(user_turn == USER::USER1)
     {
         pointer_to_user_hand = &User1_Hand;
@@ -1013,12 +1016,25 @@ void Controller::Call_Card_Effect_Function(USER user_turn, cards card_name, int 
     {
         pointer_to_user_hand = &User2_Hand;
     }
+    else
+    {
+        return;
+    }
+
+    if(index < 0 || index >= static_cast<int>(pointer_to_user_hand->size()))
+    {
+        return;
+    }
+
+    if((*pointer_to_user_hand)[index] == nullptr)
+    {
+        return;
+    }
 
     if(!(*pointer_to_user_hand)[index]->Is_Card_Effect_Available())
     {
         return;
     }
-
     switch (card_name)
     {
     case cards::AMBUSH:
@@ -2007,4 +2023,95 @@ bool Controller::Move_Fighter(Fighters_Names fighter_name, int new_space)
     }
 
     return true;
+}
+
+bool Controller::Can_Fighter_Fight(Fighters_Names fighter)
+{
+    if(fighter == Fighters_Names::NONE)
+    {
+        return false;
+    }
+
+    if(!Can_User_Select_Fighter(User_Turn, fighter))
+    {
+        return false;
+    }
+
+    int fighter_space = Return_Hero_Space_Number(fighter);
+
+    if(fighter_space < 1 || fighter_space > 32)
+    {
+        return false;
+    }
+
+    ATTACKING_RANGE range =
+        Return_Fighter_Attacking_Range(fighter);
+
+    Graph* game_graph = Graph::Get_Map_Graph_Pointer();
+
+    return game_graph->Can_Fighter_Use_Attacking_Cards(
+        User_Turn,
+        range,
+        fighter_space
+    );
+}
+
+std::set<int> Controller::Return_Fight_Available_Enemy_Spaces(Fighters_Names fighter)
+{
+    std::set<int> available_spaces;
+
+    if(fighter == Fighters_Names::NONE)
+    {
+        return available_spaces;
+    }
+
+    USER user = User_Turn;
+
+    int fighter_space =
+        Return_Hero_Space_Number(fighter);
+
+    if(fighter_space < 1 || fighter_space > 32)
+    {
+        return available_spaces;
+    }
+
+    ATTACKING_RANGE range =
+        Return_Fighter_Attacking_Range(fighter);
+
+    Graph* game_graph =
+        Graph::Get_Map_Graph_Pointer();
+
+    if(range == ATTACKING_RANGE::MELEE)
+    {
+        return game_graph->
+            return_adjacent_enemies_space_numbers_for_melee_attack(
+                user,
+                fighter_space
+            );
+    }
+
+    if(range == ATTACKING_RANGE::RANGED)
+    {
+        std::set<int> possible_spaces =
+            game_graph->
+            return_available_enemies_space_for_range_attack(
+                user,
+                fighter_space
+            );
+
+        for(int space : possible_spaces)
+        {
+            if(game_graph->Get_User_Occupying_Space(space)
+                != user &&
+               game_graph->Get_User_Occupying_Space(space)
+                != USER::NONE)
+            {
+                available_spaces.insert(space);
+            }
+        }
+
+        return available_spaces;
+    }
+
+    return available_spaces;
 }

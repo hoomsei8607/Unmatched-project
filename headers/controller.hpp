@@ -70,6 +70,7 @@ class Controller
         bool Is_Game_Over();
         bool Can_User_Select_Fighter(USER user, Fighters_Names fighter);
         bool Move_Fighter(Fighters_Names fighter_name, int new_space);
+        bool Can_Fighter_Fight(Fighters_Names fighter);
 
         USER Return_User_Turn() const;
         USER Return_Younger_User() const;
@@ -121,6 +122,7 @@ class Controller
 
 
         std::set<int> Return_Maneuver_Available_Spaces(Fighters_Names fighter);
+        std::set<int> Return_Fight_Available_Enemy_Spaces(Fighters_Names fighter);
 
         ~Controller();
         Fighters_Print_Info* fighters_printing_info_array;
