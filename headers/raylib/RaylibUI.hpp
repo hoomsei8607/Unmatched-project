@@ -138,7 +138,7 @@ private:
     Texture2D steplightlyInv;
     Texture2D vanishInv;
 
-    const int MAP_OFFSET_X = 300;
+    const int MAP_OFFSET_X = 600;
     const int MAP_OFFSET_Y = 150;
 
     USER placement_user;
@@ -207,6 +207,9 @@ private:
     void DrawFightButton();
 
     void DrawFightScreen();
+
+    void DrawFighterHUD();
+
 
     void DrawFightHero(Fighters_Names fighter, Vector2 position);
     void DrawAttackerHand();

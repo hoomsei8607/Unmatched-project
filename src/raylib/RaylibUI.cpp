@@ -370,48 +370,16 @@ void RaylibUI::Update()
 
         case Screen::FIGHT:
 
-            if(fight_screen_state ==
-            FightScreenState::ATTACKER_CARD_SELECTION ||
-            fight_screen_state ==
-            FightScreenState::DEFENDER_CARD_SELECTION)
+            if(
+                fight_screen_state == FightScreenState::ATTACKER_CARD_SELECTION ||
+                fight_screen_state == FightScreenState::DEFENDER_CARD_SELECTION
+            )
             {
                 HandleFightCardSelection();
             }
-
-            if(fight_screen_state ==
-                FightScreenState::BEFORE_COMBAT ||
-            fight_screen_state ==
-                FightScreenState::DURING_COMBAT ||
-            fight_screen_state ==
-                FightScreenState::AFTER_COMBAT ||
-            fight_screen_state ==
-                FightScreenState::COMBAT_RESULT)
+            else
             {
                 HandleCombatPhaseScreens();
-            }
-
-            else if(fight_screen_state ==
-                    FightScreenState::BEFORE_COMBAT)
-            {
-                ExecuteBeforeCombat();
-            }
-
-            else if(fight_screen_state ==
-                    FightScreenState::DURING_COMBAT)
-            {
-                ExecuteDuringCombat();
-            }
-
-            else if(fight_screen_state ==
-                    FightScreenState::COMBAT_RESULT)
-            {
-                // DON'T execute anything here yet.
-            }
-
-            else if(fight_screen_state ==
-                    FightScreenState::AFTER_COMBAT)
-            {
-                ExecuteAfterCombat();
             }
 
             break;
@@ -971,7 +939,7 @@ void RaylibUI::DrawGame()
 
     if(selected_fighter != Fighters_Names::NONE)
     {
-        DrawRectangleRec(back_button, DARKGRAY);
+        DrawRectangleRec(back_button, BLUE);
 
         DrawText(
             "BACK",
@@ -981,6 +949,8 @@ void RaylibUI::DrawGame()
             WHITE
         );
     }
+
+    DrawFighterHUD();
     
 }
 
@@ -2928,6 +2898,7 @@ void RaylibUI::ExecuteDuringCombat()
     combat_damage =
         attacker_card_value - defender_card_value;
 
+    
     if(combat_damage > 0)
     {
         controller->Set_Who_Has_Won_The_Combat_Variable(
@@ -3177,4 +3148,120 @@ bool RaylibUI::IsSkipButtonClicked()
         )
         &&
         IsMouseButtonPressed(MOUSE_BUTTON_LEFT);
+}
+
+void RaylibUI::DrawFighterHUD()
+{
+    if(selected_fighter == Fighters_Names::NONE)
+    {
+        return;
+    }
+
+    Fighter_Base_Class* fighter =
+        controller->Get_Fighter(selected_fighter);
+
+    if(fighter == nullptr)
+    {
+        return;
+    }
+
+    DrawRectangle(
+        0,
+        300,
+        MAP_OFFSET_X,
+        GetScreenHeight(),
+        Fade(BLACK, 0.85f)
+    );
+
+    DrawText(
+        "FIGHTER INFO",
+        40,
+        360,
+        32,
+        WHITE
+    );
+
+    DrawLine(
+        40,
+        405,
+        MAP_OFFSET_X - 40,
+        105,
+        GRAY
+    );
+
+    std::string fighter_name =
+        controller->Conver_Fighter_Name_Enum_To_String(
+            selected_fighter
+        );
+
+    DrawText(
+        "FIGHTER:",
+        40,
+        445,
+        22,
+        LIGHTGRAY
+    );
+
+    DrawText(
+        fighter_name.c_str(),
+        40,
+        480,
+        30,
+        WHITE
+    );
+
+    DrawText(
+        "HEALTH:",
+        40,
+        540,
+        22,
+        LIGHTGRAY
+    );
+
+    DrawText(
+        std::to_string(
+            fighter->Return_Fighter_Current_Hp()
+        ).c_str(),
+        40,
+        575,
+        30,
+        WHITE
+    );
+
+    DrawText(
+        "MOVE:",
+        250,
+        640,
+        22,
+        LIGHTGRAY
+    );
+
+    DrawText(
+        std::to_string(
+            fighter->Return_Fighter_Current_Move_Value()
+        ).c_str(),
+        250,
+        675,
+        30,
+        WHITE
+    );
+
+    // Current space
+    DrawText(
+        "SPACE:",
+        40,
+        640,
+        22,
+        LIGHTGRAY
+    );
+
+    DrawText(
+        std::to_string(
+            fighter->Return_Fighter_Current_Space()
+        ).c_str(),
+        40,
+        675,
+        30,
+        WHITE
+    );
 }
