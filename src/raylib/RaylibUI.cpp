@@ -53,6 +53,13 @@ RaylibUI::RaylibUI(Controller* control)
         60
     };
 
+    boost_maneuver_button = {
+        1540,
+        0,
+        220,
+        60
+    };
+
     fight_button = {
         1150,
         0,
@@ -89,8 +96,8 @@ void RaylibUI::Run()
 {
 
     InitWindow(
-        1880,
-        1150,
+        1920,
+        1080,
         "Unmatched"
     );
 
@@ -360,9 +367,16 @@ void RaylibUI::Update()
 
             if(!sidekick_placement_active)
             {
-                Handle_Fighter_Selection();
-                Handle_Maneuver();
-                Handle_Fight();
+                if(boost_card_selection_mode)
+                {
+                    Handle_Boost_Card_Selection();
+                }
+                else
+                {
+                    Handle_Fighter_Selection();
+                    Handle_Maneuver();
+                    Handle_Fight();
+                }
             }
 
             break;
@@ -935,7 +949,9 @@ void RaylibUI::DrawGame()
     DrawManeuverAvailableSpaces();
     DrawFighters();
     DrawManeuverButton();
+    DrawBoostManeuverButton();
     DrawFightButton();
+    DrawBoostCardSelection();
 
     if(selected_fighter != Fighters_Names::NONE)
     {
@@ -1416,12 +1432,46 @@ void RaylibUI::DrawManeuverButton()
     );
 }
 
+void RaylibUI::DrawBoostManeuverButton()
+{
+    if(selected_fighter == Fighters_Names::NONE || maneuver_mode || fight_selection_mode)
+    {
+        return;
+    }
+
+    if(controller->Is_User_Hand_Empty(controller->Return_User_Turn()))
+    {
+        return;
+    }
+
+    DrawRectangleRec(boost_maneuver_button, DARKGREEN);
+
+    DrawText(
+        "BOOST MANEUVER",
+        boost_maneuver_button.x + 22,
+        boost_maneuver_button.y + 20,
+        20,
+        WHITE
+    );
+}
+
 bool RaylibUI::IsManeuverButtonClicked()
 {
     return
         CheckCollisionPointRec(
             GetMousePosition(),
             maneuver_button
+        )
+        &&
+        IsMouseButtonPressed(MOUSE_BUTTON_LEFT);
+}
+
+bool RaylibUI::IsBoostManeuverButtonClicked()
+{
+    return
+        CheckCollisionPointRec(
+            GetMousePosition(),
+            boost_maneuver_button
         )
         &&
         IsMouseButtonPressed(MOUSE_BUTTON_LEFT);
@@ -1436,6 +1486,105 @@ bool RaylibUI::IsFightButtonClicked()
         )
         &&
         IsMouseButtonPressed(MOUSE_BUTTON_LEFT);
+}
+
+void RaylibUI::DrawBoostCardSelection()
+{
+    if(!boost_card_selection_mode)
+    {
+        return;
+    }
+
+    DrawRectangle(
+        0,
+        0,
+        GetScreenWidth(),
+        GetScreenHeight(),
+        Fade(BLACK, 0.55f)
+    );
+
+    DrawText(
+        "CHOOSE A CARD TO BOOST MANEUVER",
+        580,
+        520,
+        28,
+        WHITE
+    );
+
+    USER user = controller->Return_User_Turn();
+    std::vector<Card_Base_Class*> hand = controller->Return_A_Copy_Of_User_Hand(user);
+
+    int card_count = static_cast<int>(hand.size());
+
+    if(card_count > 7)
+    {
+        card_count = 7;
+    }
+
+    const int card_width = 140;
+    const int card_height = 190;
+    const int spacing = 15;
+
+    int total_width =
+        card_count * card_width +
+        (card_count - 1) * spacing;
+
+    int start_x = (GetScreenWidth() - total_width) / 2;
+    int y = 650;
+
+    for(int i = 0; i < card_count; i++)
+    {
+        int x = start_x + i * (card_width + spacing);
+
+        Rectangle card_rect = {
+            static_cast<float>(x),
+            static_cast<float>(y),
+            static_cast<float>(card_width),
+            static_cast<float>(card_height)
+        };
+
+        DrawCardTexture(
+            hand[i]->Get_Card_Name_Enum(),
+            card_rect
+        );
+
+        DrawRectangleLinesEx(
+            card_rect,
+            i == selected_boost_card ? 6 : 3,
+            i == selected_boost_card ? YELLOW : BLACK
+        );
+
+        DrawText(
+            TextFormat("+%d", hand[i]->get_Card_Boost_Value()),
+            x + 8,
+            y + 8,
+            22,
+            YELLOW
+        );
+    }
+
+    DrawRectangleRec(back_button, BLUE);
+
+    DrawText(
+        "BACK",
+        back_button.x + 45,
+        back_button.y + 18,
+        20,
+        WHITE
+    );
+
+    if(selected_boost_card != -1)
+    {
+        DrawRectangleRec(confirm_card_button, GREEN);
+
+        DrawText(
+            "CONFIRM",
+            confirm_card_button.x + 28,
+            confirm_card_button.y + 13,
+            20,
+            WHITE
+        );
+    }
 }
 
 
@@ -1540,7 +1689,7 @@ int RaylibUI::GetClickedManeuverSpace()
 
 void RaylibUI::Handle_Fighter_Selection()
 {
-    if(maneuver_mode)
+    if(maneuver_mode || boost_card_selection_mode)
     {
         return;
     }
@@ -1610,6 +1759,89 @@ void RaylibUI::Handle_Fighter_Selection()
     }
 }
 
+void RaylibUI::Handle_Boost_Card_Selection()
+{
+    if(IsBackButtonClicked())
+    {
+        boost_card_selection_mode = false;
+        selected_boost_card = -1;
+        boosted_card_index = -1;
+        return;
+    }
+
+    USER user = controller->Return_User_Turn();
+    std::vector<Card_Base_Class*> hand = controller->Return_A_Copy_Of_User_Hand(user);
+
+    int card_count = static_cast<int>(hand.size());
+
+    if(card_count > 7)
+    {
+        card_count = 7;
+    }
+
+    if(IsConfirmCardButtonClicked() && selected_boost_card != -1)
+    {
+        int boost_value = controller->return_card_boost_value(selected_boost_card, user);
+
+        controller->Boost_Fighter_Move_Value(selected_fighter, boost_value);
+
+        maneuver_available_spaces =
+            controller->Return_Maneuver_Available_Spaces(selected_fighter);
+
+        boost_card_selection_mode = false;
+        maneuver_mode = true;
+        selected_maneuver_space = -1;
+        boosted_card_index = selected_boost_card;
+        selected_boost_card = -1;
+
+        if(maneuver_available_spaces.empty())
+        {
+            controller->Reset_Fighter_Move_Value(selected_fighter);
+            maneuver_mode = false;
+            selected_fighter = Fighters_Names::NONE;
+            selected_fighter_space = -1;
+        }
+
+        return;
+    }
+
+    if(!IsMouseButtonPressed(MOUSE_BUTTON_LEFT))
+    {
+        return;
+    }
+
+    Vector2 mouse = GetMousePosition();
+
+    const int card_width = 140;
+    const int card_height = 190;
+    const int spacing = 15;
+
+    int total_width =
+        card_count * card_width +
+        (card_count - 1) * spacing;
+
+    int start_x = (GetScreenWidth() - total_width) / 2;
+    int y = 650;
+
+    for(int i = 0; i < card_count; i++)
+    {
+        int x = start_x + i * (card_width + spacing);
+
+        Rectangle card_rect = {
+            static_cast<float>(x),
+            static_cast<float>(y),
+            static_cast<float>(card_width),
+            static_cast<float>(card_height)
+        };
+
+        if(CheckCollisionPointRec(mouse, card_rect))
+        {
+            selected_boost_card = i;
+            return;
+        }
+    }
+}
+
 void RaylibUI::Handle_Maneuver()
 {
     if(selected_fighter == Fighters_Names::NONE)
@@ -1629,6 +1861,9 @@ void RaylibUI::Handle_Maneuver()
             maneuver_mode = false;
             maneuver_available_spaces.clear();
             selected_maneuver_space = -1;
+            selected_boost_card = -1;
+            boosted_card_index = -1;
+            controller->Reset_Fighter_Move_Value(selected_fighter);
 
             return;
         }
@@ -1643,6 +1878,14 @@ void RaylibUI::Handle_Maneuver()
                 selected_maneuver_space
             );
 
+            if(boosted_card_index != -1)
+            {
+                controller->discard(
+                    boosted_card_index,
+                    controller->Return_User_Turn()
+                );
+            }
+
             if(controller->Move_Fighter(
                     selected_fighter,
                     selected_maneuver_space))
@@ -1654,6 +1897,8 @@ void RaylibUI::Handle_Maneuver()
                 maneuver_mode = false;
                 maneuver_available_spaces.clear();
                 selected_maneuver_space = -1;
+                selected_boost_card = -1;
+                boosted_card_index = -1;
 
                 selected_fighter = Fighters_Names::NONE;
                 selected_fighter_space = -1;
@@ -1685,6 +1930,9 @@ void RaylibUI::Handle_Maneuver()
             maneuver_mode = false;
             maneuver_available_spaces.clear();
             selected_maneuver_space = -1;
+            selected_boost_card = -1;
+            boosted_card_index = -1;
+            controller->Reset_Fighter_Move_Value(selected_fighter);
 
             selected_fighter = Fighters_Names::NONE;
             selected_fighter_space = -1;
@@ -1733,6 +1981,18 @@ void RaylibUI::Handle_Maneuver()
                 space
             );
         }
+    }
+
+    if(IsBoostManeuverButtonClicked())
+    {
+        if(controller->Is_User_Hand_Empty(controller->Return_User_Turn()))
+        {
+            return;
+        }
+
+        boost_card_selection_mode = true;
+        selected_boost_card = -1;
+        boosted_card_index = -1;
     }
 }
 
@@ -2064,6 +2324,12 @@ void RaylibUI::DrawFightScreen()
 
 
         case FightScreenState::AFTER_COMBAT:
+
+            if(after_combat_move_mode)
+            {
+                DrawAfterCombatMoveSelection();
+                break;
+            }
 
             DrawText(
                 "AFTER COMBAT",
@@ -2407,6 +2673,8 @@ void RaylibUI::HandleFightCardSelection()
             fight_screen_state =
                 FightScreenState::BEFORE_COMBAT;
 
+            ExecuteBeforeCombat();
+
             return;
         }
     }
@@ -2461,6 +2729,8 @@ void RaylibUI::HandleFightCardSelection()
             );
 
             fight_screen_state = FightScreenState::BEFORE_COMBAT;
+
+            ExecuteBeforeCombat();
 
             return;
 
@@ -2733,32 +3003,6 @@ void RaylibUI::ExecuteBeforeCombat()
 
     combat_phase_log.clear();
 
-    if(controller->Return_Selected_Card_Effect_Type(
-            attacker,
-            selected_attacker_card)
-       == CARD_EFFECT_TYPE::IMMEDIATE)
-    {
-        if(controller->Should_Card_Effect_Be_Executed(
-                attacker,
-                selected_attacker_card))
-        {
-            controller->Call_Card_Effect_Function(
-                attacker,
-                controller->Return_Selected_Card_Name_As_An_Enum(
-                    attacker,
-                    selected_attacker_card
-                ),
-                selected_attacker_card
-            );
-
-            combat_phase_log +=
-                controller->Get_Card_Immediate_Result_Log(
-                    attacker,
-                    selected_attacker_card
-                );
-        }
-    }
-
     if(selected_defender_card != -1)
     {
         if(controller->Return_Selected_Card_Effect_Type(
@@ -2770,6 +3014,17 @@ void RaylibUI::ExecuteBeforeCombat()
                     defender,
                     selected_defender_card))
             {
+                if(controller->Return_Selected_Card_Name_As_An_Enum(
+                        defender,
+                        selected_defender_card
+                    ) == cards::FEINT)
+                {
+                    controller->Disable_Card_Effect(
+                        attacker,
+                        selected_attacker_card
+                    );
+                }
+
                 controller->Call_Card_Effect_Function(
                     defender,
                     controller->Return_Selected_Card_Name_As_An_Enum(
@@ -2788,13 +3043,56 @@ void RaylibUI::ExecuteBeforeCombat()
         }
     }
 
+    if(controller->Return_Selected_Card_Effect_Type(
+            attacker,
+            selected_attacker_card)
+       == CARD_EFFECT_TYPE::IMMEDIATE)
+    {
+        bool defender_cancelled_attacker =
+            selected_defender_card != -1 &&
+            controller->Return_Selected_Card_Name_As_An_Enum(
+                defender,
+                selected_defender_card
+            ) == cards::FEINT;
+
+        if(!defender_cancelled_attacker &&
+           controller->Should_Card_Effect_Be_Executed(
+                attacker,
+                selected_attacker_card))
+        {
+            if(selected_defender_card != -1 &&
+               controller->Return_Selected_Card_Name_As_An_Enum(
+                    attacker,
+                    selected_attacker_card
+                ) == cards::FEINT)
+            {
+                controller->Disable_Card_Effect(
+                    defender,
+                    selected_defender_card
+                );
+            }
+
+            controller->Call_Card_Effect_Function(
+                attacker,
+                controller->Return_Selected_Card_Name_As_An_Enum(
+                    attacker,
+                    selected_attacker_card
+                ),
+                selected_attacker_card
+            );
+
+            combat_phase_log +=
+                controller->Get_Card_Immediate_Result_Log(
+                    attacker,
+                    selected_attacker_card
+                );
+        }
+    }
+
     if(combat_phase_log.empty())
     {
         combat_phase_log = "NO EFFECTS OCCURRED";
     }
-
-    fight_screen_state =
-        FightScreenState::DURING_COMBAT;
 }
 
 void RaylibUI::ExecuteDuringCombat()
@@ -2828,7 +3126,7 @@ void RaylibUI::ExecuteDuringCombat()
                         selected_defender_card
                     ),
                     selected_defender_card,
-                    Fighters_Names::NONE,
+                    selected_fighter,
                     -1,
                     selected_attacker_card
                 );
@@ -2858,7 +3156,7 @@ void RaylibUI::ExecuteDuringCombat()
                     selected_attacker_card
                 ),
                 selected_attacker_card,
-                Fighters_Names::NONE,
+                controller->Get_Selected_Enemy(),
                 -1,
                 selected_defender_card
             );
@@ -2925,8 +3223,163 @@ void RaylibUI::ExecuteDuringCombat()
             "DEFENDER WON THE COMBAT";
     }
 
-    fight_screen_state =
-        FightScreenState::AFTER_COMBAT;
+}
+
+void RaylibUI::StartAfterCombatMove(Fighters_Names fighter, USER owner, int distance, bool can_skip, const std::string& prompt)
+{
+    Graph* game_graph = Graph::Get_Map_Graph_Pointer();
+
+    after_combat_available_spaces.clear();
+
+    game_graph->Recursive_Path_Finder(
+        after_combat_available_spaces,
+        controller->Return_Hero_Space_Number(fighter),
+        distance,
+        owner
+    );
+
+    after_combat_available_spaces.erase(
+        controller->Return_Hero_Space_Number(fighter)
+    );
+
+    after_combat_move_mode = !after_combat_available_spaces.empty();
+    selected_after_combat_space = -1;
+    after_combat_move_fighter = fighter;
+    after_combat_move_owner = owner;
+    after_combat_move_can_skip = can_skip;
+    after_combat_move_prompt = prompt;
+}
+
+void RaylibUI::StartAfterCombatMoveNextTo(Fighters_Names fighter, USER owner, Fighters_Names target, USER target_owner, bool can_skip, const std::string& prompt)
+{
+    Graph* game_graph = Graph::Get_Map_Graph_Pointer();
+
+    after_combat_available_spaces.clear();
+
+    game_graph->Recursive_Path_Finder(
+        after_combat_available_spaces,
+        controller->Return_Hero_Space_Number(target),
+        1,
+        target_owner
+    );
+
+    after_combat_move_mode = !after_combat_available_spaces.empty();
+    selected_after_combat_space = -1;
+    after_combat_move_fighter = fighter;
+    after_combat_move_owner = owner;
+    after_combat_move_can_skip = can_skip;
+    after_combat_move_prompt = prompt;
+}
+
+void RaylibUI::DrawAfterCombatMoveSelection()
+{
+    DrawTexture(mapImage, MAP_OFFSET_X, MAP_OFFSET_Y, WHITE);
+
+    for(int i = 1; i <= 32; i++)
+    {
+        DrawText(
+            std::to_string(i).c_str(),
+            MAP_OFFSET_X + space_positions[i].x,
+            MAP_OFFSET_Y + space_positions[i].y,
+            25,
+            WHITE
+        );
+    }
+
+    DrawFighters();
+
+    for(int space : after_combat_available_spaces)
+    {
+        Vector2 position = GetSpaceScreenPosition(space);
+
+        DrawCircle(
+            position.x,
+            position.y,
+            space == selected_after_combat_space ? 38.0f : 32.0f,
+            space == selected_after_combat_space ? YELLOW : Fade(GREEN, 0.55f)
+        );
+    }
+
+    DrawText(
+        after_combat_move_prompt.c_str(),
+        480,
+        40,
+        28,
+        WHITE
+    );
+
+    if(selected_after_combat_space != -1)
+    {
+        DrawRectangleRec(confirm_card_button, GREEN);
+
+        DrawText(
+            "CONFIRM",
+            confirm_card_button.x + 28,
+            confirm_card_button.y + 13,
+            20,
+            WHITE
+        );
+    }
+
+    if(after_combat_move_can_skip)
+    {
+        DrawRectangleRec(skip_button, BLUE);
+
+        DrawText(
+            "SKIP",
+            skip_button.x + 50,
+            skip_button.y + 15,
+            20,
+            WHITE
+        );
+    }
+}
+
+void RaylibUI::HandleAfterCombatMoveSelection()
+{
+    if(after_combat_move_can_skip && IsSkipButtonClicked())
+    {
+        after_combat_move_mode = false;
+        after_combat_available_spaces.clear();
+        selected_after_combat_space = -1;
+        after_combat_move_fighter = Fighters_Names::NONE;
+        after_combat_move_owner = USER::NONE;
+        return;
+    }
+
+    if(IsConfirmCardButtonClicked() && selected_after_combat_space != -1)
+    {
+        controller->Move_Fighter_For_Effect(
+            after_combat_move_fighter,
+            selected_after_combat_space,
+            after_combat_move_owner
+        );
+
+        after_combat_move_mode = false;
+        after_combat_available_spaces.clear();
+        selected_after_combat_space = -1;
+        after_combat_move_fighter = Fighters_Names::NONE;
+        after_combat_move_owner = USER::NONE;
+        return;
+    }
+
+    if(!IsMouseButtonPressed(MOUSE_BUTTON_LEFT))
+    {
+        return;
+    }
+
+    Vector2 mouse = GetMousePosition();
+
+    for(int space : after_combat_available_spaces)
+    {
+        Vector2 position = GetSpaceScreenPosition(space);
+
+        if(CheckCollisionPointCircle(mouse, position, 40.0f))
+        {
+            selected_after_combat_space = space;
+            return;
+        }
+    }
 }
 
 void RaylibUI::ExecuteAfterCombat()
@@ -2942,59 +3395,108 @@ void RaylibUI::ExecuteAfterCombat()
 
     combat_phase_log.clear();
 
-    if(controller->Return_Selected_Card_Effect_Type(
-            attacker,
-            selected_attacker_card)
-       == CARD_EFFECT_TYPE::AFTER_COMBAT)
+    auto execute_after_card = [&](USER card_user, int card_index, Fighters_Names card_fighter, Fighters_Names opposing_fighter, USER opposing_user)
     {
-        if(controller->Should_Card_Effect_Be_Executed(
-                attacker,
-                selected_attacker_card))
+        if(card_index == -1)
         {
-            controller->Call_Card_Effect_Function(
-                attacker,
-                controller->Return_Selected_Card_Name_As_An_Enum(
-                    attacker,
-                    selected_attacker_card
-                ),
-                selected_attacker_card
+            return false;
+        }
+
+        if(controller->Return_Selected_Card_Effect_Type(
+                card_user,
+                card_index)
+           != CARD_EFFECT_TYPE::AFTER_COMBAT)
+        {
+            return false;
+        }
+
+        if(!controller->Should_Card_Effect_Be_Executed(
+                card_user,
+                card_index))
+        {
+            return false;
+        }
+
+        cards card_name =
+            controller->Return_Selected_Card_Name_As_An_Enum(
+                card_user,
+                card_index
             );
 
-            combat_phase_log +=
-                controller->Get_Card_Immediate_Result_Log(
-                    attacker,
-                    selected_attacker_card
-                );
+        if(card_name == cards::DASH)
+        {
+            StartAfterCombatMove(
+                card_fighter,
+                card_user,
+                3,
+                true,
+                "DASH: MOVE YOUR FIGHTER UP TO 3 SPACES"
+            );
+
+            combat_phase_log = "DASH: choose a space or skip.";
+            return after_combat_move_mode;
         }
+
+        if(card_name == cards::THE_GAME_IS_AFOOT)
+        {
+            StartAfterCombatMove(
+                Fighters_Names::SHERLOCK,
+                card_user,
+                3,
+                true,
+                "THE GAME IS AFOOT: MOVE SHERLOCK UP TO 3 SPACES"
+            );
+
+            combat_phase_log = "THE GAME IS AFOOT: choose a space or skip.";
+            return after_combat_move_mode;
+        }
+
+        if(card_name == cards::THIRST_FOR_SUSTENANCE)
+        {
+            if(card_user == controller->return_who_won_the_combat())
+            {
+                StartAfterCombatMoveNextTo(
+                    Fighters_Names::DRACULA,
+                    card_user,
+                    opposing_fighter,
+                    opposing_user,
+                    false,
+                    "THIRST FOR SUSTENANCE: MOVE DRACULA ADJACENT TO THE ENEMY"
+                );
+
+                combat_phase_log = "THIRST FOR SUSTENANCE: choose a space.";
+                return after_combat_move_mode;
+            }
+
+            combat_phase_log += "THIRST FOR SUSTENANCE: Dracula did not win.\n";
+            return false;
+        }
+
+        controller->Call_Card_Effect_Function(
+            card_user,
+            card_name,
+            card_index,
+            opposing_fighter
+        );
+
+        combat_phase_log +=
+            controller->Get_Card_Immediate_Result_Log(
+                card_user,
+                card_index
+            );
+
+        return false;
+    };
+
+    if(selected_defender_card != -1 &&
+       execute_after_card(defender, selected_defender_card, controller->Get_Selected_Enemy(), selected_fighter, attacker))
+    {
+        return;
     }
 
-    if(selected_defender_card != -1)
+    if(execute_after_card(attacker, selected_attacker_card, selected_fighter, controller->Get_Selected_Enemy(), defender))
     {
-        if(controller->Return_Selected_Card_Effect_Type(
-                defender,
-                selected_defender_card)
-           == CARD_EFFECT_TYPE::AFTER_COMBAT)
-        {
-            if(controller->Should_Card_Effect_Be_Executed(
-                    defender,
-                    selected_defender_card))
-            {
-                controller->Call_Card_Effect_Function(
-                    defender,
-                    controller->Return_Selected_Card_Name_As_An_Enum(
-                        defender,
-                        selected_defender_card
-                    ),
-                    selected_defender_card
-                );
-
-                combat_phase_log +=
-                    controller->Get_Card_Immediate_Result_Log(
-                        defender,
-                        selected_defender_card
-                    );
-            }
-        }
+        return;
     }
 
     if(combat_phase_log.empty())
@@ -3002,8 +3504,6 @@ void RaylibUI::ExecuteAfterCombat()
         combat_phase_log = "NO EFFECTS OCCURRED";
     }
 
-    fight_screen_state =
-        FightScreenState::COMBAT_RESULT;
 }
 
 
@@ -3097,27 +3597,51 @@ void RaylibUI::HandleCombatPhaseScreens()
     switch(fight_screen_state)
     {
         case FightScreenState::BEFORE_COMBAT:
-            ExecuteBeforeCombat();
+            ExecuteDuringCombat();
+            fight_screen_state = FightScreenState::DURING_COMBAT;
             break;
 
         case FightScreenState::DURING_COMBAT:
-            ExecuteDuringCombat();
+            ExecuteAfterCombat();
+            fight_screen_state = FightScreenState::AFTER_COMBAT;
             break;
 
         case FightScreenState::AFTER_COMBAT:
-            ExecuteAfterCombat();
+            if(after_combat_move_mode)
+            {
+                HandleAfterCombatMoveSelection();
+                break;
+            }
+
+            fight_screen_state = FightScreenState::COMBAT_RESULT;
             break;
 
         case FightScreenState::COMBAT_RESULT:
 
             current_screen = Screen::GAME;
+            controller->discard(selected_attacker_card, controller->Return_User_Turn());
+
+            if(selected_defender_card != -1)
+            {
+                USER defender =
+                    controller->Return_User_Turn() == USER::USER1
+                        ? USER::USER2
+                        : USER::USER1;
+
+                controller->discard(selected_defender_card, defender);
+            }
+
             controller->Discard_Cards_If_Deck_Has_More_Than_7_Cards(controller->Return_User_Turn());
             if(controller->Manage_UserAction_Numbers_And_Return_True_TO_Change_Turn())
             {
                 controller->Change_User_Turn();
             }
+            controller->Deselect_All_Selected_Fighters();
             selected_fighter = Fighters_Names::NONE;
+            selected_fighter_space = -1;
             selected_maneuver_space = -1;
+            selected_attacker_card = -1;
+            selected_defender_card = -1;
             fight_selection_mode = false;
 
             break;

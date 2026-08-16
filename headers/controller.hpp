@@ -12,7 +12,6 @@
 #include <ftxui/component/screen_interactive.hpp>
 #include <ftxui/dom/elements.hpp>
 #include <ftxui/screen/screen.hpp>
-
 class Controller
 {
     public:
@@ -51,8 +50,6 @@ class Controller
         void Update_Fighters_Living_Status_In_Printing_Info_Array();
         void Clean_Up_The_Graph();
         void Initialize_Hero_Space_Numbers();
-        
-
         int Return_Fighter_Move_Value(Fighters_Names fighter_name) const;
         int Return_Hero_Space_Number(Fighters_Names fighter_Name) const;
         int return_card_boost_value(int card,USER user_turn);
@@ -70,6 +67,7 @@ class Controller
         bool Is_Game_Over();
         bool Can_User_Select_Fighter(USER user, Fighters_Names fighter);
         bool Move_Fighter(Fighters_Names fighter_name, int new_space);
+        bool Move_Fighter_For_Effect(Fighters_Names fighter_name, int new_space, USER fighter_owner);
         bool Can_Fighter_Fight(Fighters_Names fighter);
 
         USER Return_User_Turn() const;

@@ -2015,12 +2015,80 @@ bool Controller::Move_Fighter(Fighters_Names fighter_name, int new_space)
     game_graph->Change_Space_Occiupied_Status(new_space);
 
 
+    draw(User_Turn);
+
     Discard_Cards_If_Deck_Has_More_Than_7_Cards(User_Turn);
 
     if(Manage_UserAction_Numbers_And_Return_True_TO_Change_Turn())
     {
         Change_User_Turn();
     }
+
+    Reset_Fighter_Move_Value(fighter_name);
+
+    return true;
+}
+
+bool Controller::Move_Fighter_For_Effect(Fighters_Names fighter_name, int new_space, USER fighter_owner)
+{
+    Fighter_Base_Class* fighter = Get_Fighter(fighter_name);
+
+    if(fighter == nullptr)
+    {
+        return false;
+    }
+
+    if(new_space < 1 || new_space > 32)
+    {
+        return false;
+    }
+
+    int old_space = fighter->Return_Fighter_Current_Space();
+
+    if(old_space < 1 || old_space > 32)
+    {
+        return false;
+    }
+
+    Graph* game_graph = Graph::Get_Map_Graph_Pointer();
+
+    if(game_graph->Get_User_Occupying_Space(new_space) != USER::NONE)
+    {
+        return false;
+    }
+
+    Space* destination_space = nullptr;
+
+    game_graph->Set_The_Passed_Pointer_To_The_Corresponding_Space_Object(
+        destination_space,
+        new_space
+    );
+
+    if(destination_space == nullptr)
+    {
+        return false;
+    }
+
+    if(destination_space->Get_Occupied_Status())
+    {
+        return false;
+    }
+
+    game_graph->Set_User_Occupying_Space(
+        USER::NONE,
+        old_space
+    );
+
+    game_graph->Change_Space_Occiupied_Status(old_space);
+
+    fighter->Set_Current_Fighter_Space_Number(new_space);
+
+    game_graph->Set_User_Occupying_Space(
+        fighter_owner,
+        new_space
+    );
+
+    game_graph->Change_Space_Occiupied_Status(new_space);
 
     return true;
 }

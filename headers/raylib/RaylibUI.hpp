@@ -148,14 +148,25 @@ private:
     std::vector<Fighters_Names> sidekicks_to_place;
 
     bool maneuver_mode = false;
+    bool boost_card_selection_mode = false;
     Fighters_Names selected_fighter = Fighters_Names::NONE;
     int selected_fighter_space = -1;
     bool fight_selection_mode = false;
     std::set<int> maneuver_available_spaces;
     int selected_maneuver_space = -1;
+    int selected_boost_card = -1;
+    int boosted_card_index = -1;
+    bool after_combat_move_mode = false;
+    std::set<int> after_combat_available_spaces;
+    int selected_after_combat_space = -1;
+    Fighters_Names after_combat_move_fighter = Fighters_Names::NONE;
+    USER after_combat_move_owner = USER::NONE;
+    bool after_combat_move_can_skip = false;
+    std::string after_combat_move_prompt;
 
 
     Rectangle maneuver_button;
+    Rectangle boost_maneuver_button;
     Rectangle fight_button;
     Rectangle confirm_card_button;
 
@@ -179,6 +190,10 @@ private:
     void ExecuteAfterCombat();
     void DrawCombatResult();
     void HandleCombatPhaseScreens();
+    void StartAfterCombatMove(Fighters_Names fighter, USER owner, int distance, bool can_skip, const std::string& prompt);
+    void StartAfterCombatMoveNextTo(Fighters_Names fighter, USER owner, Fighters_Names target, USER target_owner, bool can_skip, const std::string& prompt);
+    void DrawAfterCombatMoveSelection();
+    void HandleAfterCombatMoveSelection();
 
     FightScreenState fight_screen_state = FightScreenState::ATTACKER_CARD_SELECTION;
 
@@ -200,9 +215,12 @@ private:
     void Draw_Placement_Highlights();
     void Finish_SideKick_Placement();
     void DrawManeuverButton();
+    void DrawBoostManeuverButton();
+    void DrawBoostCardSelection();
     void DrawManeuverAvailableSpaces();
     void Handle_Fighter_Selection();
     void Handle_Maneuver();
+    void Handle_Boost_Card_Selection();
 
     void DrawFightButton();
 
@@ -224,6 +242,7 @@ private:
     int GetClickedManeuverSpace();
 
     bool IsManeuverButtonClicked();
+    bool IsBoostManeuverButtonClicked();
     bool IsFightButtonClicked();
     bool IsConfirmCardButtonClicked();
     bool IsBackButtonClicked();
