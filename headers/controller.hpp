@@ -6,12 +6,51 @@
 #include <vector>
 #include <set>
 #include <map>
+#include <fstream>
+#include <iostream>
+#include <cstring>
 #include "fighter_abstract.hpp"
 
 #include <ftxui/component/component.hpp>
 #include <ftxui/component/screen_interactive.hpp>
 #include <ftxui/dom/elements.hpp>
 #include <ftxui/screen/screen.hpp>
+
+struct SavedFighter
+{
+    Fighters_Names fighter_name;
+    int current_hp;
+    int current_space;
+    int current_move_value;
+    bool is_alive;
+};
+
+struct SavedUser
+{
+    char username[32];
+    char hero_name_string[32];
+    HERO_NAME hero_name;
+
+    int fighter_count;
+    SavedFighter fighters[6];
+
+    int hand_count;
+    cards hand[10];
+
+    int deck_count;
+    cards deck[30];
+};
+
+struct SaveFile
+{
+
+    USER current_turn;
+    USER_ACTION current_user_action;
+
+    SavedUser user1;
+    SavedUser user2;
+};
+
 class Controller
 {
     public:
@@ -50,6 +89,10 @@ class Controller
         void Update_Fighters_Living_Status_In_Printing_Info_Array();
         void Clean_Up_The_Graph();
         void Initialize_Hero_Space_Numbers();
+        bool Save_Game(const std::string& file_path = "save.bin");
+        bool Load_Game(const std::string& file_path = "save.bin");
+        
+
         int Return_Fighter_Move_Value(Fighters_Names fighter_name) const;
         int Return_Hero_Space_Number(Fighters_Names fighter_Name) const;
         int return_card_boost_value(int card,USER user_turn);
@@ -142,6 +185,7 @@ class Controller
         std::vector <Card_Base_Class*>  User2_Hand;
         std::vector <cards> sherlock_deck;
         std::vector <cards> dracula_deck;
+        std::vector <cards> invisible_man_deck;
 
         std::map <int, Space_Row_And_Column_In_Array> Space_To_Array_Index_Map;
 
@@ -149,5 +193,20 @@ class Controller
         int defender_selected_card_index;
 
         Fighters_Names Selected_Enemy_Hero;
+
+        void Fill_Save_File(SaveFile& save_file) const;
+        void Fill_Saved_User(SavedUser& saved_user, USER user) const;
+        void Fill_Saved_Fighter(SavedFighter& saved_fighter, Fighter_Base_Class* fighter) const;
+        bool Load_Save_File(const SaveFile& save_file);
+        bool Load_Saved_User(const SavedUser& saved_user, USER user);
+        bool Load_Saved_Fighter(const SavedFighter& saved_fighter, USER owner);
+        void Add_Card_To_User_Hand(USER user, cards card_name);
+        std::vector<cards>& Return_Deck_For_Hero(HERO_NAME hero_name);
+        const std::vector<cards>& Return_Deck_For_Hero(HERO_NAME hero_name) const;
+        std::vector<Card_Base_Class*>& Return_User_Hand(USER user);
+        const std::vector<Card_Base_Class*>& Return_User_Hand(USER user) const;
+        void Copy_String_To_Save_Array(char* destination, int destination_size, const std::string& source) const;
+        USER Return_Fighter_Owner(Fighters_Names fighter_name) const;
+        void Place_Fighter_On_Map(Fighters_Names fighter_name, USER owner);
     };
 #endif

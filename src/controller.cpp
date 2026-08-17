@@ -13,6 +13,12 @@
 
 Controller::Controller()
 {
+    fighters_printing_info_array = nullptr;
+    fighters_printing_info_count = 0;
+    attacker_selected_card_index = -1;
+    defender_selected_card_index = -1;
+    Selected_Enemy_Hero = Fighters_Names::NONE;
+
     Space_To_Array_Index_Map[1] = {2, 12};   
     Space_To_Array_Index_Map[2] = {0, 19};   
     Space_To_Array_Index_Map[3] = {0, 31};   
@@ -542,29 +548,10 @@ void Controller::Initialize_Users_hands()
 
 void Controller::Instantiate_Card_Object(USER user, cards card_name)
 {
-    if(dracula_deck.empty())
-    {
-        return;
-    }
-    if(sherlock_deck.empty())
-    {
-        return;
-    }
     Card_Base_Class* temp_card_ptr = nullptr;
-    HERO_NAME user_hero;
-    if(user == USER::USER1)
-    {
-        user_hero = user1.Return_Hero_Type();            
-    }
-    else
-    {
-        user_hero = user2.Return_Hero_Type();
-    }
 
-    if(user_hero == HERO_NAME::DRACULA)
+    switch (card_name)
     {
-        switch (dracula_deck.back())
-        {
         case cards::FEEDING_FRENZY: 
             temp_card_ptr = new dracula_feedingfrenzy;
             break;
@@ -612,12 +599,6 @@ void Controller::Instantiate_Card_Object(USER user, cards card_name)
         case cards::FEINT : 
             temp_card_ptr = new feint;
             break;
-        }
-    }
-    else
-    {
-        switch (sherlock_deck.back())
-        {
         case cards::AMINISTER_AID :
             temp_card_ptr = new holmes_administer_aid;
             break;
@@ -639,9 +620,6 @@ void Controller::Instantiate_Card_Object(USER user, cards card_name)
         case cards::ELIMINATE_THE_IMPOSSIBLE :
             temp_card_ptr = new holmes_eliminate_the_impossible;
             break;
-        case cards::FEINT :
-            temp_card_ptr = new feint;
-            break;
         case cards::FIXED_POINT_IN_A_CHANGING_AGE :
             temp_card_ptr = new holmes_fixed_point_in_a_changing_age;
             break;
@@ -657,11 +635,13 @@ void Controller::Instantiate_Card_Object(USER user, cards card_name)
         case cards::STUDY_METHODS :
             temp_card_ptr = new holmes_study_methods;
             break;
-        
-        }
-
-        
     }
+
+    if(temp_card_ptr == nullptr)
+    {
+        return;
+    }
+
     if(user == USER::USER1)
     {
         User1_Hand.push_back(temp_card_ptr);
@@ -1880,6 +1860,394 @@ std::set<int> Controller::Return_Maneuver_Available_Spaces(Fighters_Names fighte
     available_spaces.erase(current_space);
 
     return available_spaces;
+}
+
+bool Controller::Save_Game(const std::string& file_path)
+{
+    SaveFile save_file{};
+    Fill_Save_File(save_file);
+
+    std::ofstream file(file_path, std::ios::binary);
+
+    if(!file)
+    {
+        return false;
+    }
+
+    file.write(reinterpret_cast<const char*>(&save_file), sizeof(SaveFile));
+
+    return file.good();
+}
+
+bool Controller::Load_Game(const std::string& file_path)
+{
+    SaveFile save_file{};
+
+    std::ifstream file(file_path, std::ios::binary);
+
+    if(!file)
+    {
+        return false;
+    }
+
+    file.read(reinterpret_cast<char*>(&save_file), sizeof(SaveFile));
+
+    if(!file)
+    {
+        return false;
+    }
+
+    return Load_Save_File(save_file);
+}
+
+void Controller::Fill_Save_File(SaveFile& save_file) const
+{
+    save_file = {};
+    save_file.current_turn = User_Turn;
+    save_file.current_user_action = current_user_action;
+
+    Fill_Saved_User(save_file.user1, USER::USER1);
+    Fill_Saved_User(save_file.user2, USER::USER2);
+}
+
+void Controller::Fill_Saved_User(SavedUser& saved_user, USER user) const
+{
+    saved_user = {};
+
+    const User& source_user = (user == USER::USER1) ? user1 : user2;
+
+    Copy_String_To_Save_Array(saved_user.username, 32, source_user.Return_UserName());
+    Copy_String_To_Save_Array(saved_user.hero_name_string, 32, source_user.Return_Hero_Name_String());
+    saved_user.hero_name = source_user.Return_Hero_Type();
+
+    const std::vector<Card_Base_Class*>& hand = Return_User_Hand(user);
+    saved_user.hand_count = static_cast<int>(hand.size());
+
+    for(int i = 0; i < saved_user.hand_count; i++)
+    {
+        saved_user.hand[i] = hand[i]->Get_Card_Name_Enum();
+    }
+
+    const std::vector<cards>& deck = Return_Deck_For_Hero(saved_user.hero_name);
+    saved_user.deck_count = static_cast<int>(deck.size());
+
+    for(int i = 0; i < saved_user.deck_count; i++)
+    {
+        saved_user.deck[i] = deck[i];
+    }
+
+    for(auto fighter : all_fighters)
+    {
+        if(fighter == nullptr)
+        {
+            continue;
+        }
+
+        if(Return_Fighter_Owner(fighter->Get_Fighter_Name()) != user)
+        {
+            continue;
+        }
+
+        if(saved_user.fighter_count >= 6)
+        {
+            return;
+        }
+
+        Fill_Saved_Fighter(saved_user.fighters[saved_user.fighter_count], fighter);
+        saved_user.fighter_count++;
+    }
+}
+
+void Controller::Fill_Saved_Fighter(SavedFighter& saved_fighter, Fighter_Base_Class* fighter) const
+{
+    saved_fighter = {};
+
+    if(fighter == nullptr)
+    {
+        saved_fighter.fighter_name = Fighters_Names::NONE;
+        return;
+    }
+
+    saved_fighter.fighter_name = fighter->Get_Fighter_Name();
+    saved_fighter.current_hp = fighter->Return_Fighter_Current_Hp();
+    saved_fighter.current_space = fighter->Return_Fighter_Current_Space();
+    saved_fighter.current_move_value = fighter->Return_Fighter_Current_Move_Value();
+    saved_fighter.is_alive = fighter->return_is_fighter_alive();
+}
+
+bool Controller::Load_Save_File(const SaveFile& save_file)
+{
+    if(save_file.user1.fighter_count < 0 || save_file.user1.fighter_count > 6)
+    {
+        return false;
+    }
+
+    if(save_file.user2.fighter_count < 0 || save_file.user2.fighter_count > 6)
+    {
+        return false;
+    }
+
+    User_Turn = save_file.current_turn;
+    Younger_User = save_file.current_turn;
+    current_user_action = save_file.current_user_action;
+
+    if(!Load_Saved_User(save_file.user1, USER::USER1))
+    {
+        return false;
+    }
+
+    if(!Load_Saved_User(save_file.user2, USER::USER2))
+    {
+        return false;
+    }
+
+    for(int i = 0; i < save_file.user1.fighter_count; i++)
+    {
+        if(!Load_Saved_Fighter(save_file.user1.fighters[i], USER::USER1))
+        {
+            return false;
+        }
+    }
+
+    for(int i = 0; i < save_file.user2.fighter_count; i++)
+    {
+        if(!Load_Saved_Fighter(save_file.user2.fighters[i], USER::USER2))
+        {
+            return false;
+        }
+    }
+
+    Deselect_All_Selected_Fighters();
+
+    if(fighters_printing_info_array != nullptr)
+    {
+        Update_Fighters_Living_Status_In_Printing_Info_Array();
+        Update_Map();
+    }
+
+    return true;
+}
+
+bool Controller::Load_Saved_User(const SavedUser& saved_user, USER user)
+{
+    if(saved_user.hand_count < 0 || saved_user.hand_count > 10)
+    {
+        return false;
+    }
+
+    if(saved_user.deck_count < 0 || saved_user.deck_count > 30)
+    {
+        return false;
+    }
+
+    User& target_user = (user == USER::USER1) ? user1 : user2;
+
+    target_user.Set_Name(saved_user.username);
+    target_user.Set_Age("");
+    target_user.Set_Hero_Name_String(saved_user.hero_name_string);
+    target_user.Set_Hero_Name_Type(saved_user.hero_name);
+
+    std::vector<cards>& deck = Return_Deck_For_Hero(saved_user.hero_name);
+    deck.clear();
+
+    for(int i = 0; i < saved_user.deck_count; i++)
+    {
+        deck.push_back(saved_user.deck[i]);
+    }
+
+    for(int i = 0; i < saved_user.hand_count; i++)
+    {
+        Add_Card_To_User_Hand(user, saved_user.hand[i]);
+    }
+
+    return true;
+}
+
+bool Controller::Load_Saved_Fighter(const SavedFighter& saved_fighter, USER owner)
+{
+    if(saved_fighter.fighter_name == Fighters_Names::NONE)
+    {
+        return true;
+    }
+
+    Fighter_Base_Class* fighter = Get_Fighter(saved_fighter.fighter_name);
+
+    if(fighter == nullptr)
+    {
+        return false;
+    }
+
+    int saved_space = saved_fighter.current_space;
+
+    if(saved_space < 1 || saved_space > 32)
+    {
+        saved_space = 1;
+    }
+
+    fighter->Reset_All_Info_For_Revive(saved_space);
+    fighter->change_health(saved_fighter.current_hp - fighter->Return_Fighter_Current_Hp());
+    fighter->Reset_Move_Value();
+    fighter->Boost_Move_Value(saved_fighter.current_move_value - fighter->Return_Fighter_Current_Move_Value());
+
+    if(!saved_fighter.is_alive)
+    {
+        fighter->change_health(-fighter->Return_Fighter_Current_Hp());
+    }
+
+    if(fighter->return_is_fighter_alive())
+    {
+        Place_Fighter_On_Map(saved_fighter.fighter_name, owner);
+    }
+
+    return true;
+}
+
+void Controller::Add_Card_To_User_Hand(USER user, cards card_name)
+{
+    Instantiate_Card_Object(user, card_name);
+}
+
+std::vector<cards>& Controller::Return_Deck_For_Hero(HERO_NAME hero_name)
+{
+    if(hero_name == HERO_NAME::DRACULA)
+    {
+        return dracula_deck;
+    }
+
+    if(hero_name == HERO_NAME::INVISIBLE_MAN)
+    {
+        return invisible_man_deck;
+    }
+
+    return sherlock_deck;
+}
+
+const std::vector<cards>& Controller::Return_Deck_For_Hero(HERO_NAME hero_name) const
+{
+    if(hero_name == HERO_NAME::DRACULA)
+    {
+        return dracula_deck;
+    }
+
+    if(hero_name == HERO_NAME::INVISIBLE_MAN)
+    {
+        return invisible_man_deck;
+    }
+
+    return sherlock_deck;
+}
+
+std::vector<Card_Base_Class*>& Controller::Return_User_Hand(USER user)
+{
+    if(user == USER::USER1)
+    {
+        return User1_Hand;
+    }
+
+    if(user == USER::USER2)
+    {
+        return User2_Hand;
+    }
+
+    throw std::logic_error("Invalid user when returning hand");
+}
+
+const std::vector<Card_Base_Class*>& Controller::Return_User_Hand(USER user) const
+{
+    if(user == USER::USER1)
+    {
+        return User1_Hand;
+    }
+
+    if(user == USER::USER2)
+    {
+        return User2_Hand;
+    }
+
+    throw std::logic_error("Invalid user when returning hand");
+}
+
+void Controller::Copy_String_To_Save_Array(char* destination, int destination_size, const std::string& source) const
+{
+    if(destination_size <= 0)
+    {
+        return;
+    }
+
+    std::strncpy(destination, source.c_str(), destination_size - 1);
+    destination[destination_size - 1] = '\0';
+}
+
+USER Controller::Return_Fighter_Owner(Fighters_Names fighter_name) const
+{
+    auto hero_has_fighter = [](HERO_NAME hero_name, Fighters_Names fighter)
+    {
+        if(hero_name == HERO_NAME::DRACULA)
+        {
+            return fighter == Fighters_Names::DRACULA ||
+                   fighter == Fighters_Names::SIS1 ||
+                   fighter == Fighters_Names::SIS2 ||
+                   fighter == Fighters_Names::SIS3;
+        }
+
+        if(hero_name == HERO_NAME::SHERLOCK)
+        {
+            return fighter == Fighters_Names::SHERLOCK ||
+                   fighter == Fighters_Names::WATSON;
+        }
+
+        if(hero_name == HERO_NAME::INVISIBLE_MAN)
+        {
+            return fighter == Fighters_Names::INVISIBLE_MAN;
+        }
+
+        return false;
+    };
+
+    if(hero_has_fighter(user1.Return_Hero_Type(), fighter_name))
+    {
+        return USER::USER1;
+    }
+
+    if(hero_has_fighter(user2.Return_Hero_Type(), fighter_name))
+    {
+        return USER::USER2;
+    }
+
+    return USER::NONE;
+}
+
+void Controller::Place_Fighter_On_Map(Fighters_Names fighter_name, USER owner)
+{
+    Fighter_Base_Class* fighter = Get_Fighter(fighter_name);
+
+    if(fighter == nullptr)
+    {
+        return;
+    }
+
+    int space_number = fighter->Return_Fighter_Current_Space();
+
+    if(space_number < 1 || space_number > 32)
+    {
+        return;
+    }
+
+    Graph* game_graph = Graph::Get_Map_Graph_Pointer();
+    Space* space = nullptr;
+    game_graph->Set_The_Passed_Pointer_To_The_Corresponding_Space_Object(space, space_number);
+
+    if(space == nullptr)
+    {
+        return;
+    }
+
+    game_graph->Set_User_Occupying_Space(owner, space_number);
+
+    if(!space->Get_Occupied_Status())
+    {
+        game_graph->Change_Space_Occiupied_Status(space_number);
+    }
 }
 
 bool Controller::Can_User_Select_Fighter(USER user, Fighters_Names fighter)
